@@ -1,0 +1,73 @@
+# encoding: UTF-8
+
+c = Category.new
+c.name = "魔法異界"
+c.link = "http://www.bestory.com/category/1-1.html"
+c.cat_link = "http://www.bestory.com/category/1.html"
+c.save
+
+c = Category.new
+c.name = "仙武異能"
+c.link = "http://www.bestory.com/category/2-1.html"
+c.cat_link = "http://www.bestory.com/category/2.html"
+c.save
+
+c = Category.new
+c.name = "言情敘事"
+c.link = "http://www.bestory.com/category/3-1.html"
+c.cat_link = "http://www.bestory.com/category/3.html"
+c.save
+
+c = Category.new
+c.name = "時光穿越"
+c.link = "http://www.bestory.com/category/4-1.html"
+c.cat_link = "http://www.bestory.com/category/4.html"
+c.save
+
+c = Category.new
+c.name = "科幻太空"
+c.link = "http://www.bestory.com/category/8-1.html"
+c.cat_link = "http://www.bestory.com/category/8.html"
+c.save
+
+c = Category.new
+c.name = "靈異軍事"
+c.link = "http://www.bestory.com/category/5-1.html"
+c.cat_link = "http://www.bestory.com/category/5.html"
+c.save
+
+c = Category.new
+c.name = "游戲體育"
+c.link = "http://www.bestory.com/category/6-1.html"
+c.cat_link = "http://www.bestory.com/category/6.html"
+c.save
+
+c = Category.new
+c.name = "動漫日輕"
+c.link = "http://www.bestory.com/category/9-1.html"
+c.cat_link = "http://www.bestory.com/category/9.html"
+c.save
+
+c = Category.new
+c.name = "曆史紀實"
+c.link = "http://www.bestory.com/category/10-1.html"
+c.cat_link = "http://www.bestory.com/category/10.html"
+c.save
+
+c = Category.new
+c.name = "名著古典"
+c.link = "http://www.bestory.com/category/11-1.html"
+c.cat_link = "http://www.bestory.com/category/11.html"
+c.save
+
+c = Category.new
+c.name = "科普其它"
+c.link = "http://www.bestory.com/category/14-1.html"
+c.cat_link = "http://www.bestory.com/category/14.html"
+c.save
+
+c = Category.new
+c.name = "原創"
+c.link = "http://www.bestory.com/category/15-1.html"
+c.cat_link = "http://www.bestory.com/category/15.html"
+c.save
