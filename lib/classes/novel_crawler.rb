@@ -43,7 +43,7 @@ class NovelCrawler
     nodes = @page_html.css("table")
     node = nodes[4].css("table")[3]
 
-    puts img_link = "http://www.bestory.com/" + node.css("img")[1][:src]
+    puts img_link = "http://www.bestory.com" + node.css("img")[1][:src]
     puts name = node.css("font")[0].text
     is_serializing = true
     is_serializing = false if node.css("font")[0].next.text.index("全本")
