@@ -41,6 +41,16 @@ namespace :crawl do
     end
   end
 
+  task :crawl_article_text => :environment do
+    Article.find_in_batches do |articles|
+      articles.each do |article|
+        crawler = NovelCrawler.new
+        crawler.fetch article.link
+        crawler.crawl_article article
+      end
+    end
+  end
+
   task :crawl_rank => :environment do
     ThisWeekHotShip.delete_all
     ThisMonthHotShip.delete_all

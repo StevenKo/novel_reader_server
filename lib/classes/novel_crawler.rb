@@ -116,6 +116,23 @@ class NovelCrawler
     end
   end
 
+  def crawl_article article
+    puts @page_url
+    begin
+      nodes = @page_html.css(".content")
+      nodes = nodes[0].children
+      text = nodes[2].text + "\n"
+      (4..nodes.length-1).each do |i|
+        text = text + nodes[i].text
+      end
+      text = text.gsub("◎ 精品文學網 Bestory.com  ◎ ", "")
+      article.text = text
+      article.save
+    rescue
+      puts "#{@page_url} : errors happen"
+    end
+  end
+
   def crawl_rank
     nodes = @page_html.xpath("//font[@color='#0099CC']")
     ships = ["ThisWeekHotShip", "ThisMonthHotShip", "HotShip"]
