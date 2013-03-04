@@ -13,7 +13,8 @@ NovelServer::Application.routes.draw do
           get 'category_recommend'
           get 'hot'
           get 'this_week_hot'
-          get 'this_month_hot' 
+          get 'this_month_hot'
+          get 'search'
         end
       end
       resources :articles,:only => [:index, :show]
