@@ -16,7 +16,7 @@ NovelServer::Application.routes.draw do
           get 'this_month_hot' 
         end
       end
-      resources :articles,:only => [:index]
+      resources :articles,:only => [:index, :show]
     end
   end
 end
