@@ -16,6 +16,9 @@ NovelServer::Application.routes.draw do
           get 'this_month_hot'
           get 'search'
         end
+        member do 
+          get 'detail_for_save'
+        end
       end
       resources :articles,:only => [:index, :show]
     end

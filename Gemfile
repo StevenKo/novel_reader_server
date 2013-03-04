@@ -23,6 +23,9 @@ end
 
 gem 'jquery-rails'
 
+# api
+gem 'rabl'
+
 # 爬蟲
 gem 'nokogiri'
 
