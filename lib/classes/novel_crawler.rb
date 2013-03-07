@@ -121,9 +121,9 @@ class NovelCrawler
     begin
       nodes = @page_html.css(".content")
       nodes = nodes[0].children
-      text = nodes[2].text + "\n"
+      text = change_node_br_to_newline(nodes[2]) + "\n"
       (4..nodes.length-1).each do |i|
-        text = text + nodes[i].text
+        text = text + change_node_br_to_newline(nodes[i])
       end
       text = text.gsub("◎ 精品文學網 Bestory.com  ◎ ", "")
       article.text = text
@@ -149,5 +149,12 @@ class NovelCrawler
         end
       end
     end
+  end
+
+  def change_node_br_to_newline node
+    content = node.to_html
+    content = content.gsub("<br>","\n")
+    n = Nokogiri::HTML(content)
+    n.text
   end
 end

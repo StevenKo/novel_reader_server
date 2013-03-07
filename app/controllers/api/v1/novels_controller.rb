@@ -50,7 +50,7 @@ class Api::V1::NovelsController < Api::ApiController
 
   def search
     keyword = params[:search]
-    novels = Novel.where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author")
+    novels = Novel.where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author,pic")
     render :json => novels
   end
 
