@@ -58,4 +58,15 @@ class Api::V1::NovelsController < Api::ApiController
     @novel = Novel.includes(:category).find(params[:id])
     @articles = Article.where("novel_id = #{@novel.id}").select("id, subject, title")
   end
+
+  
+  def classic
+    novels = Novel.where('is_classic = true').select("id,name,author,pic,article_num,last_update,is_serializing")
+    render :json => novels
+  end
+
+  def classic_action
+    novels = Novel.where('is_classic_action = true').select("id,name,author,pic,article_num,last_update,is_serializing")
+    render :json => novels
+  end
 end

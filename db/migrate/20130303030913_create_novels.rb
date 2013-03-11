@@ -13,6 +13,8 @@ class CreateNovels < ActiveRecord::Migration
       t.boolean :is_category_recommend
       t.boolean :is_category_hot
       t.boolean :is_category_this_week_hot
+      t.boolean :is_classic
+      t.boolean :is_classic_action
 
       t.timestamps
     end

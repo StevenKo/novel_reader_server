@@ -15,6 +15,8 @@ NovelServer::Application.routes.draw do
           get 'this_week_hot'
           get 'this_month_hot'
           get 'search'
+          get 'classic'
+          get 'classic_action'
         end
         member do 
           get 'detail_for_save'

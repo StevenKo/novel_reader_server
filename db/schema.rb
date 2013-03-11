@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(:version => 20130303035101) do
     t.boolean  "is_category_recommend"
     t.boolean  "is_category_hot"
     t.boolean  "is_category_this_week_hot"
+    t.boolean  "is_classic"
+    t.boolean  "is_classic_action"
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
   end
