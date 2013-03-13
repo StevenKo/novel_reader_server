@@ -4,9 +4,13 @@ namespace :crawl do
     categories = Category.all
     
     categories.each do |category|
-      crawler = NovelCrawler.new
-      crawler.fetch category.link
-      crawler.crawl_novels category.id
+      begin
+        crawler = NovelCrawler.new
+        crawler.fetch category.link
+        crawler.crawl_novels category.id
+      rescue
+        puts category.name
+      end 
     end
   end
 
