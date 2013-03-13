@@ -3,6 +3,7 @@ class NovelCrawler
   include Crawler
 
   def crawl_novels category_id
+    puts @page_url
     nodes = @page_html.css("#ItemContent_dl")
     nodes = nodes.children
     
@@ -25,16 +26,16 @@ class NovelCrawler
       end 
     end
 
-    page_nodes = @page_html.css("#ItemContent_pager")
-    next_link = page_nodes.css("font")[0].parent.next.css("a")
+    # page_nodes = @page_html.css("#ItemContent_pager")
+    # next_link = page_nodes.css("font")[0].parent.next.css("a")
     
-    if next_link.present?
-      next_page_link = "http://www.bestory.com/category/" + next_link[0][:href]
-      puts next_page_link
-      crawler = NovelCrawler.new
-      crawler.fetch next_page_link
-      crawler.crawl_novels category_id
-    end
+    # if next_link.present?
+    #   next_page_link = "http://www.bestory.com/category/" + next_link[0][:href]
+    #   puts next_page_link
+    #   crawler = NovelCrawler.new
+    #   crawler.fetch next_page_link
+    #   crawler.crawl_novels category_id
+    # end
   end
   
 
