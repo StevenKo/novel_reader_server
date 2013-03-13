@@ -20,9 +20,15 @@ namespace :crawl do
   task :crawl_novel_detail => :environment do
     Novel.find_in_batches do |novels|
       novels.each do |novel|
-        crawler = NovelCrawler.new
-        crawler.fetch novel.link
-        crawler.crawl_novel_detail
+        begin
+          if (novel.name != nil)
+            crawler = NovelCrawler.new
+            crawler.fetch novel.link
+            crawler.crawl_novel_detail
+          end
+        rescue
+          puts "errors: #{novel.name   novel.link}"
+        end
       end
     end
   end
