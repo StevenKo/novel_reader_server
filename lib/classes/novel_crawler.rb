@@ -41,8 +41,10 @@ class NovelCrawler
   end
   
 
-  def crawl_novel_detail 
-    novel = Novel.find_by_link(@page_url)
+  def crawl_novel_detail novel
+    return if novel.name
+    fetch novel.link
+    
     nodes = @page_html.css("table")
     node = nodes[4].css("table")[3]
 
