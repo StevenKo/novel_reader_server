@@ -53,7 +53,7 @@ class NovelCrawler
     puts article_num = node.css("font")[1].text
     puts author = node.css("font")[3].text
     puts last_update = node.css("font")[4].text
-    puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2])
+    puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
 
     novel.author = author
     novel.description = description
