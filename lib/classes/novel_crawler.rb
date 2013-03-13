@@ -42,7 +42,7 @@ class NovelCrawler
   
 
   def crawl_novel_detail novel
-    
+    begin
       nodes = @page_html.css("table")
       node = nodes[4].css("table")[3]
 
@@ -64,6 +64,9 @@ class NovelCrawler
       novel.name = name
       novel.save
 
+    rescue
+        puts "errors: #{novel.name}   #{novel.link}"
+    end
   end
 
   def crawl_cat_rank category_id
