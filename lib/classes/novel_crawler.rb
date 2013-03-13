@@ -42,29 +42,31 @@ class NovelCrawler
   
 
   def crawl_novel_detail novel
-    return if novel.name
-    fetch novel.link
-    
-    nodes = @page_html.css("table")
-    node = nodes[4].css("table")[3]
+    begin
+      nodes = @page_html.css("table")
+      node = nodes[4].css("table")[3]
 
-    puts img_link = "http://www.bestory.com" + node.css("img")[1][:src]
-    puts name = node.css("font")[0].text
-    is_serializing = true
-    is_serializing = false if node.css("font")[0].next.text.index("全本")
-    puts article_num = node.css("font")[1].text
-    puts author = node.css("font")[3].text
-    puts last_update = node.css("font")[4].text
-    puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
+      puts img_link = "http://www.bestory.com" + node.css("img")[1][:src]
+      puts name = node.css("font")[0].text
+      is_serializing = true
+      is_serializing = false if node.css("font")[0].next.text.index("全本")
+      puts article_num = node.css("font")[1].text
+      puts author = node.css("font")[3].text
+      puts last_update = node.css("font")[4].text
+      puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
 
-    novel.author = author
-    novel.description = description
-    novel.pic = img_link
-    novel.is_serializing = is_serializing
-    novel.article_num = article_num
-    novel.last_update = last_update
-    novel.name = name
-    novel.save
+      novel.author = author
+      novel.description = description
+      novel.pic = img_link
+      novel.is_serializing = is_serializing
+      novel.article_num = article_num
+      novel.last_update = last_update
+      novel.name = name
+      novel.save
+
+    rescue
+      puts "errors: #{novel.name   novel.link}"
+    end
   end
 
   def crawl_cat_rank category_id
