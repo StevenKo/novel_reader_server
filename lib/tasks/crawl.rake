@@ -21,7 +21,7 @@ namespace :crawl do
     Novel.find_in_batches do |novels|
       novels.each do |novel|
         begin
-          if (novel.name != nil)
+          if (novel.name == nil)
             crawler = NovelCrawler.new
             crawler.fetch novel.link
             crawler.crawl_novel_detail
