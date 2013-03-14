@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303035101) do
+ActiveRecord::Schema.define(:version => 20130314052307) do
 
   create_table "articles", :force => true do |t|
     t.integer  "novel_id"
@@ -56,8 +56,9 @@ ActiveRecord::Schema.define(:version => 20130303035101) do
     t.boolean  "is_category_this_week_hot"
     t.boolean  "is_classic"
     t.boolean  "is_classic_action"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.integer  "crawl_times",               :default => 0
   end
 
   add_index "novels", ["category_id"], :name => "index_novels_on_category_id"
