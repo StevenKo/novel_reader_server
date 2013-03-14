@@ -26,6 +26,8 @@ namespace :crawl do
           crawler.fetch novel.link
           crawler.crawl_novel_detail novel.id
           crawler.crawl_articles novel.id
+          novel.crawl_times = novel.crawl_times + 1
+          novel.save
         rescue
           puts "errors: #{novel.name}   #{novel.link}"
         end
