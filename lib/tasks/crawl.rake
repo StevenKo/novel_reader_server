@@ -21,9 +21,13 @@ namespace :crawl do
     Novel.find_in_batches do |novels|
       novels.each do |novel|
         next if novel.name
-        crawler = NovelCrawler.new
-        crawler.fetch novel.link
-        crawler.crawl_novel_detail novel
+        begin
+          crawler = NovelCrawler.new
+          crawler.fetch novel.link
+          crawler.crawl_novel_detail novel.id
+        rescue
+          puts "errors: #{novel.name}   #{novel.link}"
+        end
       end
     end
   end
@@ -52,6 +56,7 @@ namespace :crawl do
   task :crawl_article_text => :environment do
     Article.find_in_batches do |articles|
       articles.each do |article|
+        next if article.text
         crawler = NovelCrawler.new
         crawler.fetch article.link
         crawler.crawl_article article

@@ -3,7 +3,7 @@ class NovelCrawler
   include Crawler
 
   def crawl_novels category_id
-    puts @page_url
+    # puts @page_url
     nodes = @page_html.css("#ItemContent_dl")
     nodes = nodes.children
     
@@ -41,32 +41,28 @@ class NovelCrawler
   end
   
 
-  def crawl_novel_detail novel
-    begin
-      nodes = @page_html.css("table")
-      node = nodes[4].css("table")[3]
+  def crawl_novel_detail novel_id
+    novel = Novel.find(novel_id)
+    nodes = @page_html.css("table")
+    node = nodes[4].css("table")[3]
 
-      puts img_link = "http://www.bestory.com" + node.css("img")[1][:src]
-      puts name = node.css("font")[0].text
-      is_serializing = true
-      is_serializing = false if node.css("font")[0].next.text.index("全本")
-      puts article_num = node.css("font")[1].text
-      puts author = node.css("font")[3].text
-      puts last_update = node.css("font")[4].text
-      puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
+    puts img_link = "http://www.bestory.com" + node.css("img")[1][:src]
+    puts name = node.css("font")[0].text
+    is_serializing = true
+    is_serializing = false if node.css("font")[0].next.text.index("全本")
+    puts article_num = node.css("font")[1].text
+    puts author = node.css("font")[3].text
+    puts last_update = node.css("font")[4].text
+    puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
 
-      novel.author = author
-      novel.description = description
-      novel.pic = img_link
-      novel.is_serializing = is_serializing
-      novel.article_num = article_num
-      novel.last_update = last_update
-      novel.name = name
-      novel.save
-
-    rescue
-        puts "errors: #{novel.name}   #{novel.link}"
-    end
+    novel.author = author
+    novel.description = description
+    novel.pic = img_link
+    novel.is_serializing = is_serializing
+    novel.article_num = article_num
+    novel.last_update = last_update
+    novel.name = name
+    novel.save
   end
 
   def crawl_cat_rank category_id
@@ -112,6 +108,8 @@ class NovelCrawler
     nodes = @page_html.css("a")
     nodes.each do |node|
       if node[:href].index("/novel/")
+        article = Article.find_by_link("http://www.bestory.com" + node[:href])
+        next if article
         article = Article.new
         article.novel_id = novel_id
         article.link = "http://www.bestory.com" + node[:href]
@@ -124,7 +122,6 @@ class NovelCrawler
   end
 
   def crawl_article article
-    puts @page_url
     begin
       nodes = @page_html.css(".content")
       nodes = nodes[0].children
