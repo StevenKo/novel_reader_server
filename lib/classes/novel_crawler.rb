@@ -124,19 +124,15 @@ class NovelCrawler
   end
 
   def crawl_article article
-    begin
-      nodes = @page_html.css(".content")
-      nodes = nodes[0].children
-      text = change_node_br_to_newline(nodes[2]) + "\n"
-      (4..nodes.length-1).each do |i|
-        text = text + change_node_br_to_newline(nodes[i])
-      end
-      text = text.gsub("◎ 精品文學網 Bestory.com  ◎ ", "")
-      article.text = text
-      article.save
-    rescue
-      puts "#{@page_url} : errors happen"
+    nodes = @page_html.css(".content")
+    nodes = nodes[0].children
+    text = change_node_br_to_newline(nodes[2]) + "\n"
+    (4..nodes.length-1).each do |i|
+      text = text + change_node_br_to_newline(nodes[i])
     end
+    text = text.gsub("◎ 精品文學網 Bestory.com  ◎ ", "")
+    article.text = text
+    article.save
   end
 
   def crawl_rank
