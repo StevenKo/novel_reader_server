@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130314052307) do
+ActiveRecord::Schema.define(:version => 20130314071216) do
 
   create_table "articles", :force => true do |t|
     t.integer  "novel_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20130314052307) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "articles", ["link"], :name => "index_articles_on_link"
   add_index "articles", ["novel_id"], :name => "index_articles_on_novel_id"
 
   create_table "categories", :force => true do |t|
