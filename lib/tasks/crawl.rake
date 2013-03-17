@@ -56,15 +56,14 @@ namespace :crawl do
   # end
 
   task :crawl_article_text => :environment do
-    Article.find_in_batches do |articles|
+    Article.where(:id => 2257520/2..2257540).select("id, text, link").find_in_batches do |articles|
       articles.each do |article|
         begin
-          next if article.text
           crawler = NovelCrawler.new
           crawler.fetch article.link
           crawler.crawl_article article
         rescue
-          puts "errors: #{article.title}   #{article.link}"
+          puts "errors: #{article.link}"
         end
       end
     end

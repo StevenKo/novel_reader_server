@@ -128,14 +128,17 @@ class NovelCrawler
     nodes = nodes[0].children
     text = change_node_br_to_newline(nodes[2]) + "\n"
     (4..nodes.length-1).each do |i|
-      text = text + change_node_br_to_newline(nodes[i]) unless nodes[i].text.index("bookview")
+      if nodes[i].text.index("bookview")
+        nodes[i].css("script").remove
+      end
+      text = text + change_node_br_to_newline(nodes[i])
     end
     text = text.gsub("◎ 精品文學網 Bestory.com  ◎", "")
     text = text.gsub("※ 精 品 文 學 網 B e s t o r y  .c o m  ※", "")
     text = text.gsub("精品文學網  歡迎廣大書友光臨閱讀", "")
     article.text = text
     article.save
-    puts article.title
+    puts @page_url
   end
 
   def crawl_rank
