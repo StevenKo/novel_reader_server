@@ -138,7 +138,7 @@ class NovelCrawler
     text = text.gsub("精品文學網  歡迎廣大書友光臨閱讀", "")
     article.text = text
     article.save
-    puts @page_url
+    puts "#{@page_url}  article_id : #{article.id}"
   end
 
   def crawl_rank
