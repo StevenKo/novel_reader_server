@@ -55,8 +55,8 @@ class Api::V1::NovelsController < Api::ApiController
   end
 
   def detail_for_save
-    @novel = Novel.includes(:category).find(params[:id])
-    @articles = Article.where("novel_id = #{@novel.id}").select("id, subject, title")
+    @novel = Novel.find(params[:id])
+    # @articles = Article.where("novel_id = #{@novel.id}").select("id, subject, title")
   end
 
   
