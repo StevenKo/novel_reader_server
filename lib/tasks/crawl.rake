@@ -56,7 +56,7 @@ namespace :crawl do
   # end
 
   task :crawl_article_text => :environment do
-    Article.where(:id => 2257520/2..2257540).select("id, text, link").find_in_batches do |articles|
+    Article.where(:id => 1172096..2257540).select("id, text, link").find_in_batches do |articles|
       articles.each do |article|
         begin
           crawler = NovelCrawler.new
