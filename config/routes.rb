@@ -22,7 +22,12 @@ NovelServer::Application.routes.draw do
           get 'detail_for_save'
         end
       end
-      resources :articles,:only => [:index, :show]
+      resources :articles,:only => [:index, :show] do
+        collection do 
+          get 'next_article'
+          get 'previous_article'
+        end
+      end
     end
   end
 end

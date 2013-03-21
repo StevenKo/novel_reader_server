@@ -16,4 +16,14 @@ class Api::V1::ArticlesController < Api::ApiController
     article = Article.select("text").find(params[:id])
     render :json => article
   end
+
+  def next_article
+    next_article = Article.find_next_article(params[:article_id].to_i,params[:novel_id])
+    render :json => next_article
+  end
+
+  def previous_article
+    previous_article = Article.find_previous_article(params[:article_id].to_i,params[:novel_id])
+    render :json => previous_article
+  end
 end
