@@ -111,8 +111,8 @@ class NovelCrawler
     nodes.each do |node|
       if node[:href].index("/novel/")
         article = Article.find_by_link("http://www.bestory.com" + node[:href])
-        next if article
-        article = Article.new
+        next if (article != nil && article.text != nil)  
+        article ||= Article.new
         article.novel_id = novel_id
         article.link = "http://www.bestory.com" + node[:href]
         article.title = node.text.strip
@@ -136,6 +136,7 @@ class NovelCrawler
     text = text.gsub("◎ 精品文學網 Bestory.com  ◎", "")
     text = text.gsub("※ 精 品 文 學 網 B e s t o r y  .c o m  ※", "")
     text = text.gsub("精品文學網  歡迎廣大書友光臨閱讀", "")
+    text = text.gsub("手 機 用 戶 請 登 陸  隨 時 隨 地 看 小 說!","")
     article.text = text
     article.save
     puts "#{@page_url}  article_id : #{article.id}"
