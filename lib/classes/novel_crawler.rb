@@ -43,19 +43,18 @@ class NovelCrawler
 
   def crawl_novel_detail novel_id
     novel = Novel.find(novel_id)
-    return if novel.name
 
     nodes = @page_html.css("table")
     node = nodes[4].css("table")[3]
 
-    puts img_link = "http://www.bestory.com" + node.css("img")[1][:src]
-    puts name = node.css("font")[0].text
+    img_link = "http://www.bestory.com" + node.css("img")[1][:src]
+    name = node.css("font")[0].text
     is_serializing = true
     is_serializing = false if node.css("font")[0].next.text.index("全本")
-    puts article_num = node.css("font")[1].text
-    puts author = node.css("font")[3].text
-    puts last_update = node.css("font")[4].text
-    puts description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
+    article_num = node.css("font")[1].text
+    author = node.css("font")[3].text
+    last_update = node.css("font")[4].text
+    description = change_node_br_to_newline(node.css("table")[0].children.children[0].children.children.children[2].children.children[2]).strip
 
     novel.author = author
     novel.description = description
@@ -64,6 +63,8 @@ class NovelCrawler
     novel.article_num = article_num
     novel.last_update = last_update
     novel.name = name
+    # novel.crawl_times = novel.crawl_times + 1
+    novel.crawl_times = 3
     novel.save
   end
 
@@ -117,7 +118,7 @@ class NovelCrawler
         article.link = "http://www.bestory.com" + node[:href]
         article.title = node.text.strip
         article.subject = node.parent.parent.parent.parent.parent.previous.previous.previous.text.strip
-        puts node.text
+        # puts node.text
         article.save
       end
     end
@@ -126,8 +127,8 @@ class NovelCrawler
   def crawl_article article
     nodes = @page_html.css(".content")
     nodes = nodes[0].children
-    text = change_node_br_to_newline(nodes[2]) + "\n"
-    (4..nodes.length-1).each do |i|
+    text = "\n"
+    (0..nodes.length-1).each do |i|
       if nodes[i].text.index("bookview")
         nodes[i].css("script").remove
       end

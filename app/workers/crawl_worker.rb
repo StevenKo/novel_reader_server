@@ -6,6 +6,7 @@ class CrawlWorker
     novel = Novel.select("id, link").find(novel_id)
     crawler = NovelCrawler.new
     crawler.fetch novel.link
+    crawler.crawl_novel_detail novel.id
     crawler.crawl_articles novel.id
     puts novel.id
   end

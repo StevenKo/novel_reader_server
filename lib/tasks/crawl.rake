@@ -17,23 +17,23 @@ namespace :crawl do
     end
   end
 
-  task :crawl_novel_detail => :environment do
-    Novel.where("name is null").find_in_batches do |novels|
-      novels.each do |novel|
-        begin
-          crawler = NovelCrawler.new
-          crawler.fetch novel.link
-          crawler.crawl_novel_detail novel.id
-          # crawler.crawl_articles novel.id
-          novel.crawl_times = novel.crawl_times + 1
-          novel.save
-          puts novel.id
-        rescue
-          puts "errors: #{novel.name}   #{novel.link}"
-        end
-      end
-    end
-  end
+  # task :crawl_novel_detail => :environment do
+  #   Novel.where("name is null").find_in_batches do |novels|
+  #     novels.each do |novel|
+  #       begin
+  #         crawler = NovelCrawler.new
+  #         crawler.fetch novel.link
+  #         crawler.crawl_novel_detail novel.id
+  #         # crawler.crawl_articles novel.id
+  #         novel.crawl_times = novel.crawl_times + 1
+  #         novel.save
+  #         puts novel.id
+  #       rescue
+  #         puts "errors: #{novel.name}   #{novel.link}"
+  #       end
+  #     end
+  #   end
+  # end
 
   task :crawl_cat_ranks　=> :environment do
     Novel.update_all({:is_category_recommend => false , :is_category_hot => false, :is_category_this_week_hot => false})
@@ -46,8 +46,8 @@ namespace :crawl do
     end
   end
 
-  task :crawl_articles => :environment do
-    Novel.where("id > 387").select("id").find_in_batches do |novels|
+  task :crawl_articles_and_update_novel => :environment do
+    Novel.select("id").find_in_batches do |novels|
       novels.each do |novel|
         CrawlWorker.perform_async(novel.id)
       end
@@ -58,6 +58,25 @@ namespace :crawl do
     Article.where("text is null").select("id").find_in_batches do |articles|
       articles.each do |article|
         ArticleWorker.perform_async(article.id)
+        # begin
+        #   crawler = NovelCrawler.new
+        #   crawler.fetch article.link
+        #   crawler.crawl_article article
+        # rescue
+        #   puts "errors: #{article.link}"
+        # end
+      end
+    end
+  end
+
+  task :recrawl_article_text => :environment do
+    Article.select("id, text").find_in_batches do |articles|
+      articles.each do |article|
+        if (article.text.nil? || article.text.size < 50)
+               ArticleWorker.perform_async(article.id)
+               puts article.id
+        end
+        # ArticleWorker.perform_async(article.id)
         # begin
         #   crawler = NovelCrawler.new
         #   crawler.fetch article.link
