@@ -23,6 +23,7 @@ class NovelCrawler
             novel.category_id = category_id
             novel.save
           end
+          CrawlWorker.perform_async(novel.id)
         end
       rescue
       end 
@@ -110,16 +111,20 @@ class NovelCrawler
   def crawl_articles novel_id
     nodes = @page_html.css("a")
     nodes.each do |node|
-      if node[:href].index("/novel/")
+      if (node[:href].index("/novel/") || node[:href].index("/view/"))
         article = Article.find_by_link("http://www.bestory.com" + node[:href])
-        next if (article != nil && article.text != nil)  
-        article ||= Article.new
-        article.novel_id = novel_id
-        article.link = "http://www.bestory.com" + node[:href]
-        article.title = node.text.strip
-        article.subject = node.parent.parent.parent.parent.parent.previous.previous.previous.text.strip
-        # puts node.text
-        article.save
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://www.bestory.com" + node[:href]
+          article.title = node.text.strip
+          article.subject = node.parent.parent.parent.parent.parent.previous.previous.previous.text.strip
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
       end
     end
   end
@@ -127,12 +132,13 @@ class NovelCrawler
   def crawl_article article
     nodes = @page_html.css(".content")
     nodes = nodes[0].children
-    text = "\n"
-    (0..nodes.length-1).each do |i|
-      if nodes[i].text.index("bookview")
-        nodes[i].css("script").remove
+    text = ""
+    nodes.each do |node|
+      next if node.text.nil?
+      if node.text.index("bookview")
+        node.css("script").remove
       end
-      text = text + change_node_br_to_newline(nodes[i])
+      text = text + change_node_br_to_newline(node)
     end
     text = text.gsub("◎ 精品文學網 Bestory.com  ◎", "")
     text = text.gsub("※ 精 品 文 學 網 B e s t o r y  .c o m  ※", "")

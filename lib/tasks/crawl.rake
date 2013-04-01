@@ -6,13 +6,7 @@ namespace :crawl do
     categories.each do |category|
 
       (1..100).each do |i|
-        begin
-          crawler = NovelCrawler.new
-          crawler.fetch "http://www.bestory.com/category/#{category.id}-#{i}.html"
-          crawler.crawl_novels category.id
-        rescue
-          puts category.name + ":  http://www.bestory.com/category/#{category.id}-#{i}.html"
-        end
+        CrawlNewNovelWorker.perform_async(category.id,i)
       end
     end
   end
@@ -47,7 +41,7 @@ namespace :crawl do
   end
 
   task :crawl_articles_and_update_novel => :environment do
-    Novel.select("id").find_in_batches do |novels|
+    Novel.where("id > 12853").select("id").find_in_batches do |novels|
       novels.each do |novel|
         CrawlWorker.perform_async(novel.id)
       end
@@ -55,7 +49,7 @@ namespace :crawl do
   end
 
   task :crawl_article_text => :environment do
-    Article.where("text is null").select("id").find_in_batches do |articles|
+    Article.where("text is null and id > 2274008").select("id").find_in_batches do |articles|
       articles.each do |article|
         ArticleWorker.perform_async(article.id)
         # begin
