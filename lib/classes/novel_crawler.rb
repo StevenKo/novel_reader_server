@@ -64,8 +64,7 @@ class NovelCrawler
     novel.article_num = article_num
     novel.last_update = last_update
     novel.name = name
-    # novel.crawl_times = novel.crawl_times + 1
-    novel.crawl_times = 3
+    novel.crawl_times = novel.crawl_times + 1
     novel.save
   end
 

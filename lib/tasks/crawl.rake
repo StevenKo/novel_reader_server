@@ -41,7 +41,7 @@ namespace :crawl do
   end
 
   task :crawl_articles_and_update_novel => :environment do
-    Novel.where("id > 12853").select("id").find_in_batches do |novels|
+    Novel.select("id").find_in_batches do |novels|
       novels.each do |novel|
         CrawlWorker.perform_async(novel.id)
       end

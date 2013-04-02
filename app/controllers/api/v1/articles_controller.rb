@@ -13,7 +13,7 @@ class Api::V1::ArticlesController < Api::ApiController
   end
 
   def show
-    article = Article.select("text").find(params[:id])
+    article = Article.select("text, title").find(params[:id])
     render :json => article
   end
 
