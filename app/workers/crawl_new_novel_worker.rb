@@ -1,6 +1,7 @@
 # encoding: utf-8
 class CrawlNewNovelWorker
   include Sidekiq::Worker
+  sidekiq_options queue: "novel"
   
   def perform(category_id, page)
     begin

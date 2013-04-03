@@ -1,6 +1,7 @@
 # encoding: utf-8
 class CrawlWorker
   include Sidekiq::Worker
+  sidekiq_options queue: "novel"
   
   def perform(novel_id)
     novel = Novel.select("id, link").find(novel_id)
