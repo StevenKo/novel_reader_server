@@ -1,5 +1,5 @@
 env :PATH, ENV['PATH']
 
-every :day, :at => '03:32pm' do
-  rake 'crawl:crawl_article_text',:output => {:error => 'log/error.log', :standard => 'log/cron.log'}
+every :day, :at => '04:00am' do
+  rake 'crawl:crawl_novel_link',:output => {:error => 'log/error.log', :standard => 'log/cron.log'}
 end
