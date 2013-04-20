@@ -117,12 +117,6 @@ class NovelCrawler
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
         article = Article.find_by_link("http://www.bestory.com" + node[:href])
         next if (article != nil && article.text != nil)
-        
-        unless article
-          article = Article.find_by_title(node.text.strip)
-          article = nil if article.id != novel_id
-          next if (article != nil && article.text != nil)
-        end
 
         unless article 
           article = Article.new
