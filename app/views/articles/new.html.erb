@@ -1,0 +1,18 @@
+<%= form_for Article.new do |f|%>
+  <%= f.text_field :novel_id, :value => @novel_id,:type => "hidden"%>
+  
+  <%= f.label :text %>:
+  <%= f.text_area :text %><br />
+
+  <%= f.label :link %>:
+  <%= f.text_field :link %><br />
+
+  <%= f.label :title %>:
+  <%= f.text_field :title %><br />
+
+  <%= f.label :subject %>:
+  <%= f.text_field :subject %><br />
+
+  <%= f.submit %>
+
+<% end %>

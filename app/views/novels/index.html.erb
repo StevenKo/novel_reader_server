@@ -1,0 +1,31 @@
+<h1>Listing novels</h1>
+<%= form_for "", :url => search_novels_path, :method => :put do |f|%>
+
+<%= f.text_field "search" %><br />
+
+<% end %>
+
+<br>
+new novel: <%= link_to 'New', new_novel_path %> <br>
+<br>
+
+<%= will_paginate @novels %>
+<table>
+  <tr>
+    <th>小說名</th>
+    <th>作者名</th>
+  </tr>
+
+<% @novels.each do |novel| %>
+  <tr>
+    <td><%= novel.name %></td>
+    <td><%= novel.author %></td>
+    <td><%= link_to 'Show', novel %></td>
+    <td><%= link_to 'Edit', edit_novel_path(novel) %></td>
+    <td><%= link_to 'Destroy', novel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

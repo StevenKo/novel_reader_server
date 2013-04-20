@@ -2,6 +2,10 @@
 class NovelCrawler
   include Crawler
 
+  def crawl_from_old_db
+
+  end
+
   def crawl_novels category_id
     # puts @page_url
     nodes = @page_html.css("#ItemContent_dl")
@@ -113,6 +117,12 @@ class NovelCrawler
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
         article = Article.find_by_link("http://www.bestory.com" + node[:href])
         next if (article != nil && article.text != nil)
+        
+        unless article
+          article = Article.find_by_title(node.text.strip)
+          article = nil if article.id != novel_id
+          next if (article != nil && article.text != nil)
+        end
 
         unless article 
           article = Article.new
@@ -120,6 +130,10 @@ class NovelCrawler
           article.link = "http://www.bestory.com" + node[:href]
           article.title = node.text.strip
           article.subject = node.parent.parent.parent.parent.parent.previous.previous.previous.text.strip
+          novel = Novel.select("id,num").find(novel_id)
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
           # puts node.text
           article.save
         end

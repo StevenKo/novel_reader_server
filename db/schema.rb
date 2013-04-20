@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130330105641) do
+ActiveRecord::Schema.define(:version => 20130420062640) do
 
   create_table "articles", :force => true do |t|
     t.integer  "novel_id"
@@ -19,12 +19,15 @@ ActiveRecord::Schema.define(:version => 20130330105641) do
     t.string   "link"
     t.string   "title"
     t.string   "subject"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
+    t.integer  "num",                            :default => 0
   end
 
   add_index "articles", ["link"], :name => "index_articles_on_link"
   add_index "articles", ["novel_id"], :name => "index_articles_on_novel_id"
+  add_index "articles", ["num"], :name => "index_articles_on_num"
+  add_index "articles", ["title"], :name => "index_articles_on_title"
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -60,9 +63,13 @@ ActiveRecord::Schema.define(:version => 20130330105641) do
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
     t.integer  "crawl_times",               :default => 0
+    t.integer  "num",                       :default => 0
   end
 
+  add_index "novels", ["author"], :name => "index_novels_on_author"
   add_index "novels", ["category_id"], :name => "index_novels_on_category_id"
+  add_index "novels", ["name"], :name => "index_novels_on_name"
+  add_index "novels", ["num"], :name => "index_novels_on_num"
 
   create_table "this_month_hot_ships", :force => true do |t|
     t.integer  "novel_id"

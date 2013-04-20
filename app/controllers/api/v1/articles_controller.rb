@@ -26,4 +26,27 @@ class Api::V1::ArticlesController < Api::ApiController
     previous_article = Article.find_previous_article(params[:article_id].to_i,params[:novel_id])
     render :json => previous_article
   end
+
+  def articles_by_num
+    novel_id = params[:novel_id]
+    order = params[:order]
+
+    if order == "true"
+      articles = Article.where('novel_id = (?)', novel_id).select("id,title,subject").by_num_asc
+    else
+      articles = Article.where('novel_id = (?)', novel_id).select("id,title,subject").by_num_desc
+    end
+
+    render :json => articles
+  end
+
+  def article_by_num
+    next_article = Article.select("id,title,subject").where("novel_id = #{params[:novel_id]} and num = #{params[:num]}")
+    if next_article.present?
+      render :json => next_article[0]
+    else
+      render :json => nil
+    end
+  end
+
 end

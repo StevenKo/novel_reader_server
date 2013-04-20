@@ -1,0 +1,49 @@
+<h1>New novel</h1>
+
+<%= form_for(@novel) do |f| %>
+  <% if @novel.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@novel.errors.count, "error") %> prohibited this novel from being saved:</h2>
+
+      <ul>
+      <% @novel.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.label :name %>:
+    <%= f.text_field :name %> <br>
+    <%= f.label :author %>:
+    <%= f.text_field :author %><br>
+    <%= f.label :description %>:
+    <%= f.text_area :description %><br>
+    <%= f.label :pic %>:
+    <%= f.text_field :pic %><br>
+    <%= f.label "category id" %>:
+    <%= f.text_field :category_id %><br> ex: 1
+    <%= f.label :article_num %>:
+    <%= f.text_field :article_num %><br> ex:
+    <%= f.label :last_update %>:
+    <%= f.text_field :last_update %><br> ex: 12-06-01
+    <%= f.label :is_serializing %>:
+    <%= f.text_field :is_serializing %><br>
+    <%= f.label :is_category_recommend %>:
+    <%= f.text_field :is_category_recommend %><br>
+    <%= f.label :is_category_hot %>:
+    <%= f.text_field :is_category_hot %><br>
+    <%= f.label :is_category_this_week_hot %>:
+    <%= f.text_field :is_category_this_week_hot %><br>
+    <%= f.label :is_classic %>:
+    <%= f.text_field :is_classic %><br>
+    <%= f.label :is_classic_action %>:
+    <%= f.text_field :is_classic_action %><br>
+
+
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', novels_path %>
