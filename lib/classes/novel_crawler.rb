@@ -2,8 +2,32 @@
 class NovelCrawler
   include Crawler
 
-  def crawl_from_old_db
+  def parse_old_db_novel
+    j_array = JSON.parse @page_html
+    j_array.each do |json|
+      novel = Novel.new
+      novel.id = json["id"]
+      novel.link = json["link"]
+      novel.is_classic_action = json["is_classic_action"]
+      novel.is_classic = json["is_classic"]
+      novel.save
+    end
+  end
 
+  def parse_old_db_article
+    j_array = JSON.parse @page_html
+    j_array.each do |json|
+      article = Article.new
+      article.id = json["id"]
+      article.link = json["link"]
+      article.novel_id = json["novel_id"]
+      article.title = json["title"]
+      novel = Novel.select("id,num").find(json["novel_id"])
+      article.num = novel.num + 1
+      novel.num = novel.num + 1
+      novel.save
+      article.save
+    end
   end
 
   def crawl_novels category_id

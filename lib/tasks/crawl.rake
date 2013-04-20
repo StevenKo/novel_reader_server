@@ -11,6 +11,26 @@ namespace :crawl do
     end
   end
 
+  task :fetch_old_db_novels => :environment do
+    categories = Category.all
+    
+    categories.each do |category|
+      c = NovelCrawler.new
+      c.fetch_db_json "http://106.187.103.131/api/v1/novels/db_transfer_index.json?category_id=#{category.id}"
+      c.parse_old_db_novel
+    end
+  end
+
+  task :fetch_old_db_articles => :environment do
+    Novel.select("id").find_in_batches do |novels|
+      novels.each do |novel|
+        c = NovelCrawler.new
+        c.fetch_db_json
+        c.parse_old_db_article
+      end
+    end
+  end
+
   # task :crawl_novel_detail => :environment do
   #   Novel.where("name is null").find_in_batches do |novels|
   #     novels.each do |novel|

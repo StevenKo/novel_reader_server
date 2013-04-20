@@ -7,6 +7,12 @@ class Api::V1::NovelsController < Api::ApiController
     render :json => novels
   end
 
+  def db_transfer_index
+    category_id = params[:category_id]
+    novels = Novel.where('category_id = (?)', category_id).select("id,link,is_classic,is_classic_action")
+    render :json => novels
+  end
+
   def show
     novel = Novel.find(params[:id])
     render :json => novel

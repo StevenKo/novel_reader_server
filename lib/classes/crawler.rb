@@ -11,6 +11,18 @@ module Crawler
     @page_html = get_page(@page_url)   
   end
 
+  def fetch_db_json url
+    @page_url = url
+    body = ''
+    begin
+      open(url){ |io|
+          body = io.read
+      }
+    rescue
+    end
+    @page_html = body
+  end
+
   def post_fetch url, option
     @page_url = url
     url = URI.parse(url)

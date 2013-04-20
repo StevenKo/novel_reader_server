@@ -32,6 +32,7 @@ NovelServer::Application.routes.draw do
           get 'search'
           get 'classic'
           get 'classic_action'
+          get 'db_transfer_index'
         end
         member do 
           get 'detail_for_save'
