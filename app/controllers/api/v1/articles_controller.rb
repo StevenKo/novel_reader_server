@@ -12,6 +12,13 @@ class Api::V1::ArticlesController < Api::ApiController
     render :json => articles
   end
 
+  def db_transfer_index
+    novel_id = params[:novel_id]
+    articles = Article.where('novel_id = (?)', novel_id).select("id,title,subject,link,novel_id")
+
+    render :json => articles
+  end
+
   def show
     article = Article.select("text, title").find(params[:id])
     render :json => article

@@ -18,10 +18,13 @@ class NovelCrawler
     j_array = JSON.parse @page_html
     j_array.each do |json|
       article = Article.new
+      
       article.id = json["id"]
       article.link = json["link"]
       article.novel_id = json["novel_id"]
       article.title = json["title"]
+      article.subject = json["subject"]
+      
       novel = Novel.select("id,num").find(json["novel_id"])
       article.num = novel.num + 1
       novel.num = novel.num + 1

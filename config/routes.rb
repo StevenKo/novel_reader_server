@@ -44,6 +44,7 @@ NovelServer::Application.routes.draw do
           get 'previous_article'
           get 'articles_by_num'
           get 'article_by_num'
+          get 'db_transfer_index'
         end
       end
     end
