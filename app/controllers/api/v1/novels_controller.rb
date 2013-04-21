@@ -62,6 +62,7 @@ class Api::V1::NovelsController < Api::ApiController
 
   def detail_for_save
     @novel = Novel.find(params[:id])
+    render :json => @novel
     # @articles = Article.where("novel_id = #{@novel.id}").select("id, subject, title")
   end
 
