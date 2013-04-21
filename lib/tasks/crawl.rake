@@ -24,9 +24,15 @@ namespace :crawl do
   task :fetch_old_db_articles => :environment do
     Novel.select("id").find_in_batches do |novels|
       novels.each do |novel|
-        c = NovelCrawler.new
-        c.fetch_db_json
-        c.parse_old_db_article
+        OldDbArticlesWorker.perform_async(novel.id)
+      end
+    end
+  end
+
+  task :fetch_old_db_article_text => :environment do
+    Article.select("id").find_in_batches do |articles|
+      articles.each do |article|
+        OldDbArticleWorker.perform_async(article.id)
       end
     end
   end

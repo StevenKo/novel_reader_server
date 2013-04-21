@@ -33,6 +33,13 @@ class NovelCrawler
     end
   end
 
+  def parse_old_db_article_detail article_id
+    json = JSON.parse @page_html
+    article = Article.find(article_id)
+    article.text = json["text"]
+    article.save
+  end
+
   def crawl_novels category_id
     # puts @page_url
     nodes = @page_html.css("#ItemContent_dl")

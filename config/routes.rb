@@ -18,7 +18,9 @@ NovelServer::Application.routes.draw do
 
 
   namespace :api do
+    get 'status_check' => 'api#status_check'
     namespace :v1 do
+
       
       resources :categories, :only => [:index]
       resources :novels,:only => [:index, :show] do

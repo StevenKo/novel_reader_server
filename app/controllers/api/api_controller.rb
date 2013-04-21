@@ -32,4 +32,8 @@ class Api::ApiController  < ActionController::Base
     render :json => promotion.to_json
   end
 
+  def status_check
+    render :status=>200, :json=>{:message=>"The request ok "}
+  end
+
 end
