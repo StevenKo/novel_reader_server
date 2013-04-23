@@ -30,7 +30,7 @@ namespace :crawl do
   end
 
   task :fetch_old_db_article_text => :environment do
-    Article.select("id").find_in_batches do |articles|
+    Article.select("id").where("text is null").find_in_batches do |articles|
       articles.each do |article|
         OldDbArticleWorker.perform_async(article.id)
       end
