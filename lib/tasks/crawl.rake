@@ -11,49 +11,50 @@ namespace :crawl do
     end
   end
 
-  task :fetch_old_db_novels => :environment do
-    categories = Category.all
+  # task :fetch_old_db_novels => :environment do
+  #   categories = Category.all
     
-    categories.each do |category|
-      c = NovelCrawler.new
-      c.fetch_db_json "http://106.187.103.131/api/v1/novels/db_transfer_index.json?category_id=#{category.id}"
-      c.parse_old_db_novel
-    end
-  end
+  #   categories.each do |category|
+  #     c = NovelCrawler.new
+  #     c.fetch_db_json "http://106.187.103.131/api/v1/novels/db_transfer_index.json?category_id=#{category.id}"
+  #     c.parse_old_db_novel
+  #   end
+  # end
 
-  task :fetch_old_db_articles => :environment do
-    Novel.select("id").find_in_batches do |novels|
-      novels.each do |novel|
-        OldDbArticlesWorker.perform_async(novel.id)
-      end
-    end
-  end
-
-  task :fetch_old_db_article_text => :environment do
-    Article.select("id").where("text is null").find_in_batches do |articles|
-      articles.each do |article|
-        OldDbArticleWorker.perform_async(article.id)
-      end
-    end
-  end
-
-  # task :crawl_novel_detail => :environment do
-  #   Novel.where("name is null").find_in_batches do |novels|
+  # task :fetch_old_db_articles => :environment do
+  #   Novel.select("id").find_in_batches do |novels|
   #     novels.each do |novel|
-  #       begin
-  #         crawler = NovelCrawler.new
-  #         crawler.fetch novel.link
-  #         crawler.crawl_novel_detail novel.id
-  #         # crawler.crawl_articles novel.id
-  #         novel.crawl_times = novel.crawl_times + 1
-  #         novel.save
-  #         puts novel.id
-  #       rescue
-  #         puts "errors: #{novel.name}   #{novel.link}"
-  #       end
+  #       OldDbArticlesWorker.perform_async(novel.id)
   #     end
   #   end
   # end
+
+  # task :fetch_old_db_article_text => :environment do
+  #   Article.select("id").where("text is null").find_in_batches do |articles|
+  #     articles.each do |article|
+  #       OldDbArticleWorker.perform_async(article.id)
+  #     end
+  #   end
+  # end
+
+  task :crawl_novel_detail_and_articles => :environment do
+    Novel.select("id").find_in_batches do |novels|
+      novels.each do |novel|
+        CrawlWorker.perform_async(novel.id)
+        # begin
+        #   crawler = NovelCrawler.new
+        #   crawler.fetch novel.link
+        #   crawler.crawl_novel_detail novel.id
+        #   # crawler.crawl_articles novel.id
+        #   novel.crawl_times = novel.crawl_times + 1
+        #   novel.save
+        #   puts novel.id
+        # rescue
+        #   puts "errors: #{novel.name}   #{novel.link}"
+        # end
+      end
+    end
+  end
 
   task :crawl_cat_ranks　=> :environment do
     Novel.update_all({:is_category_recommend => false , :is_category_hot => false, :is_category_this_week_hot => false})
