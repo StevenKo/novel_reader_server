@@ -55,13 +55,15 @@ class NovelCrawler
           novel_html = novels[i-1]
           link = "http://www.bestory.com" + novel_html.css("a")[0][:href]
           novel = Novel.find_by_link link
+          novel.category_id = category_id
+          novel.save
           unless novel
             novel = Novel.new
             novel.link = link
             novel.category_id = category_id
             novel.save
           end
-          CrawlWorker.perform_async(novel.id)
+          # CrawlWorker.perform_async(novel.id)
         end
       rescue
       end 

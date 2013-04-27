@@ -37,24 +37,24 @@ namespace :crawl do
   #   end
   # end
 
-  task :crawl_novel_detail_and_articles => :environment do
-    Novel.select("id").find_in_batches do |novels|
-      novels.each do |novel|
-        CrawlWorker.perform_async(novel.id)
-        # begin
-        #   crawler = NovelCrawler.new
-        #   crawler.fetch novel.link
-        #   crawler.crawl_novel_detail novel.id
-        #   # crawler.crawl_articles novel.id
-        #   novel.crawl_times = novel.crawl_times + 1
-        #   novel.save
-        #   puts novel.id
-        # rescue
-        #   puts "errors: #{novel.name}   #{novel.link}"
-        # end
-      end
-    end
-  end
+  # task :crawl_novel_detail_and_articles => :environment do
+  #   Novel.select("id").find_in_batches do |novels|
+  #     novels.each do |novel|
+  #       CrawlWorker.perform_async(novel.id)
+  #       # begin
+  #       #   crawler = NovelCrawler.new
+  #       #   crawler.fetch novel.link
+  #       #   crawler.crawl_novel_detail novel.id
+  #       #   # crawler.crawl_articles novel.id
+  #       #   novel.crawl_times = novel.crawl_times + 1
+  #       #   novel.save
+  #       #   puts novel.id
+  #       # rescue
+  #       #   puts "errors: #{novel.name}   #{novel.link}"
+  #       # end
+  #     end
+  #   end
+  # end
 
   task :crawl_cat_ranks　=> :environment do
     Novel.update_all({:is_category_recommend => false , :is_category_hot => false, :is_category_this_week_hot => false})
