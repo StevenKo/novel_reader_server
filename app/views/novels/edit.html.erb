@@ -4,7 +4,47 @@
 
 <h1>Editing novel</h1>
 
+重新 crawl novel: <br><br>
 <%= render 'form' %>
+
+<br>#########################################################################<br>
+
+<br>修改novel :<br><br>
+
+<%= form_for(@novel) do |f| %>
+
+  <div class="actions">
+    <%= f.label :name %>:
+    <%= f.text_field :name %> <br>
+    <%= f.label :author %>:
+    <%= f.text_field :author %><br>
+    <%= f.label :description %>:
+    <%= f.text_area :description ,:cols => "400"%><br>
+    <%= f.label :pic %>:
+    <%= f.text_field :pic %><br>
+    <%= f.label "category id" %>:
+    <%= f.text_field :category_id %> ex: 1 <br>
+    <%= f.label :article_num %>:
+    <%= f.text_field :article_num %> ex: <br>
+    <%= f.label :last_update %>:
+    <%= f.text_field :last_update %> ex: 12-06-01 <br>
+    <%= f.label :is_serializing %>:
+    <%= f.text_field :is_serializing %><br>
+    <%= f.label :is_category_recommend %>:
+    <%= f.text_field :is_category_recommend %><br>
+    <%= f.label :is_category_hot %>:
+    <%= f.text_field :is_category_hot %><br>
+    <%= f.label :is_category_this_week_hot %>:
+    <%= f.text_field :is_category_this_week_hot %><br>
+    <%= f.label :is_classic %>:
+    <%= f.text_field :is_classic %><br>
+    <%= f.label :is_classic_action %>:
+    <%= f.text_field :is_classic_action %><br>
+
+
+    <%= f.submit %>
+  </div>
+<% end %>
 
 <%= link_to 'Show', @novel %> |
 <%= link_to 'Back', novels_path %>

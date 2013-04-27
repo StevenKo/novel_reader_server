@@ -42,4 +42,13 @@ class NovelsController < ApplicationController
     end
   end
 
+  def update
+    @novel = Novel.find(params[:id])
+    if @novel.update_attributes(params[:novel])
+      redirect_to :action => 'show'
+    else
+      render :action => "edit" 
+    end
+  end
+
 end
