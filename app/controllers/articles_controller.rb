@@ -41,6 +41,14 @@ class ArticlesController < ApplicationController
     redirect_to :action => 'show', :id => article.id
   end
 
+  def crawl_text_onther_site
+    article = Article.select("id, text, link").find(params[:article_id])
+    crawler = NovelCrawler.new
+    crawler.fetch_other_site params[:url]
+    crawler.crawl_text_onther_site article
+    redirect_to :action => 'show', :id => article.id
+  end
+
   def destroy
     @article = Article.find(params[:id])
     @article.destroy

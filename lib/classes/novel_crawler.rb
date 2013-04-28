@@ -192,6 +192,16 @@ class NovelCrawler
     puts "#{@page_url}  article_id : #{article.id}"
   end
 
+  def crawl_text_onther_site article
+    if(@page_url.index("yantengzw"))
+      nodes = @page_html.css("#htmlContent")
+      text  = change_node_br_to_newline(nodes)
+      article_text = ZhConv.convert("zh-tw", text)
+      article.text = article_text
+      article.save
+    end
+  end
+
   def crawl_rank
     nodes = @page_html.xpath("//font[@color='#0099CC']")
     ships = ["ThisWeekHotShip", "ThisMonthHotShip", "HotShip"]

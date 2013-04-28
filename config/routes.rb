@@ -13,6 +13,7 @@ NovelServer::Application.routes.draw do
   resources :articles do
     collection do
       get 're_crawl'
+      put 'crawl_text_onther_site'
     end
   end
 

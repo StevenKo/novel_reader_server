@@ -11,6 +11,18 @@ module Crawler
     @page_html = get_page(@page_url)   
   end
 
+  def fetch_other_site url
+    @page_url = url
+    body = ''
+    begin
+      open(url){ |io|
+          body = io.read
+      }
+    rescue
+    end
+    @page_html = Nokogiri::HTML(body)
+  end
+
   def fetch_db_json url
     @page_url = url
     body = ''

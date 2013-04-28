@@ -1,3 +1,20 @@
+<ul>可以用的網站：
+<li><%= link_to "http://www.bestory.com/","http://www.bestory.com/"%></li>
+</ul>
+
+<h1>重新 Crawl Article Text</h1>
+
+<%= form_for "", :url => crawl_text_onther_site_articles_path({:article_id => @article.id}), data: { confirm: 'Are you sure?' }, :method => :put do |f|%>
+
+  <%= f.label :parse_url %>:
+  <%= f.text_field "url" %>
+<%= f.submit "crawl" %>
+<% end %>
+
+
+<br>#########################################################################<br>
+
+
 <%= form_for @article do |f|%>
   
   <%= f.label :text %>:
