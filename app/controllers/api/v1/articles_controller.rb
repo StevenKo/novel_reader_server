@@ -48,6 +48,7 @@ class Api::V1::ArticlesController < Api::ApiController
   end
 
   def next_article_by_num
+    params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
     articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num > #{params[:num]}").show
     if articles.length > 0
       render :json => Article.select('id, novel_id, text, title,num').find(articles[0].id)
@@ -57,6 +58,7 @@ class Api::V1::ArticlesController < Api::ApiController
   end
 
   def previous_article_by_num
+    params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
     articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show
     if articles.length > 0
       render :json => Article.select('id, novel_id, text, title,num').find(articles[articles.length-1].id)
