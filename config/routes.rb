@@ -35,7 +35,7 @@ NovelServer::Application.routes.draw do
           get 'search'
           get 'classic'
           get 'classic_action'
-          get 'db_transfer_index'
+          # get 'db_transfer_index'
         end
         member do 
           get 'detail_for_save'
@@ -46,8 +46,9 @@ NovelServer::Application.routes.draw do
           get 'next_article'
           get 'previous_article'
           get 'articles_by_num'
-          get 'article_by_num'
-          get 'db_transfer_index'
+          get 'next_article_by_num'
+          get 'previous_article_by_num'
+          # get 'db_transfer_index'
         end
       end
     end

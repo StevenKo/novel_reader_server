@@ -14,12 +14,14 @@ new novel: <%= link_to 'New', new_novel_path %> <br>
   <tr>
     <th>小說名</th>
     <th>作者名</th>
+    <th>show</th>
   </tr>
 
 <% @novels.each do |novel| %>
   <tr>
     <td><%= novel.name %></td>
     <td><%= novel.author %></td>
+    <td><%= novel.is_show %></td>
     <td><%= link_to 'Show', novel %></td>
     <td><%= link_to 'Edit', edit_novel_path(novel) %></td>
     <td><%= link_to 'Destroy', novel, method: :delete, data: { confirm: 'Are you sure?' } %></td>

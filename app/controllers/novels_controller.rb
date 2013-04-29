@@ -1,11 +1,11 @@
 class NovelsController < ApplicationController
   def index
-    @novels = Novel.select("id,name,author").paginate(:page => params[:page], :per_page => 20)
+    @novels = Novel.select("id,name,author,is_show").paginate(:page => params[:page], :per_page => 20)
   end
 
   def search
     keyword = params[:search].strip
-    @novels = Novel.select("id,name,author").where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author,pic,article_num,last_update,is_serializing")
+    @novels = Novel.select("id,name,author,is_show").where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author,pic,article_num,last_update,is_serializing")
   end
 
   def update_novel
@@ -15,7 +15,7 @@ class NovelsController < ApplicationController
 
   def show
     @novel = Novel.find(params[:id])
-    @articles = Article.select("id,title,subject,num").where("novel_id = #{params[:id]}").paginate(:page => params[:page], :per_page => 50)
+    @articles = Article.select("id,title,subject,num,is_show").where("novel_id = #{params[:id]}").paginate(:page => params[:page], :per_page => 50)
   end
 
   def edit
