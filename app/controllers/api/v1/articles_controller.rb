@@ -39,27 +39,27 @@ class Api::V1::ArticlesController < Api::ApiController
     order = params[:order]
 
     if order == "true"
-      articles = Article.where('novel_id = (?)', novel_id).show.select("id,title,subject").by_num_asc
+      articles = Article.where('novel_id = (?)', novel_id).show.select("id,title,subject,num").by_num_asc
     else
-      articles = Article.where('novel_id = (?)', novel_id).show.select("id,title,subject").by_num_desc
+      articles = Article.where('novel_id = (?)', novel_id).show.select("id,title,subject,num").by_num_desc
     end
 
     render :json => articles
   end
 
   def next_article_by_num
-    next_article = Article.select("id,title,subject").where("novel_id = #{params[:novel_id]} and num > #{params[:num]}").show
-    if next_article.present?
-      render :json => next_article[0]
+    articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num > #{params[:num]}").show
+    if articles.length > 0
+      render :json => Article.select('id, novel_id, text, title,num').find(articles[0].id)
     else
       render :json => nil
     end
   end
 
   def previous_article_by_num
-    next_article = Article.select("id,title,subject").where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show
-    if next_article.present?
-      render :json => next_article[next_article.size-1]
+    articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show
+    if articles.length > 0
+      render :json => Article.select('id, novel_id, text, title,num').find(articles[articles.length-1].id)
     else
       render :json => nil
     end
