@@ -13,6 +13,31 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def reset_num
+    num = params[:num]
+    novel_id = params[:novel_id]
+    article_id = params[:article_id]
+
+    article = Article.where("novel_id = #{novel_id} and num = #{num}")
+    if article[0]
+      articles = Article.select("id,num").where("novel_id = #{novel_id} and num >= #{num}")
+      Article.transaction do
+        articles.each do |article|
+          article.update_column(:num,article.num + 1)
+        end
+      end
+      novel = Novel.select("id,num").find(novel_id)
+      novel.update_column(:num,novel.num + 1)
+      article = Article.select("id,num").find(article_id)
+      article.update_column(:num,num)
+    else
+      article = Article.select("id,num").find(article_id)
+      article.update_column(:num,num)
+    end
+    
+    redirect_to :controller => 'novels', :action => 'show', :id => novel_id
+  end
+
   def show
     @article = Article.find(params[:id]) 
   end

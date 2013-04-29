@@ -11,9 +11,19 @@
 <%= f.submit "crawl" %>
 <% end %>
 
-
 <br>#########################################################################<br>
 
+<h1> Reset Num Article</h1>
+
+<%= form_for "", :url => reset_num_articles_path({:article_id => @article.id,:novel_id => @article.novel_id}), :method => :put do |f|%>
+
+<%= f.text_field "num" %> ex: 22
+<%= f.submit "set" %>
+<% end %>
+
+
+#########################################################################<br>
+<h1> Edit Article</h1>
 
 <%= form_for @article do |f|%>
   
@@ -38,3 +48,6 @@
   <%= f.submit %>
 
 <% end %>
+
+
+
