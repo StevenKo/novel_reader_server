@@ -208,7 +208,7 @@ class NovelCrawler
     elsif(@page_url.index("www.zizaidu.com/big5"))
       nodes = @page_html.css("#content")
       text  = change_node_br_to_newline(nodes).strip
-      article_text = text.gsub("(最好的全文字小說網︰自在讀小說網 www.zizaidu.com)","")
+      article_text = text.gsub("（最好的全文字小說網︰自在讀小說網 www.zizaidu.com）","")
       article.text = article_text
       article.save
     end
