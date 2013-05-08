@@ -234,6 +234,11 @@ class NovelCrawler
       article_text = article_text.gsub("精品小說推薦","")
       article.text = article_text
       article.save
+    elsif (@page_url.index('yawen8'))
+      @page_html.css("#content script, #content span, #content .pageTools").remove
+      article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+      article.text = article_text
+      article.save
     end
   end
 
