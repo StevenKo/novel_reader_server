@@ -52,7 +52,7 @@ class ArticlesController < ApplicationController
     article.num = novel.num + 1
     novel.num = novel.num + 1
     if article.save && novel.save
-      render :action => 'show'
+      redirect_to article_path(article.id)
     else
       render :action => "new", :novel_id => article.novel_id
     end
