@@ -211,6 +211,11 @@ class NovelCrawler
       article_text = text.gsub("（最好的全文字小說網︰自在讀小說網 www.zizaidu.com）","")
       article.text = article_text
       article.save
+    elsif (@page_url.index("www.4hw.com.cn"))
+      @page_html.css(".art_cont .art_ad,.art_cont .fenye, .art_cont .tishi").remove
+      article_text = ZhConv.convert("zh-tw",@page_html.css(".art_cont").text.strip)
+      article.text = article_text
+      article.save
     end
   end
 
