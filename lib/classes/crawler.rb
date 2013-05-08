@@ -21,7 +21,7 @@ module Crawler
       }
     rescue
     end
-    @page_html = Nokogiri::HTML(body)
+    @page_html = Nokogiri::HTML(body,nil,"GB18030")
   end
 
   def fetch_db_json url
