@@ -227,6 +227,12 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
       article.text = article_text
       article.save
+    elsif (@page_url.index('sj131'))
+      @page_html.css("#content a").remove
+      article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+      article_text = text.gsub("如果您喜欢这个章节,","")
+      article.text = article_text
+      article.save
     end
   end
 
