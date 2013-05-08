@@ -6,6 +6,7 @@
 <li><%= link_to "http://read.shanwen.com/","http://read.shanwen.com/"%></li>
 <li><%= link_to "http://shushu.com.cn/","http://shushu.com.cn/"%></li>
 <li><%= link_to "http://tw.9pwx.com/","http://tw.9pwx.com/"%></li>
+<li><%= link_to "http://www.sj131.com/","http://www.sj131.com/"%></li>
 </ul>
 
 <h1>重新 Crawl Article Text</h1>
@@ -32,12 +33,6 @@
 <h1> Edit Article</h1>
 
 <%= form_for @article do |f|%>
-  
-  <%= f.label :text %>:
-  <%= f.text_area :text , :cols => "400"%><br />
-
-  <%= f.label :link %>:
-  <%= f.text_field :link %><br />
 
   <%= f.label :title %>:
   <%= f.text_field :title %> ex: 第一章 如你所願 <br />
@@ -50,6 +45,12 @@
 
   <%= f.label "show" %>
   <%= f.text_field :is_show %> ex: (true =1, false = 0) <br />
+  
+  <%= f.label :text %>:
+  <%= f.text_area :text , :cols => "400"%><br />
+
+  <%= f.label :link %>:
+  <%= f.text_field :link %><br />
 
   <%= f.submit %>
 

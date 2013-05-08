@@ -21,7 +21,7 @@ module Crawler
       }
     rescue
     end
-    if (url.index('shanwen')|| url.index('shushu'))
+    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131'))
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
     else
       @page_html = Nokogiri::HTML(body)
