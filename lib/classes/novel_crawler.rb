@@ -216,6 +216,11 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",@page_html.css(".art_cont").text.strip)
       article.text = article_text
       article.save
+    elsif (@page_url.index("shushu.com.cn"))
+      @page_html.css("#content script,#content a").remove
+      article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+      article.text = article_text
+      article.save
     end
   end
 
