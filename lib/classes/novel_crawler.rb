@@ -230,7 +230,8 @@ class NovelCrawler
     elsif (@page_url.index('sj131'))
       @page_html.css("#content a").remove
       article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
-      article_text = article_text.gsub("如果您喜欢这个章节,","")
+      article_text = article_text.gsub("如果您喜歡這個章節","")
+      article_text = article_text.gsub("精品小說推薦","")
       article.text = article_text
       article.save
     end
