@@ -3,6 +3,7 @@ module Crawler
   require 'nokogiri'
   require 'open-uri'
   require 'iconv'
+  require 'net/http'
   
   attr_accessor :page_url, :page_html
   
@@ -43,19 +44,27 @@ module Crawler
   end
   
   def get_page url
-  # url = url.gsub(/\s+/, "")
-  # ecode_url = URI.encode(url)
-  ic = Iconv.new("utf-8//translit//IGNORE","big5")
-  body = ''
+    
+    if(url.index('book.qq'))
+      /bookapp.book.qq.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('bookapp.book.qq.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      doc = Nokogiri::HTML(content,nil,"GB18030")
+    else
+      ic = Iconv.new("utf-8//translit//IGNORE","big5")
+      body = ''
 
-  begin
-    open(url){ |io|
-        body = ic.iconv(io.read)
-    }
-  rescue
-  end
-  doc = Nokogiri::HTML(body)
-
+      begin
+        open(url){ |io|
+            body = ic.iconv(io.read)
+        }
+      rescue
+      end
+      doc = Nokogiri::HTML(body)
+    end
+    doc
   end
 
   
