@@ -227,6 +227,12 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
       article.text = article_text
       article.save
+    elsif (@page_url.index("tw.9pwx.com"))
+      @page_html.css(".bookcontent #msg-bottom").remove
+      text = @page_html.css(".bookcontent").text.strip
+      article_text = text.gsub("鑾勾絏ュ庤鎷誨潒濯兼煉鐪磭榪惰琚氣-官家求魔殺神武動乾坤最終進化神印王座| www.9pwx.com","")
+      article.text = article_text
+      article.save
     end
   end
 
