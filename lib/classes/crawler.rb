@@ -21,11 +21,7 @@ module Crawler
       }
     rescue
     end
-    if(url.index('shanwen'))
-      @page_html = Nokogiri::HTML(body,nil,"GB18030")
-    else
-      @page_html = Nokogiri::HTML(body)
-    end
+    @page_html = Nokogiri::HTML(body,nil,"GB18030")
   end
 
   def fetch_db_json url
