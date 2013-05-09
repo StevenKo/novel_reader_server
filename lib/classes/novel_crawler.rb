@@ -263,6 +263,11 @@ class NovelCrawler
       final_text = ZhConv.convert("zh-tw",article_text.strip)
       article.text = final_text
       article.save
+    elsif (@page_url.index('www.k6uk.com'))
+      text = @page_html.css("#content").text.strip
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
     end
   end
 
