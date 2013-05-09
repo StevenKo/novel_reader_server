@@ -187,6 +187,7 @@ class NovelCrawler
     text = text.gsub("※ 精 品 文 學 網 B e s t o r y  .c o m  ※", "")
     text = text.gsub("精品文學網  歡迎廣大書友光臨閱讀", "")
     text = text.gsub("手 機 用 戶 請 登 陸  隨 時 隨 地 看 小 說!","")
+    text = text.gsub("精品文學 iPhone App現已推出！支持離線下載看小說，請使用iPhone下載安裝！","")
     article.text = text
     article.save
     puts "#{@page_url}  article_id : #{article.id}"
