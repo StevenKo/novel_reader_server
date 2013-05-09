@@ -21,13 +21,34 @@ module Crawler
       }
     rescue
     end
-    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131'))
+    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') )
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
 
     elsif (url.index('yawen8'))
       /ww.yawen8.com(.*)/ =~ url
       url = $1
       http = Net::HTTP.new('www.yawen8.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('www.8535.org'))
+      /www.8535.org(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.8535.org', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('book.qq'))
+      /book.qq.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('book.qq.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('www.k6uk.com'))
+      /www.k6uk.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.k6uk.com', 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
       @page_html = Nokogiri::HTML(content,nil,"GB18030")

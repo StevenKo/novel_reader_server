@@ -251,6 +251,24 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
       article.save
+    elsif (@page_url.index('8535.org'))
+      @page_html.css("#bookcontent #adtop, #bookcontent #endtips").remove
+      text = @page_html.css("#bookcontent").text.strip
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
+    elsif (@page_url.index('59to.com'))
+      @page_html.css("#content a").remove
+      text = @page_html.css("#content").text
+      article_text = text.gsub("*** 现在加入59文学，和万千书友交流阅读乐趣！59文学永久地址：www.59to.com ***", "")
+      final_text = ZhConv.convert("zh-tw",article_text.strip)
+      article.text = final_text
+      article.save
+    elsif (@page_url.index('www.k6uk.com'))
+      text = @page_html.css("#content").text.strip
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
     end
   end
 
