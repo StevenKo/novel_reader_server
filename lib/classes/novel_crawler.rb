@@ -268,6 +268,13 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
       article.save
+    elsif (@page_url.index('www.dawenxue.net'))
+      text = @page_html.css("#clickeye_content").text.strip
+      text1 = text.gsub("大文学", "")
+      text2 = text1.gsub("www.dawenxue.net", "")
+      article_text = ZhConv.convert("zh-tw",text2)
+      article.text = article_text
+      article.save
     end
   end
 
