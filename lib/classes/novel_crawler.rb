@@ -151,7 +151,8 @@ class NovelCrawler
     nodes = @page_html.css("a")
     nodes.each do |node|
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
-        article = Article.find_by_link("http://www.bestory.com" + node[:href])
+        # article = Article.find_by_link("http://www.bestory.com" + node[:href])
+        article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
         next if (article != nil && article.text != nil)
 
         unless article 
@@ -272,6 +273,14 @@ class NovelCrawler
     elsif (@page_url.index('quanben'))
       text = @page_html.css("#content").text.strip
       text = text.gsub(/[a-zA-Z]/,"")
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
+    elsif (@page_url.index('wcxiaoshuo'))
+      @page_html.css("#htmlContent a").remove
+      @page_html.css("#htmlContent img").remove
+      text = @page_html.css("#htmlContent").text.strip
+      text = text.gsub("由【无*错】【小-说-网】会员手打，更多章节请到网址：www.wcxiaoshuo.com","")
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
       article.save 
