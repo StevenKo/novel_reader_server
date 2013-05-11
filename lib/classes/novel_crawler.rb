@@ -291,6 +291,12 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
       article.save 
+    elsif (@page_url.index('ranhen.net'))
+      text = @page_html.css("#content p").text
+      text2 = text.gsub('小技巧：按 Ctrl+D 快速保存当前章节页面至浏览器收藏夹；按 回车[Enter]键 返回章节目录，按 ←键 回到上一章，按 →键 进入下一章。','')
+      article_text = ZhConv.convert("zh-tw",text2)
+      article.text = article_text
+      article.save 
     end
   end
 
