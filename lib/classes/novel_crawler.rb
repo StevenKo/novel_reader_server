@@ -296,7 +296,20 @@ class NovelCrawler
       text2 = text.gsub('小技巧：按 Ctrl+D 快速保存当前章节页面至浏览器收藏夹；按 回车[Enter]键 返回章节目录，按 ←键 回到上一章，按 →键 进入下一章。','')
       article_text = ZhConv.convert("zh-tw",text2)
       article.text = article_text
-      article.save 
+      article.save
+    elsif (@page_url.index('6ycn.net'))
+      @page_html.css("#content style, #content .pagesloop").remove
+      text = @page_html.css("#content").text.strip
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
+    elsif (@page_url.index('book108.com'))
+      @page_html.css("#content a").remove
+      text = @page_html.css("#content p").text
+      text2 = text.gsub("1０８尒説WWW.Book１０８。com鯁","")
+      article_text = ZhConv.convert("zh-tw",text2)
+      article.text = article_text
+      article.save   
     end
   end
 
