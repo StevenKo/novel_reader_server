@@ -283,7 +283,16 @@ class NovelCrawler
       text = text.gsub("由【无*错】【小-说-网】会员手打，更多章节请到网址：www.wcxiaoshuo.com","")
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
-      article.save 
+      article.save
+    elsif (@page_url.index('shumilou'))
+      @page_html.css("#content span").remove
+      @page_html.css("#content b").remove
+      @page_html.css("#content .title").remove
+      @page_html.css("#content script").remove
+      text = @page_html.css("#content").text.strip
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
     end
   end
 
