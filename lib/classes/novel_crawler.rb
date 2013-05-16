@@ -274,6 +274,10 @@ class NovelCrawler
       text = @page_html.css("#clickeye_content").text.strip
       text1 = text.gsub("大文学", "")
       text2 = text1.gsub("www.dawenxue.net", "")
+      text2 = text2.gsub("()", "")
+      text2 = text2.gsub("www.Sxiaoshuo.com", "")
+      text2 = text2.gsub("最快的小说搜索网", "")
+      text2 = text2.gsub("/////", "")
       article_text = ZhConv.convert("zh-tw",text2)
       article.text = article_text
       article.save
