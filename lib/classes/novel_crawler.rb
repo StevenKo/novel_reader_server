@@ -293,6 +293,26 @@ class NovelCrawler
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
       article.save
+    elsif (@page_url.index('dzxsw'))
+      text = @page_html.css("#content").text
+      text = text.gsub(/\/\d*/,"")
+      text = text.gsub("'>","")
+      text = text.gsub(".+?","")
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
+    elsif(@page_url.index('xianjie'))
+      @page_html.css(".para script").remove
+      text = @page_html.css(".para").text
+      text = text.gsub("阅读最好的小说，就上仙界小说网www.xianjie.me","")
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
+    elsif (@page_url.index('u8xs'))
+      text = change_node_br_to_newline(@page_html.css("#content"))
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
     end
   end
 
