@@ -36,14 +36,18 @@ show:   <%= @novel.is_show %> </br>
     <%= f.label :parse_url %>:
     <%= f.text_field "url" %>
     <%= f.submit "crawl" %>
-
-    <%= form_for "", :url => reset_num_articles_path({:article_id => article.id,:novel_id => article.novel_id}), :method => :put do |f|%>
+    <% end %>
+    </td>
+    
+    <td>
+    <%= form_for "", :url => reset_num_articles_path({:article_id => article.id,:novel_id => article.novel_id,:page => params[:page]}), :method => :put do |f|%>
     <%= f.text_field "num" %> ex: 22
     <%= f.submit "set" %>
+    
+    <% end %>
     </td>
 
-<% end %>
-<% end %>
+
 <% end %>
 </table>
 <% end %>
