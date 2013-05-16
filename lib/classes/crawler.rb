@@ -21,7 +21,8 @@ module Crawler
       }
     rescue
     end
-    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs'))
+    
+    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue'))
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
 
     elsif (url.index('yawen8'))
@@ -56,6 +57,27 @@ module Crawler
       /ww.jjwxc.net(.*)/ =~ url
       url = $1
       http = Net::HTTP.new('www.jjwxc.net', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('ranhen'))
+      /ww.ranhen.net(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.ranhen.net', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('6ycn'))
+      /ww.6ycn.net(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.6ycn.net', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('book108'))
+      /ww.book108.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.book108.com', 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
       @page_html = Nokogiri::HTML(content,nil,"GB18030")
