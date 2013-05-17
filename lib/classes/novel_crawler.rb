@@ -239,7 +239,8 @@ class NovelCrawler
         ArticleWorker.perform_async(article.id)
       end
     elsif(@page_url.index('quanben'))
-      nodes = @page_html.css(".acss tr a")
+      nodes = @page_html.css(".acss tr .ccss a")
+      novel = Novel.select("id,num,name").find(novel_id)
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
         next if (article != nil && article.text != nil)
@@ -249,14 +250,14 @@ class NovelCrawler
           article.novel_id = novel_id
           article.link = @page_url + node[:href]
           article.title = ZhConv.convert("zh-tw",node.text.strip)
-          novel = Novel.select("id,num,name").find(novel_id)
           article.subject = novel.name
-          article.num = novel.num + 1
-          novel.num = novel.num + 1
-          novel.save
+          /(\d*)/ =~ node[:href]
+          article.num = $1.to_i
           # puts node.text
           article.save
         end
+        novel.num = article.num + 1
+        novel.save
         ArticleWorker.perform_async(article.id)
       end
     end
