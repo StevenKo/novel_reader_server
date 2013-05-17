@@ -197,6 +197,29 @@ class NovelCrawler
         ArticleWorker.perform_async(article.id)
       end
     end
+    elsif(@page_url.index('shu88.net'))
+      url = novel.link.gsub("index.html","")
+      nodes = @page_html.css('ol li')
+      nodes.each do |node|
+        article = Article.find_by_link(url+node.child[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node.child[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    end
 
   end
 
