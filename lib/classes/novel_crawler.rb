@@ -196,9 +196,8 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
-    end
     elsif(@page_url.index('shu88.net'))
-      url = novel.link.gsub("index.html","")
+      url = @page_url.gsub("index.html","")
       nodes = @page_html.css('ol li')
       nodes.each do |node|
         article = Article.find_by_link(url+node.child[:href])
