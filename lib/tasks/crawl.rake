@@ -118,4 +118,79 @@ namespace :crawl do
     crawler.fetch url
     crawler.crawl_rank
   end
+
+  task :crawl_specific_novel => :environment do
+    
+    novel_id = 15470
+    url_mother = "http://www.shu88.net/files/article/html/0/969/"
+    url = "http://www.shu88.net/files/article/html/0/969/index.html"
+    # novel.name = 總裁，殘情毒愛
+    c = NovelCrawler.new
+    c.fetch_other_site url
+    novel = Novel.find(novel_id)
+    # Article.where( :novel_id => novel_id).each do |a| a.delete end
+    current_size = Article.where( :novel_id => novel_id).size()
+
+    total_num = c.page_html.css('ol li').size()
+    i = 0
+    while i < total_num do
+      text = c.page_html.css('ol li')[i].text.strip
+      title =  ZhConv.convert("zh-tw", text)
+      puts title
+      Article.create(:novel_id => novel_id, :title => title , :num => i + current_size +1, :subject => novel.name, :link => url_mother + c.page_html.css('ol li')[i].child[:href])
+      i = i+1
+    end
+
+
+    # crawl article content
+    j = 1 + current_size
+    while j < total_num + current_size do
+      puts "article"+j.to_s
+      article = Article.where(:novel_id => novel_id)[j - 1]
+      c2 = NovelCrawler.new
+      c2.fetch_other_site article.link
+      text = c2.page_html.css(".contentbox").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+      j = j + 1
+    end
+
+  end
+
+  # test now
+  task :crawl_new_novel => :environment do
+    
+    novel = Novel.create(:name => "test")
+    novel_id = novel.id
+    
+    url_mother = "http://www.shu88.net/files/article/html/0/969/"
+    url = "http://www.shu88.net/files/article/html/0/969/index.html"
+
+    c = NovelCrawler.new
+    c.fetch_other_site url
+
+    total_num = c.page_html.css('ol li').size()
+    i = 0
+    while i < total_num do
+      text = c.page_html.css('ol li')[i].text.strip
+      title =  ZhConv.convert("zh-tw", text)
+      puts title
+      Article.create(:novel_id => novel_id, :title => title , :num => i+1, :subject => novel.name, :link => url_mother + c.page_html.css('ol li')[i].child[:href])
+      i = i+1
+    end
+
+    j = 1
+    while j < total_num do
+      puts "article"+j.to_s
+      article = Article.where(:novel_id => novel_id)[j - 1]
+      c2 = NovelCrawler.new
+      c2.fetch_other_site article.link
+      text = c2.page_html.css(".contentbox").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+      j = j + 1
+    end
+
+  end
+
 end

@@ -342,7 +342,11 @@ class NovelCrawler
       text2 = text.gsub("1０８尒説WWW.Book１０８。com鯁","")
       article_text = ZhConv.convert("zh-tw",text2)
       article.text = article_text
-      article.save   
+      article.save
+    elsif (@page_url.index('shu88.net'))
+      text = @page_html.css(".contentbox").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save    
     end
   end
 

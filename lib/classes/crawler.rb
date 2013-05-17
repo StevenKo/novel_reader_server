@@ -22,7 +22,7 @@ module Crawler
     rescue
     end
     
-    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue'))
+    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88'))
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
 
     elsif (url.index('yawen8'))
