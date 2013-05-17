@@ -282,6 +282,48 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('dawenxue'))
+      nodes = @page_html.css(".ccss a")
+      nodes.each do |node|
+        article = Article.find_by_link(@page_url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = @page_url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('book.sfacg'))
+      nodes = @page_html.css(".list_Content  a")
+      nodes.each do |node|
+        article = Article.find_by_link("http://book.sfacg.com" + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://book.sfacg.com" + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     end
 
   end
@@ -491,7 +533,12 @@ class NovelCrawler
     elsif (@page_url.index('shu88.net'))
       text = @page_html.css(".contentbox").text.strip
       article.text = ZhConv.convert("zh-tw", text)
-      article.save   
+      article.save
+    elsif (@page_url.index('sfacg'))
+      node = @page_html.css("#ChapterBody")
+      text = change_node_br_to_newline(node)
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save    
     end
   end
 
