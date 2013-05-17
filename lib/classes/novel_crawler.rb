@@ -61,6 +61,7 @@ class NovelCrawler
             novel = Novel.new
             novel.link = link
             novel.category_id = category_id
+            novel.is_show = false
             novel.save
           end
           # CrawlWorker.perform_async(novel.id)
@@ -84,6 +85,7 @@ class NovelCrawler
 
   def crawl_novel_detail novel_id
     novel = Novel.find(novel_id)
+    return if novel.name
 
     nodes = @page_html.css("table")
     node = nodes[4].css("table")[3]
@@ -148,20 +150,44 @@ class NovelCrawler
   end
 
   def crawl_articles novel_id
-    nodes = @page_html.css("a")
-    nodes.each do |node|
-      if (node[:href].index("/novel/") || node[:href].index("/view/"))
-        # article = Article.find_by_link("http://www.bestory.com" + node[:href])
-        article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
+
+    if(@page_url.index('www.bestory.com'))
+      nodes = @page_html.css("a")
+      nodes.each do |node|
+        if (node[:href].index("/novel/") || node[:href].index("/view/"))
+          article = Article.find_by_link("http://www.bestory.com" + node[:href])
+          # article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = "http://www.bestory.com" + node[:href]
+            article.title = node.text.strip
+            article.subject = node.parent.parent.parent.parent.parent.previous.previous.previous.text.strip
+            novel = Novel.select("id,num").find(novel_id)
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+        end
+      end
+    elsif(@page_url.index('77wx'))
+      nodes = @page_html.css(".box_con #list dl dd a")
+      nodes.each do |node|
+        article = Article.find_by_link(node[:href])
         next if (article != nil && article.text != nil)
 
         unless article 
           article = Article.new
           article.novel_id = novel_id
-          article.link = "http://www.bestory.com" + node[:href]
-          article.title = node.text.strip
-          article.subject = node.parent.parent.parent.parent.parent.previous.previous.previous.text.strip
-          novel = Novel.select("id,num").find(novel_id)
+          article.link = node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
           article.num = novel.num + 1
           novel.num = novel.num + 1
           novel.save
@@ -171,6 +197,7 @@ class NovelCrawler
         ArticleWorker.perform_async(article.id)
       end
     end
+
   end
 
   def crawl_article article
@@ -347,6 +374,14 @@ class NovelCrawler
       text = @page_html.css(".contentbox").text.strip
       article.text = ZhConv.convert("zh-tw", text)
       article.save    
+    elsif (@page_url.index('77wx'))
+      @page_html.css(".content a").remove
+      text = @page_html.css(".content").text.strip
+      text = text.gsub("七七文学","")
+      text = text.gsub("九星天辰诀","")
+      article_text = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save
     end
   end
 

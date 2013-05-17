@@ -35,7 +35,7 @@ class ArticlesController < ApplicationController
       article.update_column(:num,num)
     end
     
-    redirect_to :controller => 'novels', :action => 'show', :id => novel_id
+    redirect_to :controller => 'novels', :action => 'show', :id => novel_id, :page => params[:page]
   end
 
   def show
