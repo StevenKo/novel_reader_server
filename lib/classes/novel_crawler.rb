@@ -324,6 +324,140 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('xianjie'))
+      url = @page_url.gsub("index.html","")
+      nodes = @page_html.css(".zhangjie dl dd a")
+      nodes.each do |node|
+        article = Article.find_by_link(url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('5ccc.net'))
+      nodes = @page_html.css(".ccss a")
+      nodes.each do |node|
+        article = Article.find_by_link(node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('tw.mingzw'))
+      nodes = @page_html.css(".chapterlist a")
+      nodes.each do |node|
+        article = Article.find_by_link("http://tw.mingzw.com/" + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://tw.mingzw.com/" + node[:href]
+          article.title = node.text.strip
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('520xs'))
+      nodes = @page_html.css("#list dl").children
+      subject = ""
+      nodes.each do |node|
+        
+        if node[:id] == "qw"
+          subject = node.text
+          puts subject
+        elsif node.css("a")[0]
+          node = node.css("a")[0]
+          article = Article.find_by_link(node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = node[:href]
+            article.title = node.text.strip
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = subject
+            /(\d*)\/\z/ =~ node[:href]
+            article.num = $1.to_i
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+        end
+      end
+    elsif(@page_url.index('tw.xiaoshuokan'))
+      nodes = @page_html.css(".booklist a")
+      nodes.each do |node|
+        article = Article.find_by_link("http://tw.xiaoshuokan.com" + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://tw.xiaoshuokan.com" + node[:href]
+          article.title = node.text.strip
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('92txt.net'))
+      nodes = @page_html.css(".ccss a")
+      nodes.each do |node|
+        article = Article.find_by_link(@page_url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = @page_url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     end
 
   end
@@ -538,7 +672,55 @@ class NovelCrawler
       node = @page_html.css("#ChapterBody")
       text = change_node_br_to_newline(node)
       article.text = ZhConv.convert("zh-tw", text)
-      article.save    
+      article.save
+    elsif (@page_url.index('5ccc.net'))
+      @page_html.css("#content a").remove
+      @page_html.css("#content script").remove
+      node = @page_html.css("#content")
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+    elsif (@page_url.index('tw.mingzw'))
+      @page_html.css("div[@style='text-align: center']").remove
+      @page_html.css("div[@style='border: 1px solid #a6a6a6; width: 850px; margin: 0 auto;'] script").remove
+      node = @page_html.css("div[@style='border: 1px solid #a6a6a6; width: 850px; margin: 0 auto;']")
+      text = node.text.strip
+      text = text.gsub("如需請通過此鏈接進入沖囍下載頁面","")
+      text = text.gsub("明智屋中文","")
+      text = text.gsub("wWw.MinGzw.cOm","")
+      text = text.gsub("沒有彈窗","")
+      text = text.gsub("更新及時","")
+      article.text = text
+      article.save
+    elsif (@page_url.index('520xs'))
+      @page_html.css("#TXT a").remove
+      node = @page_html.css("#TXT")
+      text = change_node_br_to_newline(node).strip
+      text = text.gsub("最新章节","")
+      text = text.gsub("TXT下载","")
+      text = text.gsub("520小说提供无弹窗全文字在线阅读，更新速度更快文章质量更好，如果您觉得520小说网不错就多多分享本站!谢谢各位读者的支持!","")
+      text = text.gsub("520小说高速首发","")
+      text = text.gsub(/本章节是.*地址为/,"")
+      text = text.gsub("如果你觉的本章节还不错的话请不要忘记向您QQ群和微博里的朋友推荐哦！","")
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+    elsif (@page_url.index('tw.xiaoshuokan'))
+      node = @page_html.css(".bookcontent")
+      text = change_node_br_to_newline(node).strip
+      text = text.gsub(/&(.*)WWW.3Zcn.net/,"")
+      text = text.gsub(/&(.*)WWW.3Zcn.net/,"")
+      text = text.gsub("三藏中文","")
+      text = text.gsub("bsp","")
+      text = text.gsub("(本章免費)","")
+      article.text = text
+      article.save
+    elsif (@page_url.index('92txt.net'))
+      node = @page_html.css("#chapter_content")
+      text = change_node_br_to_newline(node)
+      text = text.gsub("www.92txt.net 就爱网","")
+      text = text.gsub("亲们记得多给戚惜【投推荐票】、【投月票】，【加入书架】，【留言评论】哦，鞠躬敬谢","")
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save           
     end
   end
 
