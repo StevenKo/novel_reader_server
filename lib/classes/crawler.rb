@@ -22,7 +22,7 @@ module Crawler
     rescue
     end
 
-    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net'))
+    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo'))
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
 
     elsif (url.index('yawen8'))
@@ -78,6 +78,13 @@ module Crawler
       /ww.book108.com(.*)/ =~ url
       url = $1
       http = Net::HTTP.new('www.book108.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('ranwen'))
+      /ww.ranwen.net(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.ranwen.net', 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
       @page_html = Nokogiri::HTML(content,nil,"GB18030")
