@@ -239,27 +239,59 @@ class NovelCrawler
         ArticleWorker.perform_async(article.id)
       end
     elsif(@page_url.index('quanben'))
-      nodes = @page_html.css(".acss tr .ccss a")
+      nodes = @page_html.css("tr")
       novel = Novel.select("id,num,name").find(novel_id)
+      subject = ""
       nodes.each do |node|
-        article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        if (node.children.size() == 1)
+          subject = ZhConv.convert("zh-tw",node.children.text.strip)
+        elsif (node.children.size() == 4)
+          inside_nodes = node.children.children
+          inside_nodes.each do |n|
+            if n.name == "a"
+              article = Article.find_by_link(@page_url + n[:href])
+              next if (article != nil && article.text != nil)
 
-        unless article 
-          article = Article.new
-          article.novel_id = novel_id
-          article.link = @page_url + node[:href]
-          article.title = ZhConv.convert("zh-tw",node.text.strip)
-          article.subject = novel.name
-          /(\d*)/ =~ node[:href]
-          article.num = $1.to_i
-          # puts node.text
-          article.save
+              unless article 
+              article = Article.new
+              article.novel_id = novel_id
+              article.link = @page_url + n[:href]
+              article.title = ZhConv.convert("zh-tw",n.text.strip)
+              article.subject = subject
+              /(\d*)/ =~ n[:href]
+              article.num = $1.to_i
+              # puts node.text
+              article.save
+              end
+              novel.num = article.num + 1
+              novel.save
+              ArticleWorker.perform_async(article.id)
+            end
+          end
         end
-        novel.num = article.num + 1
-        novel.save
-        ArticleWorker.perform_async(article.id)
       end
+
+      # nodes = @page_html.css(".acss tr .ccss a")
+      # novel = Novel.select("id,num,name").find(novel_id)
+      # nodes.each do |node|
+      #   article = Article.find_by_link(@page_url + node[:href])
+      #   next if (article != nil && article.text != nil)
+
+      #   unless article 
+      #     article = Article.new
+      #     article.novel_id = novel_id
+      #     article.link = @page_url + node[:href]
+      #     article.title = ZhConv.convert("zh-tw",node.text.strip)
+      #     article.subject = novel.name
+      #     /(\d*)/ =~ node[:href]
+      #     article.num = $1.to_i
+      #     # puts node.text
+      #     article.save
+      #   end
+      #   novel.num = article.num + 1
+      #   novel.save
+      #   ArticleWorker.perform_async(article.id)
+      # end
     elsif(@page_url.index('shu88.net'))
       url = @page_url.gsub("index.html","")
       nodes = @page_html.css('ol li')
@@ -364,26 +396,53 @@ class NovelCrawler
       # end
     elsif(@page_url.index('xianjie'))
       url = @page_url.gsub("index.html","")
-      nodes = @page_html.css(".zhangjie dl dd a")
-      nodes.each do |node|
-        article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
 
-        unless article 
+      subject = ""
+      nodes = @page_html.css(".zhangjie dl").children
+      nodes.each do |node|
+        if node.name == "dt"
+          subject = ZhConv.convert("zh-tw",node.text.strip)
+        elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
+          article = Article.find_by_link(url + node.children[0][:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
           article = Article.new
           article.novel_id = novel_id
-          article.link = url + node[:href]
+          article.link = url + node.children[0][:href]
           article.title = ZhConv.convert("zh-tw",node.text.strip)
           novel = Novel.select("id,num,name").find(novel_id)
-          article.subject = novel.name
+          article.subject = subject
           article.num = novel.num + 1
           novel.num = novel.num + 1
           novel.save
           # puts node.text
           article.save
+          end
+          ArticleWorker.perform_async(article.id)          
         end
-        ArticleWorker.perform_async(article.id)
       end
+
+      # nodes = @page_html.css(".zhangjie dl dd a")
+      # nodes.each do |node|
+      #   article = Article.find_by_link(url + node[:href])
+      #   next if (article != nil && article.text != nil)
+
+      #   unless article 
+      #     article = Article.new
+      #     article.novel_id = novel_id
+      #     article.link = url + node[:href]
+      #     article.title = ZhConv.convert("zh-tw",node.text.strip)
+      #     novel = Novel.select("id,num,name").find(novel_id)
+      #     article.subject = novel.name
+      #     article.num = novel.num + 1
+      #     novel.num = novel.num + 1
+      #     novel.save
+      #     # puts node.text
+      #     article.save
+      #   end
+      #   ArticleWorker.perform_async(article.id)
+      # end
     elsif(@page_url.index('5ccc.net'))
       url = page_url.gsub('index.html','')
       nodes = @page_html.css(".ccss a")
@@ -540,7 +599,29 @@ class NovelCrawler
           article.save
         end
         ArticleWorker.perform_async(article.id)
-      end  
+      end
+    elsif(@page_url.index('bsxsw'))
+      url = "http://www.bsxsw.com"
+      nodes = @page_html.css(".chapterlist a")
+      nodes.each do |node|
+        article = Article.find_by_link(url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end     
     elsif (@page_url.index('zizaidu'))
        url = @page_url.sub("index.html","")
        nodes = @page_html.css("div.uclist a")
@@ -561,6 +642,39 @@ class NovelCrawler
           article.save
         end
         ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('59to'))
+      url = @page_url
+
+      subject = ""
+      nodes = @page_html.css(".acss").children
+      nodes.each do |node|
+        if node.children.children[0].name == "h2"
+          subject = ZhConv.convert("zh-tw",node.children.text.strip)
+        elsif (node.children.children[0].name == "a")
+          inside_nodes = node.children.children
+          inside_nodes.each do |n|
+            if n[:href] != nil
+              article = Article.find_by_link(url + n[:href])
+              next if (article != nil && article.text != nil)
+
+              unless article 
+              article = Article.new
+              article.novel_id = novel_id
+              article.link = url + n[:href]
+              article.title = ZhConv.convert("zh-tw",n.text.strip)
+              novel = Novel.select("id,num,name").find(novel_id)
+              article.subject = subject
+              article.num = novel.num + 1
+              novel.num = novel.num + 1
+              novel.save
+              # puts node.text
+              article.save
+              end
+              ArticleWorker.perform_async(article.id)
+            end  
+          end                  
+        end
       end
     end
 
@@ -687,6 +801,7 @@ class NovelCrawler
       text = @page_html.css("#content").text.strip
       text = text.gsub(/[a-zA-Z]/,"")
       text = text.gsub("全本小说网","")
+      text = text.gsub("wWw!QuanBEn!CoM","")
       article_text = ZhConv.convert("zh-tw",text)
       article.text = article_text
       article.save
@@ -854,6 +969,20 @@ class NovelCrawler
     elsif (@page_url.index('ranwen.net'))
       text = @page_html.css("div#content").text.strip
       article.text = ZhConv.convert("zh-tw", text)
+      article.save
+    elsif (@page_url.index('bsxsw'))
+      text = @page_html.css(".ReadContents").text
+      text = text.gsub("上一章  |  万事如易目录  |  下一章","")
+      text = text.gsub("=波=斯=小=说=网= bsxsw.com","")
+      text = text.gsub("sodu,,返回首页","")
+      text = text.gsub("sodu","")
+      text = text.gsub("zybook,返回首页","")
+      text = text.gsub("zybook","")
+      text = text.gsub("三月果)","")
+      text = text.gsub("三月果","")
+      text = text.gsub("处理SSI文件时出错","")
+      text = text.gsub("收费章节(12点)","")
+      article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
     end
   end
