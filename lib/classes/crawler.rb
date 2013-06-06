@@ -22,7 +22,7 @@ module Crawler
     rescue
     end
 
-    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo'))
+    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo') || url.index('qbxiaoshuo') || url.index('xhxsw')|| url.index('lwxs'))
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
 
     elsif (url.index('yawen8'))
