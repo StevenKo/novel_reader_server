@@ -5,7 +5,7 @@ class CrawlWorker
   
   def perform(novel_id)
     novel = Novel.select("id, link, is_show").find(novel_id)
-    return if novel.is_show == false
+    # return if novel.is_show == false
 
     crawler = NovelCrawler.new
     if(novel.link.index('bestory'))
