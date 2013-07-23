@@ -55,8 +55,6 @@ class NovelCrawler
           novel_html = novels[i-1]
           link = "http://www.bestory.com" + novel_html.css("a")[0][:href]
           novel = Novel.find_by_link link
-          novel.category_id = category_id
-          novel.save
           unless novel
             novel = Novel.new
             novel.link = link
@@ -115,23 +113,35 @@ class NovelCrawler
     this_week_nodes = nodes[5].children[1].children[2].children[1].children
     
     this_week_nodes.each do |node|
-      link = "http://www.bestory.com" + node.css("a")[0][:href] if node.css("a")[0]
-      puts link
-      if (link && novel = Novel.find_by_link(link))
+      name = node.css("a").text.split("/")[0]
+      puts name
+      if (name && name.size > 6) 
+        novel = Novel.where(["name like ?", "%#{name[0..6]}%"])[0]
+      else
+        novel = Novel.find_by_name name
+      end
+
+      if novel
         novel.is_category_this_week_hot = true 
         novel.save
-        puts "tes"
+        puts "yes"
       end
     end
 
     hot_nodes = @page_html.xpath("//td[@bgcolor='#29ABCE']")[0].parent.parent.parent.parent.parent.children[1].children[2].children[1].children
     hot_nodes.each do |node|
-      link = "http://www.bestory.com" + node.css("a")[0][:href] if node.css("a")[0]
-      puts link
-      if (link && novel = Novel.find_by_link(link))
+      name = node.css("a").text.split("/")[0]
+      puts name
+      if (name && name.size > 6)
+        novel = Novel.where(["name like ?", "%#{name[0..6]}%"])[0]
+      else
+        novel = Novel.find_by_name name
+      end
+
+      if novel
         novel.is_category_hot = true 
         novel.save
-        puts "tes"
+        puts "yes"
       end
     end
 
@@ -139,12 +149,18 @@ class NovelCrawler
     return if recommend_nodes.text.strip.blank?
     recommend_nodes.each do |node|
       novel_node = node.children[0]
-      link = "http://www.bestory.com" + novel_node.css("a")[0][:href]
-      puts link
-      if (link && novel = Novel.find_by_link(link))
+      name = novel_node.css("a")[0].text.split("/")[0]
+      puts name
+      if (name && name.size > 6)
+        novel = Novel.where(["name like ?", "%#{name[0..6]}%"])[0]
+      else
+        novel = Novel.find_by_name name
+      end
+
+      if novel
         novel.is_category_recommend = true 
         novel.save
-        puts "tes"
+        puts "yes"
       end
     end
   end
@@ -1610,11 +1626,18 @@ class NovelCrawler
       novel_nodes = nodes[i].parent.parent.parent.parent.css("a")
       novel_nodes.each do |node|
         ship = eval "#{ships[i]}.new"
-        link = "http://www.bestory.com" + node[:href]
-        novel = Novel.find_by_link link
+        # link = "http://www.bestory.com" + node[:href]
+        # novel = Novel.find_by_link link
+        name = node.text.split("/")[0]
+        if name.size > 6
+          novel = Novel.where(["name like ?", "%#{name[0..6]}%"])[0]
+        else
+          novel = Novel.find_by_name name
+        end
         if novel
           ship.novel = novel
           ship.save
+          puts name
         end
       end
     end
