@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130428070426) do
+ActiveRecord::Schema.define(:version => 20130727082845) do
 
   create_table "articles", :force => true do |t|
     t.integer  "novel_id"
@@ -90,5 +90,12 @@ ActiveRecord::Schema.define(:version => 20130428070426) do
   end
 
   add_index "this_week_hot_ships", ["novel_id"], :name => "index_this_week_hot_ships_on_novel_id"
+
+  create_table "users", :force => true do |t|
+    t.string   "registration_id"
+    t.text     "read_novels"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
 end
