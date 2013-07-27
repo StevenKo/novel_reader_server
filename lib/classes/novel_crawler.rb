@@ -146,10 +146,10 @@ class NovelCrawler
     end
 
     recommend_nodes = @page_html.xpath("//td[@bgcolor='#FFFFFF' and @colspan='2']")[0].children[3].children
+    recommend_nodes = recommend_nodes.css("a.blue")
     return if recommend_nodes.text.strip.blank?
     recommend_nodes.each do |node|
-      novel_node = node.children[0]
-      name = novel_node.css("a")[0].text.split("/")[0]
+      name = node.text
       puts name
       if (name && name.size > 6)
         novel = Novel.where(["name like ?", "%#{name[0..6]}%"])[0]

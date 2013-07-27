@@ -52,6 +52,12 @@ NovelServer::Application.routes.draw do
           # get 'db_transfer_index'
         end
       end
+
+      resources :users, :only => [:create] do
+        collection do
+          put 'update_novel'
+        end
+      end
     end
   end
 end
