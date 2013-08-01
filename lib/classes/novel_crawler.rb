@@ -352,15 +352,16 @@ class NovelCrawler
         ArticleWorker.perform_async(article.id)
       end
     elsif(@page_url.index('dawenxue'))
+      url = @page_url.gsub("index.html","")
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
-        article = Article.find_by_link(@page_url + node[:href])
+        article = Article.find_by_link(url + node[:href])
         next if (article != nil && article.text != nil)
 
         unless article 
           article = Article.new
           article.novel_id = novel_id
-          article.link = @page_url + node[:href]
+          article.link = url + node[:href]
           article.title = ZhConv.convert("zh-tw",node.text.strip)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = novel.name
@@ -759,7 +760,7 @@ class NovelCrawler
       end  
     elsif(@page_url.index('yawen8'))
       url = @page_url
-      nodes = @page_html.css("dd a")
+      nodes = @page_html.css(".bookUpdate a")
       nodes.each do |node|
         if (node.text.index("yawen8") ==nil)
           article = Article.find_by_link(url + node[:href])
@@ -769,7 +770,11 @@ class NovelCrawler
             article = Article.new
             article.novel_id = novel_id
             article.link = url + node[:href]
-            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            title = node.text.strip
+            title = title.gsub("www.yawen8.com","")
+            title = title.gsub("雅文言情小说","")
+            title = title.gsub("()","")
+            article.title = ZhConv.convert("zh-tw",title)
             novel = Novel.select("id,num,name").find(novel_id)
             article.subject = novel.name
             article.num = novel.num + 1
@@ -877,7 +882,7 @@ class NovelCrawler
           end
         end
       end  
-    elsif(@page_url.index('xs8'))
+    elsif(@page_url.index('xs8.cn'))
       url = ""
       nodes = @page_html.css("div.mod_container a")
       nodes.each do |node|
@@ -1013,6 +1018,32 @@ class NovelCrawler
           end
           ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('my285'))
+      url = @page_url
+      @page_html.css("div tr td a").first.remove
+      @page_html.css("div tr td a").first.remove
+      @page_html.css("div tr td a").last.remove
+      @page_html.css("div tr td a").last.remove
+      nodes = @page_html.css("div tr td a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end  
     elsif(@page_url.index('57book'))
       url = "http://tw.57book.net/"
       @page_html.css(".footer").remove
@@ -1103,6 +1134,28 @@ class NovelCrawler
           end
           ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('orion34g'))
+      url = @page_url
+      nodes = @page_html.css(".novel_list a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end  
     elsif(@page_url.index('d5wx'))
       url = ""
       nodes = @page_html.css("tr.ccss a")
@@ -1123,7 +1176,96 @@ class NovelCrawler
             article.save
           end
           ArticleWorker.perform_async(article.id)
-      end                                               
+      end
+    elsif(@page_url.index('dz320'))
+      url = ""
+      nodes = @page_html.css("div.mulu a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('qbxs8'))
+      url = @page_url.sub("index.shtml","")
+      nodes = @page_html.css("ul li a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('yjwxw'))
+      url = @page_url
+      @page_html.css("td.ccss a")[0..30].remove
+      nodes = @page_html.css("td.ccss a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('shunong'))    
+      url = @page_url.sub("index.html","")
+      nodes = @page_html.css(".booklist a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end                                                             
     elsif (@page_url.index('zizaidu'))
       url = @page_url.sub("index.html","")
       nodes = @page_html.css("div.uclist a")
@@ -1145,7 +1287,97 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
-    elsif(@page_url.index('59to'))
+    elsif (@page_url.index('zwxiaoshuo.com'))
+      url = @page_url
+      nodes = @page_html.css(".insert_list li a")
+      nodes.each do |node|
+        article = Article.find_by_link(url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          /(\d*)/ =~ node[:href]
+          article.num = $1.to_i
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end  
+    elsif (@page_url.index('zuiyq'))
+      url = @page_url.sub("index.html","")
+      nodes = @page_html.css("div#htmlList a")
+      nodes.each do |node|
+        article = Article.find_by_link(url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          /(\d*)/ =~ node[:href]
+          article.num = $1.to_i
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif (@page_url.index('6yzw'))
+      url = @page_url.sub("index.html","")
+      nodes = @page_html.css(".ccss a")
+      nodes.each do |node|
+        article = Article.find_by_link(url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          /(\d*)/ =~ node[:href]
+          article.num = $1.to_i
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end  
+    elsif(@page_url.index('59to.org'))
+      url = "http://tw.59to.org"
+      @page_html.css(".booklist a").last.remove
+      @page_html.css(".booklist a").last.remove
+      @page_html.css(".booklist a").last.remove
+      @page_html.css(".booklist a").last.remove
+      @page_html.css(".booklist a").last.remove
+      nodes = @page_html.css(".booklist a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end    
+    elsif(@page_url.index('59to.com'))
       url = @page_url
 
       subject = ""
@@ -1230,8 +1462,18 @@ class NovelCrawler
     elsif (@page_url.index("read.shanwen.com"))
       @page_html.css("#content")
       @page_html.css("#content center").remove
-      article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
-      article.text = article_text
+      text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+      if text.length < 100
+        imgs = @page_html.css(".divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版"
+        article.text = text_img
+      else
+        article.text = ZhConv.convert("zh-tw", text)
+      end
       article.save
     elsif (@page_url.index("shushu.com.cn"))
       @page_html.css("#content script,#content a").remove
@@ -1241,10 +1483,19 @@ class NovelCrawler
     elsif (@page_url.index("tw.9pwx.com"))
       @page_html.css(".bookcontent #msg-bottom").remove
       text = @page_html.css(".bookcontent").text.strip
-      article_text = text.gsub("鑾勾絏ュ庤鎷誨潒濯兼煉鐪磭榪惰琚氣-官家求魔殺神武動乾坤最終進化神印王座| www.9pwx.com","")
-      article_text = text.gsub("鍗兼雞銇264264-官家求魔殺神武動乾坤最終進化神印王座|","")
-      article_text = text.gsub("www.9pwx.com","")
-      article.text = article_text.strip
+      if text.length < 100
+        begin
+          url = "http://tw.9pwx.com"
+          text = @page_html.css(".divimage img")[0][:src]
+          article.text = url + text + "*&&$$*" + "如果看不到圖片, 請更新至新版"  
+        rescue Exception => e      
+        end
+      else
+        article_text = text.gsub("鑾勾絏ュ庤鎷誨潒濯兼煉鐪磭榪惰琚氣-官家求魔殺神武動乾坤最終進化神印王座| www.9pwx.com","")
+        article_text = text.gsub("鍗兼雞銇264264-官家求魔殺神武動乾坤最終進化神印王座|","")
+        article_text = text.gsub("www.9pwx.com","")
+        article.text = article_text.strip
+      end     
       article.save
     elsif (@page_url.index('sj131'))
       if @page_html.css("#content").text != ""
@@ -1307,6 +1558,12 @@ class NovelCrawler
       final_text = ZhConv.convert("zh-tw",article_text.strip)
       article.text = final_text
       article.save
+    elsif (@page_url.index('59to.org'))
+      @page_html.css(".bookcontent div").remove
+      text = @page_html.css(".bookcontent").text.strip
+      article_text  = ZhConv.convert("zh-tw",text)
+      article.text = article_text
+      article.save  
     elsif (@page_url.index('www.k6uk.com'))
       text = @page_html.css("#content").text.strip
       article_text = ZhConv.convert("zh-tw",text)
@@ -1319,9 +1576,22 @@ class NovelCrawler
       text2 = text2.gsub("()", "")
       text2 = text2.gsub("www.Sxiaoshuo.com", "")
       text2 = text2.gsub("最快的小说搜索网", "")
-      text2 = text2.gsub("/////", "")
-      article_text = ZhConv.convert("zh-tw",text2)
-      article.text = article_text
+      text2 = text2.gsub("/////", "")    
+      if text2.length < 100
+        begin
+          imgs = @page_html.css(".divimage img")
+          text_img = ""
+          imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+          end
+          text_img = text_img + "如果看不到圖片, 請更新至新版"
+          article.text = text_img
+        rescue Exception => e      
+        end
+      else
+        article_text = ZhConv.convert("zh-tw",text2)
+        article.text = article_text
+      end
       article.save
     elsif (@page_url.index('quanben'))
       text = @page_html.css("#content").text.strip
@@ -1426,7 +1696,22 @@ class NovelCrawler
     elsif (@page_url.index('sfacg'))
       node = @page_html.css("#ChapterBody")
       text = change_node_br_to_newline(node)
-      article.text = ZhConv.convert("zh-tw", text)
+      if text.length < 50
+        url = "http://book.sfacg.com"
+        imgs = @page_html.css("#ChapterBody img")
+        text_img = ""
+        imgs.each do |img|
+          if img[:src].index("sfacg.com")
+            text_img = text_img + img[:src] + "*&&$$*"
+          else
+            text_img = text_img + url + img[:src] + "*&&$$*"
+          end
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版"
+        article.text = text_img
+      else
+        article.text = ZhConv.convert("zh-tw", text)
+      end
       article.save
     elsif (@page_url.index('5ccc.net'))
       @page_html.css("#content a").remove
@@ -1527,7 +1812,14 @@ class NovelCrawler
       text = @page_html.css("div#content").text.strip
       article.text = ZhConv.convert("zh-tw", text)
       article.save
-    elsif (@page_url.index('xs8'))
+    elsif (@page_url.index('shunong'))
+      @page_html.css(".bookcontent div").remove
+      @page_html.css(".bookcontent script").remove
+      @page_html.css(".bookcontent a").remove
+      text = @page_html.css(".bookcontent").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save  
+    elsif (@page_url.index('xs8.cn'))
       text = @page_html.css("div.chapter_content").text.strip
       article.text = ZhConv.convert("zh-tw", text)
       article.save
@@ -1550,7 +1842,18 @@ class NovelCrawler
       article.save  
     elsif (@page_url.index('23hh'))
       text = @page_html.css("#contents").text.strip
-      article.text = ZhConv.convert("zh-tw", text)
+      if text.length < 100
+        imgs = @page_html.css("#contents .divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版"
+        article.text = text_img
+      else
+        text = text.gsub("http://","")
+        article.text = ZhConv.convert("zh-tw", text)
+      end
       article.save
     elsif (@page_url.index('readnovel'))
       text = @page_html.css(".mainContentNew").text.strip
@@ -1579,6 +1882,20 @@ class NovelCrawler
       text = @page_html.css("#content").text.strip
       article.text = ZhConv.convert("zh-tw", text)
       article.save
+    elsif (@page_url.index('6yzw'))
+      text = @page_html.css("#readtext").text.strip
+      if text.length < 100
+        imgs = @page_html.css("#readtext .divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版"
+        article.text = text_img
+      else
+        article.text = ZhConv.convert("zh-tw", text)
+      end
+      article.save
     elsif (@page_url.index('jinbang'))
       @page_html.css("a").remove
       text = @page_html.css("div.novel_content").text.strip
@@ -1591,7 +1908,53 @@ class NovelCrawler
     elsif (@page_url.index('d5wx'))
       text = @page_html.css("td#contenthtzw").text.strip
       article.text = ZhConv.convert("zh-tw", text)
-      article.save                   
+      article.save
+    elsif (@page_url.index('my285'))
+      text = @page_html.css("tr")[4].text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+    elsif (@page_url.index('zwxiaoshuo.com'))
+      @page_html.css(".contentbox div").remove
+      text = @page_html.css(".contentbox").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save  
+    elsif (@page_url.index('dz320'))
+      @page_html.css("div.cmt").remove
+      text = @page_html.css("div.content").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+    elsif (@page_url.index('yjwxw'))
+      @page_html.css("#content div").remove
+      text = @page_html.css("#content").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save  
+    elsif (@page_url.index('zuiyq'))
+      text = @page_html.css(".contentbox").text.strip
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save
+    elsif (@page_url.index('orion34g'))
+      @page_html.css(".novel_content div").remove
+      text = @page_html.css(".novel_content").text.strip
+      if text.length < 100
+        begin
+          text = @page_html.css(".divimage img")[0][:src]
+          article.text = text + "*&&$$*" + "如果看不到圖片, 請更新至新版"
+        rescue Exception => e      
+        end
+      else
+        article.text = ZhConv.convert("zh-tw", text)
+      end
+      article.save  
+    elsif (@page_url.index('qbxs8'))
+      @page_html.css("div.text div").remove
+      @page_html.css("div.text a").remove
+      @page_html.css("div.text h1").remove
+      @page_html.css("div.text h2").remove
+      @page_html.css("div.text script").remove
+      text = @page_html.css("div.text").text.strip
+      text = text.gsub("*  * 女  生 小  说  网 - http://www.qbxs8.com - 好  看  的  女  生 小  说     ★★★★★薄情锦郁★★★★★ ","")
+      article.text = ZhConv.convert("zh-tw", text)
+      article.save                                   
     elsif (@page_url.index('57book'))
       @page_html.css("div#msg-bottom").remove
       text = @page_html.css("div.bookcontent").text.strip

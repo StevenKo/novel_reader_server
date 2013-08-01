@@ -23,9 +23,8 @@ module Crawler
     end
     if url.index('shushu5')||url.index('kushuku')
       @page_html = Nokogiri::HTML(body)
-    elsif (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo') || url.index('qbxiaoshuo') || url.index('xhxsw')|| url.index('lwxs') || url.index('5200xs') || url.index('hfxs') || url.index('5800') || url.index('bjxiaoshuo') )
+    elsif (url.index('shanwen')|| url.index('shushu')|| url.index('sj131') || url.index('59to') || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo') || url.index('qbxiaoshuo') || url.index('xhxsw')|| url.index('lwxs') || url.index('5200xs') || url.index('hfxs') || url.index('5800.cc') || url.index('bjxiaoshuo') )
       @page_html = Nokogiri::HTML(body,nil,"GB18030")
-
     elsif (url.index('yawen8'))
       /ww.yawen8.com(.*)/ =~ url
       url = $1
@@ -110,6 +109,13 @@ module Crawler
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
       @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('59to.org'))
+      /tw.59to.org(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('tw.59to.org', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"big5")  
     elsif (url.index('book.kanunu.org'))
       /book.kanunu.org(.*)/ =~ url
       url = $1
@@ -123,14 +129,42 @@ module Crawler
       http = Net::HTTP.new('www.d5wx.com', 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
-      @page_html = Nokogiri::HTML(content,nil,"GB18030")  
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('zwxiaoshuo.com'))
+      /ww.zwxiaoshuo.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.zwxiaoshuo.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"big5")     
     elsif (url.index('qiuwu'))
       /ww.qiuwu.net(.*)/ =~ url
       url = $1
       http = Net::HTTP.new('www.qiuwu.net', 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
-      @page_html = Nokogiri::HTML(content,nil,"GB18030")  
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+    elsif (url.index('6yzw.com'))
+      /ww.6yzw.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.6yzw.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030") 
+    elsif (url.index('ww.yjwxw.com'))
+      /ww.yjwxw.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.yjwxw.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030") 
+    elsif (url.index('ww.shunong.com'))
+      /ww.shunong.com(.*)/ =~ url
+      url = $1
+      http = Net::HTTP.new('www.shunong.com', 80)
+      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      content = res.body
+      @page_html = Nokogiri::HTML(content,nil,"GB18030")             
     elsif (url.index('zizaidu'))
       ic = Iconv.new("utf-8//translit//IGNORE","big5")
       body = ''
