@@ -50,6 +50,8 @@ gem 'slim'
 
 gem 'zhconv'
 
+gem 'gcm'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

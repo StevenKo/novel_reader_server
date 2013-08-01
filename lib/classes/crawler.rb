@@ -22,7 +22,9 @@ module Crawler
     rescue
     end
 
-    if (url.index('shanwen')|| url.index('shushu')|| url.index('sj131')  || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo') || url.index('qbxiaoshuo') || url.index('xhxsw')|| url.index('lwxs') || url.index('5200xs') || url.index('hfxs') || url.index('5800.cc') || url.index('bjxiaoshuo') || url.index('fftxt.net'))
+    if url.index('shushu5')||url.index('kushuku')
+      @page_html = Nokogiri::HTML(body)
+    elsif (url.index('shanwen')|| url.index('shushu')|| url.index('sj131')  || url.index('quanben') || url.index('xianjie') || url.index('u8xs') || url.index('dawenxue') || url.index('shu88') || url.index('77wx') || url.index('xuanhutang') || url.index('5ccc.net') || url.index('520xs') || url.index('92txt.net') || url.index('ranwenxiaoshuo') || url.index('qbxiaoshuo') || url.index('xhxsw')|| url.index('lwxs') || url.index('5200xs') || url.index('hfxs') || url.index('5800.cc') || url.index('bjxiaoshuo') || url.index('fftxt.net') || url.index('d586.com'))
       @page_html = Nokogiri::HTML(body,nil,"GB18030")   
     elsif (url.index('yawen8'))
       /ww.yawen8.com(.*)/ =~ url

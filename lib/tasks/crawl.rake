@@ -193,4 +193,27 @@ namespace :crawl do
 
   end
 
+  task :send_notification => :environment do
+    gcm = GCM.new("AIzaSyBSeIzNxqXm2Rr4UnThWTBDXiDchjINbrc")
+    u = User.find(2)
+    registration_ids= [u.registration_id]
+    options = {data: {
+                  activity: 4, 
+                  title: "好久沒看小說王囉", 
+                  big_text: "繼續看個小說吧！", 
+                  content: "我是 content", 
+                  is_resent: true, 
+                  category_name: "test", 
+                  category_id: 1,
+                  novel_name: "novel_name",
+                  novel_author: "novel_author",
+                  novel_description: "novel_description",
+                  novel_update: "20000",
+                  novel_pic_url: "http",
+                  novel_article_num: "2222",
+                  novel_id: 133
+                  }, collapse_key: "updated_score"}
+    response = gcm.send_notification(registration_ids, options)
+  end
+
 end
