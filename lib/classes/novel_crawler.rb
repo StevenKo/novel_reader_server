@@ -1615,6 +1615,10 @@ class NovelCrawler
       text = text.gsub("收费章节(12点)","")
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
+    elsif (@page_url.index('shushu5.com'))
+      text = @page_html.css("#partbody").text
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
     end
   end
 
