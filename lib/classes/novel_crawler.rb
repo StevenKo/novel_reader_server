@@ -1619,6 +1619,12 @@ class NovelCrawler
       text = @page_html.css("#partbody").text
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
+    elsif (@page_url.index('kushuku.com'))
+      @page_html.css("span").remove
+      node = @page_html.css("#content")
+      text = change_node_br_to_newline(node)
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
     end
   end
 
