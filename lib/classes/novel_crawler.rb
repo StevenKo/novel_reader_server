@@ -212,6 +212,48 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('wsxs.net'))
+      nodes = @page_html.css(".acss tr a")
+      nodes.each do |node|
+        article = Article.find_by_link(node[:href])
+        next if (article != nil && article.text != nil && article.text.length > 100)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('ttshuo'))
+      nodes = @page_html.css(".ChapterList_Item a")
+      nodes.each do |node|
+        article = Article.find_by_link("http://www.ttshuo.com" + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://www.ttshuo.com" + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     elsif(@page_url.index('feiku.com'))
       nodes = @page_html.css(".clearfix ul li[itemprop='itemListElement'] a")
       nodes.each do |node|
@@ -518,7 +560,66 @@ class NovelCrawler
             ArticleWorker.perform_async(article.id)
           end
         index = index +1        
-      end   
+      end
+    elsif(@page_url.index('daomubiji'))
+
+      subject = ""
+      nodes = @page_html.css(".bg .mulu")
+      nodes.each do |node|
+
+        child_nodes = node.css("td")
+        child_nodes.each_with_index do |c_node,i|
+          if i==0
+            subject = ZhConv.convert("zh-tw",c_node.text.strip)
+          else
+            a_node = c_node.css("a")[0]
+            next if a_node.nil?
+            article = Article.find_by_link(a_node[:href])
+            next if (article != nil && article.text != nil)
+            unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = a_node[:href]
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = subject
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+            end
+            ArticleWorker.perform_async(article.id)    
+          end
+        end
+      end
+    elsif(@page_url.index('wenku8.cn'))
+      subject = ""
+      nodes = @page_html.css(".acss tr td")
+      nodes.each do |node|
+        if node[:class] == "vcss"
+          subject = ZhConv.convert("zh-tw",node.text.strip)
+        else
+          a_node = node.css("a")[0]
+          next if a_node.nil?
+          article = Article.find_by_link(a_node[:href])
+          next if (article != nil && article.text != nil)
+          unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = a_node[:href]
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = subject
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+          end
+          ArticleWorker.perform_async(article.id)    
+        end
+      end
     elsif(@page_url.index('xianjie'))
       url = @page_url.gsub("index.html","")
 
@@ -1907,6 +2008,17 @@ class NovelCrawler
       text = text.gsub("求金牌、求收藏、求推荐、求点击、求评论、求红包、求礼物，各种求，有什么要什么，都砸过来吧！","").strip
       text = text.gsub("小窍门：按左右键快速翻到上下章节","").strip
       article.text = ZhConv.convert("zh-tw", text)
+      
+      if text.length < 100
+        imgs = @page_html.css("p img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
+
       article.save
     elsif (@page_url.index('ranwen.net'))
       text = @page_html.css("div#content").text.strip
@@ -2131,7 +2243,18 @@ class NovelCrawler
       node.css("script").remove
       text = change_node_br_to_newline(node)
       article.text = ZhConv.convert("zh-tw", text.strip)
+
+      if text.length < 100
+        imgs = @page_html.css("#tigtag_size img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
       article.save
+
     elsif (@page_url.index('feiku.com'))
       node = @page_html.css(".art_wrap.mt15")
       node.css("a").remove
@@ -2151,6 +2274,49 @@ class NovelCrawler
       text = text.gsub("欢迎你","")
       text = text.gsub("最快更新","")
       article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('ttshuo'))
+      node = @page_html.css(".detailcontent")
+      node.css("a").remove
+      node.css("script").remove
+      text = change_node_br_to_newline(node)
+      text = text.gsub("本作品来自天天小说网(www.ttshuo.com)","")
+      text = text.gsub("大量精品小说","")
+      text = text.gsub("永久免费阅读","")
+      text = text.gsub("敬请收藏关注","")
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('daomubiji'))
+      node = @page_html.css(".content")
+      node.css("a").remove
+      node.css(".shangxia").remove
+      node.css(".cmt").remove
+      node.css("script").remove
+      node.css("span").remove
+      text = node.text
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('wenku8.cn'))
+      node = @page_html.css("#content")
+      node.css("#contentdp").remove
+      text = node.text
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('wsxs.net'))
+      node = @page_html.css("#content")
+      text = node.text
+      text = text.gsub("☺文山小说网编辑整理，谢谢观赏！☺","")
+      article.text = ZhConv.convert("zh-tw", text.strip)
+
+      if text.length < 100
+        imgs = @page_html.css("#content img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
       article.save
     end
   end
