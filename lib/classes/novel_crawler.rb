@@ -359,6 +359,27 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('jianxia.cc'))
+      nodes = @page_html.css(".xsyd_ml_2 a")
+      nodes.each do |node|
+        article = Article.find_by_link(node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     elsif(@page_url.index('readnovel'))
       nodes = @page_html.css(".listPanel li a")
       nodes.each do |node|
@@ -952,7 +973,7 @@ class NovelCrawler
       nodes.each do |node|
         if (node.text.index("yawen8") ==nil)
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if (article != nil && article.text != nil && article.text.length > 100)
 
           unless article 
             article = Article.new
@@ -2317,6 +2338,11 @@ class NovelCrawler
         text_img = text_img + "如果看不到圖片, 請更新至新版APP"
         article.text = text_img
       end
+      article.save
+    elsif(@page_url.index('jianxia.cc'))
+      node = @page_html.css("#article p")[0]
+      node.css("span").remove
+      article.text = ZhConv.convert("zh-tw", node.text)
       article.save
     end
   end
