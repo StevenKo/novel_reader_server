@@ -439,7 +439,7 @@ class NovelCrawler
       subject = novel.name
       nodes.each do |node|
         article = Article.find_by_link("http://www.d586.com" + node[:href])
-        next if (article != nil && article.text != nil)
+        next if (article != nil && article.text != nil && article.text.length > 100)
 
         unless article 
         article = Article.new
@@ -624,7 +624,7 @@ class NovelCrawler
           a_node = node.css("a")[0]
           next if a_node.nil?
           article = Article.find_by_link(a_node[:href])
-          next if (article != nil && article.text != nil)
+          next if (article != nil && article.text != nil && article.text.length > 100)
           unless article 
           article = Article.new
           article.novel_id = novel_id
