@@ -2252,7 +2252,7 @@ class NovelCrawler
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
     elsif (@page_url.index('d586.com'))
-      node = @page_html.css("#content_gangshangfuheiwangyeqiebenkuangye_9075")
+      node = @page_html.css(".content")
       node.css("a").remove
       node.css("script").remove
       text = change_node_br_to_newline(node)
