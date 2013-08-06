@@ -524,7 +524,7 @@ class NovelCrawler
       nodes = @page_html.css(".acss tr a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if (article != nil && article.text != nil && article.text.length > 250)
 
         unless article 
           article = Article.new
@@ -1783,7 +1783,38 @@ class NovelCrawler
           article.save
         end
         ArticleWorker.perform_async(article.id)
-      end  
+      end
+    elsif(@page_url.index('luoqiu.com'))
+
+      novel = Novel.select("id,num,name").find(novel_id)
+      subject = novel.name
+      nodes = @page_html.css(".booklist span")
+      nodes.each do |node|
+        if(node[:class]=="v")
+          subject = node.text.strip.gsub(".","")
+        else
+          a_node = node.css("a")[0]
+          url = @page_url.gsub("index.html","") + a_node[:href]
+          article = Article.find_by_link(url)
+          next if (article != nil && article.text != nil && article.text.length > 100)
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+            article.subject = subject
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+        end
+        novel.article_num = novel.articles.size.to_s + "篇"
+        novel.latest_article_id = novel.articles.last.id
+        novel.save
+      end 
     elsif(@page_url.index('59to.org'))
       url = "http://tw.59to.org"
       @page_html.css(".booklist a").last.remove
@@ -2121,6 +2152,16 @@ class NovelCrawler
       text = @page_html.css("#content").text.strip
       text = text.gsub("看校园小说到-玄葫堂","")
       article_text = ZhConv.convert("zh-tw",text)
+
+      if (article_text.length < 250)
+        imgs = @page_html.css(".divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article_text = text_img
+      end
       article.text = article_text
       article.save
     elsif (@page_url.index('shu88.net'))
@@ -2590,7 +2631,12 @@ class NovelCrawler
       text = text.gsub("WWW.YQWXC.COM","")
       text = text.gsub("免费看VIP全本小说","")
       article.text = ZhConv.convert("zh-tw", text)
-      article.save  
+      article.save
+    elsif (@page_url.index('luoqiu.com'))
+      node = @page_html.css("#content")
+      text = node.text
+      article.text = text.strip
+ 
 
     end
   end
