@@ -1323,7 +1323,7 @@ class NovelCrawler
       nodes = @page_html.css("ol li a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if (article != nil && article.text != nil && article.text.length > 150)
 
           unless article 
             article = Article.new
@@ -1811,9 +1811,6 @@ class NovelCrawler
           end
           ArticleWorker.perform_async(article.id)
         end
-        novel.article_num = novel.articles.size.to_s + "篇"
-        novel.latest_article_id = novel.articles.last.id
-        novel.save
       end 
     elsif(@page_url.index('59to.org'))
       url = "http://tw.59to.org"
@@ -1986,6 +1983,17 @@ class NovelCrawler
         article.text = article_text
         article.save
       end
+      if (article.text.length < 150 )
+        imgs = @page_html.css("img.imagecontent")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+        article.save
+      end
+
     elsif (@page_url.index('yawen8'))
       article_text = ZhConv.convert("zh-tw",@page_html.css("div.txtc").text.strip)
       text2 = ""
@@ -2635,9 +2643,18 @@ class NovelCrawler
     elsif (@page_url.index('luoqiu.com'))
       node = @page_html.css("#content")
       text = node.text
-      article.text = text.strip
- 
+      article.text = ZhConv.convert("zh-tw", text.strip)
 
+      if text.length < 100
+        imgs = @page_html.css("#content img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
+      article.save
     end
   end
 

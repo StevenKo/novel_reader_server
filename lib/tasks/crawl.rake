@@ -196,9 +196,9 @@ namespace :crawl do
   task :send_notification => :environment do
     gcm = GCM.new("AIzaSyBSeIzNxqXm2Rr4UnThWTBDXiDchjINbrc")
     u = User.find(2)
-    registration_ids= [u.registration_id]
+    registration_ids= ["APA91bHKW2dYbWqZ_bYLX5Ked2TBobnNDsPbUYqbPAKpc7_MqpbuyFPDQdqUzU8k_Gdh-nMCQh-UNHdcErl6EFpE77v0oTDufc24PRSTvipG81HI0-1vfVWbVXimIqAyLxfeZgAKazRxAK0f7GPUoZhvsUPW2_HbKg"]
     options = {data: {
-                  activity: 4, 
+                  activity: 0, 
                   title: "好久沒看小說王囉", 
                   big_text: "繼續看個小說吧！", 
                   content: "我是 content", 
