@@ -256,6 +256,37 @@ class NovelCrawler
             article.save
           end
           ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('xybook.net'))
+      /(\d*_*\d*\.html)/ =~ @page_url   
+      root_url = @page_url.sub($1,"")
+      nodes = @page_html.css(".pagelist a")
+      nodes.each do |node|
+          next unless node[:href]
+          article = nil
+          if(node[:href] == "#")
+            url = @page_url
+          else
+            url = root_url + node[:href]
+          end
+          article = Article.find_by_link(url)
+
+          next if (article != nil && article.text != nil)
+          next if (node.text == "上一页")
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
       end  
     elsif(@page_url.index('yqhhy.cc'))    
       url = @page_url.sub("index.html","")
@@ -1481,28 +1512,6 @@ class NovelCrawler
           end
           ArticleWorker.perform_async(article.id)
       end
-    elsif(@page_url.index('5800'))
-      url = @page_url
-      nodes = @page_html.css("div.TabCss a")
-      nodes.each do |node|
-          article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
-
-          unless article 
-            article = Article.new
-            article.novel_id = novel_id
-            article.link = url + node[:href]
-            article.title = ZhConv.convert("zh-tw",node.text.strip)
-            novel = Novel.select("id,num,name").find(novel_id)
-            article.subject = novel.name
-            article.num = novel.num + 1
-            novel.num = novel.num + 1
-            novel.save
-            # puts node.text
-            article.save
-          end
-          ArticleWorker.perform_async(article.id)
-      end
     elsif(@page_url.index('zhsxs'))
       url = "http://tw.zhsxs.com"
       nodes = @page_html.css("td.chapterlist a")
@@ -1791,7 +1800,7 @@ class NovelCrawler
       nodes = @page_html.css(".booklist span")
       nodes.each do |node|
         if(node[:class]=="v")
-          subject = node.text.strip.gsub(".","")
+          subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
         else
           a_node = node.css("a")[0]
           url = @page_url.gsub("index.html","") + a_node[:href]
@@ -2012,6 +2021,17 @@ class NovelCrawler
       article_text = article_text.gsub("［本章未完，請點擊下一頁繼續閱讀！］","")
       article_text = article_text.gsub("...   ","")
       article.text = article_text
+
+      if (article.text.length < 150 )
+        imgs = @page_html.css(".piccontent img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+        article.save
+      end
       article.save
     elsif (@page_url.index('52buk.com'))
       text = @page_html.css(".novelcon").text.strip
@@ -2654,6 +2674,21 @@ class NovelCrawler
         text_img = text_img + "如果看不到圖片, 請更新至新版APP"
         article.text = text_img
       end
+      article.save
+    elsif (@page_url.index('jjwxc.net'))
+      node = @page_html.css(".noveltext")
+      node.css("a").remove
+      node.css("font").remove
+      node.css("span").remove
+      node.css("script").remove
+      text = change_node_br_to_newline(node).strip.gsub("[]","").gsub("  ","").gsub("\n\n","")
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('xybook.net'))
+      node = @page_html.css(".article-article")
+      node.css("a").remove
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
     end
   end
