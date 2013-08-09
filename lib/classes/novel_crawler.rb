@@ -464,6 +464,35 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('xiaoshuozhe.com'))
+      nodes = @page_html.css(".list dl").children
+      novel = Novel.select("id,num,name").find(novel_id)
+      subject = novel.name
+
+      nodes.each do |node|
+        if (node.name == "dt")
+          subject = node.text
+        elsif node.name == "dd"
+          node = node.css("a")[0]
+          url = @page_url + node[:href]
+          article = Article.find_by_link(url)
+          next if (article != nil && article.text != nil && article.text.length > 150)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            article.subject = ZhConv.convert("zh-tw",subject)
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+        end
+      end
     elsif(@page_url.index('5800.cc'))
       nodes = @page_html.css(".TabCss a")
       nodes.each do |node|
@@ -1950,6 +1979,15 @@ class NovelCrawler
       @page_html.css("#content script,#content a").remove
       article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
       article.text = article_text
+      if article.text.length < 150
+        imgs = @page_html.css(".divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
       article.save
     elsif (@page_url.index("tw.9pwx.com"))
       @page_html.css(".bookcontent #msg-bottom").remove
@@ -2687,6 +2725,13 @@ class NovelCrawler
     elsif (@page_url.index('xybook.net'))
       node = @page_html.css(".article-article")
       node.css("a").remove
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('xiaoshuozhe'))
+      node = @page_html.css("#BookText")
+      node.css("#ad_right").remove
+      node.css("font").remove
       text = node.text.strip
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
