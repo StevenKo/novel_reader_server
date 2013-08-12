@@ -22,9 +22,9 @@ module Crawler
     rescue
     end
 
-    if url.index('shushu5')||url.index('kushuku')||url.index('feiku.com')|| url.index('daomubiji') || url.index('luoqiu.com')
+    if url.index('shushu5')||url.index('kushuku')||url.index('feiku.com')|| url.index('daomubiji') || url.index('luoqiu.com') || url.index('kxwxw')
       @page_html = Nokogiri::HTML(body)
-    elsif url.index('xybook.net')
+    elsif url.index('xybook.net') || url.index('uuxs.com')
       html = open(url).read
       # charset = Nokogiri::HTML(html).meta_encoding
       html.force_encoding("gbk")
@@ -212,7 +212,14 @@ module Crawler
       end
       @page_html = Nokogiri::HTML(body)             
     else
-      @page_html = Nokogiri::HTML(body)
+      charset = Nokogiri::HTML(body).meta_encoding
+      if (charset=="utf-8")
+        @page_html = Nokogiri::HTML(body)
+      else
+        body.force_encoding("gbk")
+        body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+        @page_html = Nokogiri::HTML.parse body
+      end
     end
   end
 

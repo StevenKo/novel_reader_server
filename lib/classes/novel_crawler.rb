@@ -859,18 +859,19 @@ class NovelCrawler
     elsif(@page_url.index('wenku8.cn'))
       subject = ""
       nodes = @page_html.css(".acss tr td")
+      url = @page_url.gsub("index.htm","")
       nodes.each do |node|
         if node[:class] == "vcss"
           subject = ZhConv.convert("zh-tw",node.text.strip)
         else
           a_node = node.css("a")[0]
           next if a_node.nil?
-          article = Article.find_by_link(a_node[:href])
+          article = Article.find_by_link(url + a_node[:href])
           next if (article != nil && article.text != nil && article.text.length > 100)
           unless article 
           article = Article.new
           article.novel_id = novel_id
-          article.link = a_node[:href]
+          article.link = url + a_node[:href]
           article.title = ZhConv.convert("zh-tw",a_node.text.strip)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = subject
@@ -982,6 +983,27 @@ class NovelCrawler
         end
         ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('xxs8.com'))
+      nodes = @page_html.css(".bookdetail a")
+      nodes.each do |node|
+        article = Article.find_by_link(node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = node[:href]
+          article.title = node.text.strip
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     elsif(@page_url.index('520xs'))
       nodes = @page_html.css("#list dl").children
       subject = ""
@@ -1023,6 +1045,28 @@ class NovelCrawler
           article = Article.new
           article.novel_id = novel_id
           article.link = "http://tw.xiaoshuokan.com" + node[:href]
+          article.title = node.text.strip
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('uuxs.com'))
+      #this load pic by ajax, so cannot crawl pic
+      nodes = @page_html.css(".booklist a")
+      nodes.each do |node|
+        article = Article.find_by_link(@page_url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = @page_url + node[:href]
           article.title = node.text.strip
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = novel.name
@@ -2318,6 +2362,8 @@ class NovelCrawler
       text = text.gsub("(本章免費)","")
       text = text.gsub("&n8","")
       text = text.gsub("ｏ","")
+      text = text.gsub("&nWww.xiaoｓhuoｋａn.Com","")
+      text = text.gsub("WWW.ｘｉａｏｓｈｕｏｋａｎ.ｃｏｍ","")
       article.text = text
       article.save
     elsif (@page_url.index('92txt.net'))
@@ -2643,6 +2689,15 @@ class NovelCrawler
       node.css("#contentdp").remove
       text = node.text
       article.text = ZhConv.convert("zh-tw", text.strip)
+      if text.length < 100
+        imgs = @page_html.css("#content .divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
       article.save
     elsif (@page_url.index('wsxs.net'))
       node = @page_html.css("#content")
@@ -2753,6 +2808,17 @@ class NovelCrawler
       node = @page_html.css("#BookText")
       node.css("#ad_right").remove
       node.css("font").remove
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('uuxs'))
+      node = @page_html.css("#content")
+      node.css("#adtop,#notify,script,.divimage,#endtips,.pageTools").remove
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('xxs8.com'))
+      node = @page_html.css("#mmpage")
       text = node.text.strip
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
