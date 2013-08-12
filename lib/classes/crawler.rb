@@ -213,7 +213,7 @@ module Crawler
       @page_html = Nokogiri::HTML(body)             
     else
       charset = Nokogiri::HTML(body).meta_encoding
-      if (charset=="utf-8")
+      if (charset=="utf-8" || charset=="big5")
         @page_html = Nokogiri::HTML(body)
       else
         body.force_encoding("gbk")
