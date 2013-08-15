@@ -191,6 +191,33 @@ class NovelCrawler
           ArticleWorker.perform_async(article.id)
         end
       end
+    elsif(@page_url.index('ck101.com'))
+      novel = Novel.select("id,num,name").find(novel_id)
+      last_node_url = @page_html.css(".pg a").last.previous[:href]
+      /thread-(\d*)-(\d*)-\d*/ =~ last_node_url
+      (1..$2.to_i).each do |page|
+        if (page == 1)
+          url = "http://ck101.com/forum.php?mod=threadlazydata&tid=" + $1
+        else
+          url = "http://ck101.com/" + "thread-#{$1}-#{page}-2.html"
+        end
+        article = Article.find_by_link(url)
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url
+          article.title = "#{page}"
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     elsif(@page_url.index('gosky.net'))    
       url = @page_url.sub("index.html","")
       nodes = @page_html.css("table")[3].css("a")
@@ -287,7 +314,29 @@ class NovelCrawler
             article.save
           end
           ArticleWorker.perform_async(article.id)
-      end  
+      end
+    elsif(@page_url.index('book.sto.cc'))
+      nodes = @page_html.css("#webPage a")
+      last_node = nodes.last
+      /(\d*)-(\d*)/ =~ last_node[:href]
+      (1..$2.to_i).each do |i|
+        article = Article.find_by_link("http://book.sto.cc/" + $1 + "-" + i.to_s)
+        next if (article != nil && article.text != nil)
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://book.sto.cc/" + $1 + "-" + i.to_s
+          article.title = i.to_s
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
     elsif(@page_url.index('yqhhy.cc'))    
       url = @page_url.sub("index.html","")
       nodes = @page_html.css("#readtext a")
@@ -882,6 +931,38 @@ class NovelCrawler
           article.save
           end
           ArticleWorker.perform_async(article.id)    
+        end
+      end
+    elsif(@page_url.index('daomuxsw'))
+      subject = ""
+      nodes = @page_html.css(".mainbody td")
+      url = @page_url.gsub("index.html","")
+      nodes.each do |node|
+        if node[:class] == "vcss"
+          subject = ZhConv.convert("zh-tw",node.text.strip)
+        else
+          a_nodes = node.css("a")
+          a_nodes.each do |a_node|
+            next if a_node.nil?
+            article = Article.find_by_link(url + a_node[:href])
+            next if (article != nil && article.text != nil && article.text.length > 100)
+            unless article 
+              article = Article.new
+              article.novel_id = novel_id
+              article.link = url + a_node[:href]
+              article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+              novel = Novel.select("id,num,name").find(novel_id)
+              article.subject = subject
+              /(\d*)\.html/ =~ a_node[:href]
+              next unless $1
+              article.num = $1.to_i
+              novel.num = novel.num + 1
+              novel.save
+              # puts node.text
+              article.save
+            end
+            ArticleWorker.perform_async(article.id)
+          end  
         end
       end
     elsif(@page_url.index('xianjie'))
@@ -2821,6 +2902,22 @@ class NovelCrawler
       node = @page_html.css("#mmpage")
       text = node.text.strip
       article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('book.sto.cc'))
+      node = @page_html.css("#BookContent")
+      node.css("span,script").remove
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('daomuxsw'))
+      node = @page_html.css("#content")
+      text = node.text.strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('ck101.com'))
+      node = @page_html.css(".t_f")
+      text = node.text.strip
+      article.text = text
       article.save
     end
   end
