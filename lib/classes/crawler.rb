@@ -205,7 +205,7 @@ module Crawler
       end
       @page_html = Nokogiri::HTML(body)             
     else
-      if (body.index("charset=gbk"))
+      if (body.index("charset=gbk") || body.index("charset=gb2312"))
         body.force_encoding("gbk")
         body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
         @page_html = Nokogiri::HTML.parse body
