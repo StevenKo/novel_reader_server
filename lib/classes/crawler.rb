@@ -81,13 +81,6 @@ module Crawler
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
       @page_html = Nokogiri::HTML(content,nil,"GB18030")
-    elsif (url.index('ranwen.net'))
-      /ww.ranwen.net(.*)/ =~ url
-      url = $1
-      http = Net::HTTP.new('www.ranwen.net', 80)
-      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
-      content = res.body
-      @page_html = Nokogiri::HTML(content,nil,"GB18030")
     elsif (url.index('ww.qtxny.com'))
       /ww.qtxny.com(.*)/ =~ url
       url = $1
@@ -212,8 +205,7 @@ module Crawler
       end
       @page_html = Nokogiri::HTML(body)             
     else
-      charset = Nokogiri::HTML(body).meta_encoding
-      if (charset=="gbk")
+      if (body.index("charset=gbk"))
         body.force_encoding("gbk")
         body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
         @page_html = Nokogiri::HTML.parse body

@@ -1185,7 +1185,7 @@ class NovelCrawler
       nodes = @page_html.css("div.uclist dd a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if (article != nil && article.text != nil && article.text.size > 100)
 
         unless article 
           article = Article.new
@@ -1207,7 +1207,7 @@ class NovelCrawler
       nodes = @page_html.css("div#defaulthtml4 a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if (article != nil && article.text != nil && article.text.size > 100)
 
         unless article 
           article = Article.new
@@ -2481,7 +2481,7 @@ class NovelCrawler
     elsif (@page_url.index('ranwen.net'))
       text = @page_html.css("div#content").text.strip
       if text.length < 50
-        imgs = @page_html.css("#content .divimage img")
+        imgs = @page_html.css(".divimage img")
         text_img = ""
         imgs.each do |img|
             text_img = text_img + img[:src] + "*&&$$*"
