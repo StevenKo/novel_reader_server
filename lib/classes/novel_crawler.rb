@@ -195,8 +195,10 @@ class NovelCrawler
       novel = Novel.select("id,num,name").find(novel_id)
       last_node_url = @page_html.css(".pg a").last.previous[:href]
       /thread-(\d*)-(\d*)-\d*/ =~ last_node_url
-      (1..$2.to_i).each do |page|
-        if (page == 1)
+      (0..$2.to_i).each do |page|
+        if (page == 0)
+          url = @page_url
+        elsif (page == 1)
           url = "http://ck101.com/forum.php?mod=threadlazydata&tid=" + $1
         else
           url = "http://ck101.com/" + "thread-#{$1}-#{page}-2.html"
@@ -858,7 +860,7 @@ class NovelCrawler
               article.subject = subject_titles[index]
               article.save
             end
-            next if (article != nil && article.text != nil && articicle.text.size > 100)
+            next if (article != nil && article.text != nil && article.text.size > 100)
 
             unless article 
               article = Article.new
@@ -1006,6 +1008,34 @@ class NovelCrawler
         if node.name == "dt"
           subject = ZhConv.convert("zh-tw",node.text.strip)
         elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
+          article = Article.find_by_link(url + node.children[0][:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node.children[0][:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = subject
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+          end
+          ArticleWorker.perform_async(article.id)          
+        end
+      end
+    elsif(@page_url.index('siluke'))
+      url = @page_url
+
+      subject = ""
+      nodes = @page_html.css("#list dl").children
+      nodes.each do |node|
+        if node.name == "dt"
+          subject = ZhConv.convert("zh-tw",node.text.strip)
+        elsif (node.name == "dd" && node.css("a").present?)
           article = Article.find_by_link(url + node.children[0][:href])
           next if (article != nil && article.text != nil)
 
@@ -3059,6 +3089,12 @@ class NovelCrawler
         text_img = text_img + "如果看不到圖片, 請更新至新版APP"
         article.text = text_img
       end
+      article.save
+    elsif(@page_url.index('siluke'))
+      node = @page_html.css("#content")
+      node.css("script").remove
+      text = change_node_br_to_newline(node).strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
     end
   end
