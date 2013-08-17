@@ -1788,7 +1788,7 @@ class NovelCrawler
           ArticleWorker.perform_async(article.id)
       end  
     elsif(@page_url.index('d5wx'))
-      url = ""
+      url = @page_url
       nodes = @page_html.css("tr.ccss a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
@@ -1802,7 +1802,8 @@ class NovelCrawler
             novel = Novel.select("id,num,name").find(novel_id)
             article.subject = novel.name
             s = node[:href]
-            article.num = s[(s.index("cid=")+4)..s.length]
+            /(\d*)\.shtml/ =~ s
+            article.num = $1.to_i
             # puts node.text
             article.save
           end
@@ -3043,6 +3044,21 @@ class NovelCrawler
       node.css("span").remove
       text = change_node_br_to_newline(node).strip
       article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('www.yunshuge'))
+      node = @page_html.css("#content")
+      text = change_node_br_to_newline(node).strip
+      text = text.gsub("www.biquge.com ","")
+
+      if text.length < 100
+        imgs = @page_html.css("#imgview")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
       article.save
     end
   end
