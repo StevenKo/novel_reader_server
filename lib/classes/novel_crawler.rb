@@ -1837,6 +1837,7 @@ class NovelCrawler
             article.subject = novel.name
             s = node[:href]
             /(\d*)\.shtml/ =~ s
+            /cid=(\d*)/ =~ s if($1.nil?)
             article.num = $1.to_i
             # puts node.text
             article.save
@@ -1931,7 +1932,30 @@ class NovelCrawler
             article.save
           end
           ArticleWorker.perform_async(article.id)
-      end                                                             
+      end
+    elsif(@page_url.index('jjwxc.net'))    
+      nodes = @page_html.css("#oneboolt a")
+      nodes.each do |node|
+        next unless node[:href] && node[:href].index('chapterid')
+        article = Article.find_by_link(node[:href])
+        next if (article != nil && article.text != nil)
+        
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end                                                           
     elsif (@page_url.index('zizaidu'))
       url = @page_url.sub("index.html","")
       nodes = @page_html.css("div.uclist a")
