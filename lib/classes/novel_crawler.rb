@@ -3209,6 +3209,12 @@ class NovelCrawler
       text = text.gsub("\r\n","")
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
+    elsif ('txtbbs.com')
+      node = @page_html.css("#content")
+      node.css("img").remove
+      text = change_node_br_to_newline(node).strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
     end
   end
 
