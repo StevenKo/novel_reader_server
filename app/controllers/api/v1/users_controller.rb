@@ -1,13 +1,14 @@
 class Api::V1::UsersController < ApplicationController
   def create
-    regid = params[:regid]
-    user = User.find_by_registration_id(regid)
+    render :status=>404, :json => {"message" => "fail"} and return unless params[:device_id]
+    user = find_user
     if user
-      user.registration_id = regid;
+      user.registration_id = params[:regid]
       user.save
     else
       user = User.new
-      user.registration_id = regid
+      user.device_id = params[:device_id]
+      user.registration_id = params[:regid]
       user.read_novels = []
       user.save
     end
@@ -16,15 +17,44 @@ class Api::V1::UsersController < ApplicationController
 
   def update_novel
     novel = params[:novel]
-    regid = params[:regid]
-    user = User.find_by_registration_id(regid)
+    user = find_user
     if user
       user.read_novels << novel unless user.read_novels.include? novel
       user.save
       render :status=>200, :json => {"message" => "success"}
     else
       render :status=>404, :json => {"message" => "fail"}
-    end
-    
+    end 
   end
+
+  def update_collected_novels
+    novels = params[:novels]
+    user = find_user
+    if user
+      user.collected_novels = novels
+      user.save
+      render :status=>200, :json => {"message" => "success"}
+    else
+      render :status=>404, :json => {"message" => "fail"}
+    end
+  end
+
+  def update_downloaded_novels
+    novels = params[:novels]
+    user = find_user
+    if user
+      user.downloaded_novels = novels
+      user.save
+      render :status=>200, :json => {"message" => "success"}
+    else
+      render :status=>404, :json => {"message" => "fail"}
+    end
+  end
+
+  private
+    def find_user
+      device_id = params[:device_id]
+      return nil unless device_id
+      user = User.find_by_device_id(device_id)
+    end
 end
