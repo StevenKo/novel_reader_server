@@ -961,6 +961,34 @@ class NovelCrawler
           ArticleWorker.perform_async(article.id)    
         end
       end
+    elsif(@page_url.index('paradise.ezla'))
+      subject = ""
+      nodes = @page_html.css(".acss tr td")
+      url = @page_url.gsub("index.html","")
+      nodes.each do |node|
+        if node[:class] == "vcss"
+          subject = ZhConv.convert("zh-tw",node.text.strip)
+        else
+          a_node = node.css("a")[0]
+          next if a_node.nil?
+          article = Article.find_by_link(url + a_node[:href])
+          next if (article != nil && article.text != nil && article.text.length > 100)
+          unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + a_node[:href]
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = subject
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+          end
+          ArticleWorker.perform_async(article.id)    
+        end
+      end
     elsif(@page_url.index('daomuxsw'))
       subject = ""
       nodes = @page_html.css(".mainbody td")
@@ -2810,7 +2838,7 @@ class NovelCrawler
       article.text = ZhConv.convert("zh-tw", text)
       article.save  
     elsif (@page_url.index('23hh'))
-      text = @page_html.css("#contents").text.strip
+      text = change_node_br_to_newline(@page_html.css("#contents"))
       if text.length < 100
         imgs = @page_html.css("#contents .divimage img")
         text_img = ""
@@ -3268,6 +3296,11 @@ class NovelCrawler
       node.css("p[style='border:5px solid #fed2fe; color:#FF00FF; background-color:#fed2fe;']").remove
       text = change_node_br_to_newline(node).strip
       article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('paradise.ezla'))
+      node = @page_html.css("#content")
+      node.css("img").remove
+      article.text = node.text
       article.save
     end
   end

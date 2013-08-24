@@ -209,6 +209,10 @@ module Crawler
         body.force_encoding("gbk")
         body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
         @page_html = Nokogiri::HTML.parse body
+      elsif(body.index("charset=big5"))
+        body.force_encoding("big5")
+        body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+        @page_html = Nokogiri::HTML(body,nil)
       else
         @page_html = Nokogiri::HTML(body)
       end
