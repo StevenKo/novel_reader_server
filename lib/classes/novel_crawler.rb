@@ -1663,6 +1663,31 @@ class NovelCrawler
           ArticleWorker.perform_async(article.id)          
         end
       end
+    elsif(@page_url.index('lightnovel.cn'))
+      nodes = @page_html.css("dd.mg-15")
+      nodes.each do |node|
+        subject = ZhConv.convert("zh-tw",node.css(".ft-24").text.gsub("\n","").gsub("\r","").gsub("\t",""))
+        a_nodes = node.css(".inline a")
+        a_nodes.each do |a_node|
+          article = Article.find_by_link(a_node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = a_node[:href]
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = subject
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+          end
+          ArticleWorker.perform_async(article.id)    
+        end
+      end
     elsif(@page_url.index('23hh'))
       url = @page_url
       nodes = @page_html.css("td a")
@@ -2143,6 +2168,26 @@ class NovelCrawler
           article = Article.new
           article.novel_id = novel_id
           article.link = "http://shushu.com.cn" + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif (@page_url.index('guanhuaju.com'))
+      nodes = @page_html.css("#db_4_3_1 a")
+      nodes.each do |node|
+        article = Article.find_by_link("http://www.guanhuaju.com" + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://www.guanhuaju.com" + node[:href]
           article.title = ZhConv.convert("zh-tw",node.text.strip)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = novel.name
@@ -2901,6 +2946,15 @@ class NovelCrawler
     elsif (@page_url.index('guanhuaju'))
       text = @page_html.css("div#content_text").text.strip
       article.text = ZhConv.convert("zh-tw", text)
+      if text.length < 100
+        imgs = @page_html.css(".divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
       article.save 
     elsif (@page_url.index('d5wx'))
       text = @page_html.css("td#contenthtzw").text.strip
@@ -3300,7 +3354,19 @@ class NovelCrawler
     elsif(@page_url.index('paradise.ezla'))
       node = @page_html.css("#content")
       node.css("img").remove
-      article.text = node.text
+      text = node.text
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('dwxs.net'))
+      node = @page_html.css("#content")
+      node.css("font,script").remove
+      text = change_node_br_to_newline(node).strip
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('lightnovel.cn'))
+      node = @page_html.css("#J_view")
+      text = change_node_br_to_newline(node)
+      article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
     end
   end

@@ -22,7 +22,7 @@ module Crawler
     rescue
     end
 
-    if url.index('shushu5')||url.index('kushuku')||url.index('feiku.com')|| url.index('daomubiji') || url.index('luoqiu.com') || url.index('kxwxw') || url.index('txtbbs.com')
+    if url.index('shushu5')||url.index('kushuku')||url.index('feiku.com')|| url.index('daomubiji') || url.index('luoqiu.com') || url.index('kxwxw') || url.index('txtbbs.com') || url.index('lightnovel.cn')
       @page_html = Nokogiri::HTML(body)
     elsif url.index('xybook.net') || url.index('uuxs.com')
       html = open(url).read
