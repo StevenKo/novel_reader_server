@@ -22,8 +22,8 @@ class ArticlesController < ApplicationController
     if article[0]
       articles = Article.select("id,num").where("novel_id = #{novel_id} and num >= #{num}")
       Article.transaction do
-        articles.each do |article|
-          article.update_column(:num,article.num + 1)
+        articles.each do |a|
+          a.update_column(:num,a.num + 1)
         end
       end
       novel = Novel.select("id,num").find(novel_id)
