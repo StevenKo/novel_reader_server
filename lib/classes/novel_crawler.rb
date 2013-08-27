@@ -2008,6 +2008,51 @@ class NovelCrawler
           end
           ArticleWorker.perform_async(article.id)
       end
+    elsif(@page_url.index('9pwx.com'))    
+      url = @page_url.sub("index.html","")
+      nodes = @page_html.css(".booklist a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end
+    elsif(@page_url.index('ranwenba'))
+      url = @page_url
+      nodes = @page_html.css(".book_booklist .contentandborder")
+      nodes = nodes[0].css("a")
+      nodes.each do |node|
+          article = Article.find_by_link(url + node[:href])
+          next if (article != nil && article.text != nil)
+
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url + node[:href]
+            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            novel = Novel.select("id,num,name").find(novel_id)
+            article.subject = novel.name
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+      end
     elsif(@page_url.index('jjwxc.net'))    
       nodes = @page_html.css("#oneboolt a")
       nodes.each do |node|
@@ -2117,6 +2162,27 @@ class NovelCrawler
         ArticleWorker.perform_async(article.id)
       end
     elsif (@page_url.index('6yzw'))
+      url = @page_url.sub("index.html","")
+      nodes = @page_html.css(".ccss a")
+      nodes.each do |node|
+        article = Article.find_by_link(url + node[:href])
+        next if (article != nil && article.text != nil)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          /(\d*)/ =~ node[:href]
+          article.num = $1.to_i
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
+      end
+    elsif (@page_url.index('dushiwenxue'))
       url = @page_url.sub("index.html","")
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
@@ -2565,6 +2631,15 @@ class NovelCrawler
       article_text = text.gsub("*** 现在加入59文学，和万千书友交流阅读乐趣！59文学永久地址：www.59to.com ***", "")
       final_text = ZhConv.convert("zh-tw",article_text.strip)
       article.text = final_text
+      if (article_text.length < 250)
+        imgs = @page_html.css(".divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article_text = text_img
+      end
       article.save
     elsif (@page_url.index('59to.org'))
       @page_html.css(".bookcontent div").remove
@@ -2735,7 +2810,7 @@ class NovelCrawler
       @page_html.css("#content a").remove
       @page_html.css("#content script").remove
       node = @page_html.css("#content")
-      text = node.text.strip
+      text = change_node_br_to_newline(node).strip
       article.text = ZhConv.convert("zh-tw", text)
       article.save
     elsif (@page_url.index('tw.mingzw'))
@@ -3365,6 +3440,28 @@ class NovelCrawler
       article.save
     elsif(@page_url.index('lightnovel.cn'))
       node = @page_html.css("#J_view")
+      text = change_node_br_to_newline(node)
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif(@page_url.index('dushiwenxue'))
+      node = @page_html.css("#content")
+      node.css("div[style='float:right;']").remove
+      node.css("center").remove
+      text = change_node_br_to_newline(node)
+      article.text = ZhConv.convert("zh-tw", text.strip)
+      if text.length < 100
+        imgs = @page_html.css("#content .divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      end
+      article.save
+    elsif(@page_url.index('ranwenba'))
+      node = @page_html.css("#booktext")
+      node.css("script").remove
       text = change_node_br_to_newline(node)
       article.text = ZhConv.convert("zh-tw", text.strip)
       article.save
