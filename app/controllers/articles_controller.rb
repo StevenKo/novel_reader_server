@@ -86,4 +86,9 @@ class ArticlesController < ApplicationController
     @article.destroy
     redirect_to :controller => 'novels', :action => 'show', :id => @article.novel_id
   end
+
+  def search_by_num
+    @article = Article.where("novel_id = #{params[:novel_id]} and num = #{params[:num]}")[0]
+    render :show
+  end
 end

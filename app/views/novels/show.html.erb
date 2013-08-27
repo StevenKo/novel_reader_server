@@ -4,6 +4,15 @@
 show:   <%= @novel.is_show %> </br>
 <%= link_to 'Edit', edit_novel_path(@novel) %> |
 <%= link_to 'Back', novels_path %>
+</br>
+</br>
+找特定篇數文章：
+請輸入篇數
+<%= form_for "", :url => search_by_num_articles_path(:novel_id => @novel.id), :method => :put do |f|%>
+
+<%= f.text_field "num" %><br />
+
+<% end %>
 
 <br>#########################################################################<br>
 

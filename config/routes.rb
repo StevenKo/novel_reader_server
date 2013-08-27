@@ -15,6 +15,7 @@ NovelServer::Application.routes.draw do
       get 're_crawl'
       put 'crawl_text_onther_site'
       put 'reset_num'
+      put 'search_by_num'
     end
   end
 
