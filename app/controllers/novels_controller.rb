@@ -51,4 +51,14 @@ class NovelsController < ApplicationController
     end
   end
 
+  def set_all_articles_to_invisiable
+    Article.update_all("is_show = false", "novel_id = #{params[:id]}")
+    redirect_to novel_path(params[:id])
+  end
+
+  def recrawl_all_articles
+    CrawlWorker.perform_async(params[:id])
+    redirect_to novel_path(params[:id])
+  end
+
 end

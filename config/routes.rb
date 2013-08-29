@@ -8,6 +8,10 @@ NovelServer::Application.routes.draw do
       put 'search'
       put 'update_novel'
     end
+    member do
+      get 'set_all_articles_to_invisiable'
+      get 'recrawl_all_articles'
+    end
   end
 
   resources :articles do
