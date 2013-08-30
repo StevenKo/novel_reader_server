@@ -56,6 +56,7 @@ class Api::V1::NovelsController < Api::ApiController
 
   def search
     keyword = params[:search].strip
+    keyword = ZhConv.convert("zh-tw",keyword)
     novels = Novel.where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").show.select("id,name,author,pic,article_num,last_update,is_serializing")
     render :json => novels
   end
