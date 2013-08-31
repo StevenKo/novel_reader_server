@@ -877,6 +877,7 @@ class NovelCrawler
       while index < num do
         nodes = @page_html.css(".list_Content")[index].css("a")
         nodes.each do |node|
+            next unless node[:href]
             article = Article.find_by_link("http://book.sfacg.com" + node[:href])
             if (article != nil)
               article.subject = subject_titles[index]
@@ -1201,25 +1202,32 @@ class NovelCrawler
         end
       end
     elsif(@page_url.index('tw.xiaoshuokan'))
-      nodes = @page_html.css(".booklist a")
+      
+      novel = Novel.select("id,num,name").find(novel_id)
+      subject = novel.name
+      nodes = @page_html.css(".booklist span")
       nodes.each do |node|
-        article = Article.find_by_link("http://tw.xiaoshuokan.com" + node[:href])
-        next if (article != nil && article.text != nil)
-
-        unless article 
-          article = Article.new
-          article.novel_id = novel_id
-          article.link = "http://tw.xiaoshuokan.com" + node[:href]
-          article.title = node.text.strip
-          novel = Novel.select("id,num,name").find(novel_id)
-          article.subject = novel.name
-          article.num = novel.num + 1
-          novel.num = novel.num + 1
-          novel.save
-          # puts node.text
-          article.save
+        if(node[:class]=="v")
+          subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
+        else
+          a_node = node.css("a")[0]
+          url = "http://tw.xiaoshuokan.com" + a_node[:href]
+          article = Article.find_by_link(url)
+          next if (article != nil && article.text != nil && article.text.length > 100)
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+            article.subject = subject
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
         end
-        ArticleWorker.perform_async(article.id)
       end
     elsif(@page_url.index('uuxs.com'))
       #this load pic by ajax, so cannot crawl pic
@@ -1806,7 +1814,7 @@ class NovelCrawler
           end
           ArticleWorker.perform_async(article.id)
       end  
-    elsif(@page_url.index('57book'))
+    elsif(@page_url.index('tw.57book'))
       url = "http://tw.57book.net/"
       @page_html.css(".footer").remove
       nodes = @page_html.css(".booklist span a")
@@ -3084,8 +3092,8 @@ class NovelCrawler
       article.text = ZhConv.convert("zh-tw", text)
       article.save                                   
     elsif (@page_url.index('57book'))
-      @page_html.css("div#msg-bottom").remove
-      text = @page_html.css("div.bookcontent").text.strip
+      @page_html.css("div#msg-bottom,script").remove
+      text = change_node_br_to_newline(@page_html.css("div.bookcontent")).strip
       text = text.gsub("www.57book.net","")
       text = text.gsub("無極小說~~","")
       text = text.gsub("三藏小說免費小說手打網","")
