@@ -13,8 +13,11 @@ class Api::V1::UsersController < ApplicationController
     user.country = params[:country] if params[:country]
     user.platform = params[:platform] if params[:platform]
     user.version = params[:version] if params[:version]
-    user.save
-    render :status=>200, :json => {"message" => "success"}
+    if user.save
+      render :status=>200, :json => {"message" => "success"}
+    else
+      render :status=>404, :json => {"message" => "fail"}
+    end
   end
 
   def update_novel
