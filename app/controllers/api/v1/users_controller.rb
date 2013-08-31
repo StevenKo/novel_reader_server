@@ -4,14 +4,15 @@ class Api::V1::UsersController < ApplicationController
     user = find_user
     if user
       user.registration_id = params[:regid]
-      user.save
     else
       user = User.new
       user.device_id = params[:device_id]
       user.registration_id = params[:regid]
       user.read_novels = []
-      user.save
     end
+    user.country = params[:country] if params[:country]
+    user.platform = params[:platform] if params[:platform]
+    user.save
     render :status=>200, :json => {"message" => "success"}
   end
 
