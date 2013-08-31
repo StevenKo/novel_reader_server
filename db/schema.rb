@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130831021436) do
+ActiveRecord::Schema.define(:version => 20130831022826) do
 
   create_table "articles", :force => true do |t|
     t.integer  "novel_id"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(:version => 20130831021436) do
     t.text     "collected_novels"
     t.string   "country"
     t.string   "platform"
+    t.integer  "version"
   end
 
   add_index "users", ["device_id"], :name => "index_users_on_device_id"

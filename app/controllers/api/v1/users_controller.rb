@@ -12,6 +12,7 @@ class Api::V1::UsersController < ApplicationController
     end
     user.country = params[:country] if params[:country]
     user.platform = params[:platform] if params[:platform]
+    user.version = params[:version] if params[:version]
     user.save
     render :status=>200, :json => {"message" => "success"}
   end
