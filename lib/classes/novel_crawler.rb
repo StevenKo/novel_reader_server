@@ -3480,7 +3480,7 @@ class NovelCrawler
       text = change_node_br_to_newline(node)
       article.text = ZhConv.convert("zh-tw", text.strip)
       if text.length < 100
-        imgs = @page_html.css("#content .divimage img")
+        imgs = @page_html.css(".divimage img")
         text_img = ""
         imgs.each do |img|
             text_img = text_img + img[:src] + "*&&$$*"
