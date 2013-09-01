@@ -1932,7 +1932,7 @@ class NovelCrawler
       nodes = @page_html.css("div.mulu a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if (article != nil && article.text != nil && article.text.size > 100)
 
           unless article 
             article = Article.new
