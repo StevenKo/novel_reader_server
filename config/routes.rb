@@ -1,6 +1,11 @@
 require 'sidekiq/web'
 NovelServer::Application.routes.draw do
   mount Sidekiq::Web, at: '/sidekiq'
+
+  root to: 'novels#index'
+  post '/login', to: 'sessions#create'
+  get '/login', to: 'sessions#new'
+  get '/logout', to: 'sessions#destroy'
   
 
   resources :novels do 

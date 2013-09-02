@@ -1,4 +1,7 @@
 class NovelsController < ApplicationController
+
+  before_filter :require_admin, only: [:new, :create, :edit, :update, :index, :show, :destroy]
+
   def index
     @novels = Novel.select("id,name,author,is_show").paginate(:page => params[:page], :per_page => 20)
   end

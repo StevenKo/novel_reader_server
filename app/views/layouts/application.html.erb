@@ -8,6 +8,11 @@
 </head>
 <body>
 
+<% if logged_in? %>
+    <%= link_to 'Logout', logout_path %>
+    <%= link_to 'Novels', novels_path %>
+<% end %>
+
 <%= yield %>
 
 </body>
