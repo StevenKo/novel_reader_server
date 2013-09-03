@@ -8,7 +8,7 @@ module Crawler
   attr_accessor :page_url, :page_html, :fake_browser_urls, :do_not_encode_urls, :match_url_pattern
   
   def fetch url
-    @fake_browser_urls = ["www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com"]
+    @fake_browser_urls = ["www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com"]
     @do_not_encode_urls = ['ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','lightnovel.cn','tw.xiaoshuokan','tw.57book','b.faloo.com/p/','9pwx.com','wcxiaoshuo']
     @page_url = url
     get_page(@page_url)   
@@ -52,23 +52,27 @@ module Crawler
       http = Net::HTTP.new(@match_url_pattern, 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
-      @page_html = Nokogiri::HTML(content,nil,"GB18030")
+      get_nokogiri_html(content)
     else
-      tmp = body.encode("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
-      @page_html = Nokogiri::HTML(tmp)
-      encoding = @page_html.meta_encoding
+      get_nokogiri_html(body)
+    end
+  end
 
-      if (encoding == "gbk" || encoding == "gb2312")
-        body.force_encoding("gbk")
-        body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
-        @page_html = Nokogiri::HTML.parse body
-      elsif(encoding == "big5")
-        body.force_encoding("big5")
-        body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
-        @page_html = Nokogiri::HTML(body,nil)
-      else
-        @page_html = Nokogiri::HTML(body)
-      end
+  def get_nokogiri_html body
+    tmp = body.encode("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+    @page_html = Nokogiri::HTML(tmp)
+    encoding = @page_html.meta_encoding
+
+    if (encoding == "gbk" || encoding == "gb2312")
+      body.force_encoding("gbk")
+      body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+      @page_html = Nokogiri::HTML.parse body
+    elsif(encoding == "big5")
+      body.force_encoding("big5")
+      body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+      @page_html = Nokogiri::HTML(body,nil)
+    else
+      @page_html = Nokogiri::HTML(body)
     end
   end
 

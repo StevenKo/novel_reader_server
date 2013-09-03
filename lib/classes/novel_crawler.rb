@@ -1509,7 +1509,7 @@ class NovelCrawler
     elsif(@page_url.index('sj131'))
       url = @page_url
       subject = ""
-      nodes = @page_html.css(".dirbox dl").children
+      nodes = @page_html.css(".booklist dl").children
       nodes.each do |node|
         if node.name == "dt"
           subject = ZhConv.convert("zh-tw",node.text.strip)
@@ -1965,6 +1965,33 @@ class NovelCrawler
           article.save
         end
         ArticleWorker.perform_async(article.id)
+      end
+    elsif (@page_url.index('ttzw.com'))
+      url = @page_url
+      nodes = @page_html.css("#chapter_list").children
+      novel = Novel.find(novel_id)
+      nodes.each do |node|
+        if(node[:class]=="chapter_list_chapter_title")
+          subject = ZhConv.convert("zh-tw",node.text.strip)
+        elsif(node[:class]=="chapter_list_chapter")
+          a_node = node.css("a")[0]
+          url = @page_url.gsub("index.html","") + a_node[:href]
+          article = Article.find_by_link(url)
+          next if (article != nil && article.text != nil && article.text.length > 100)
+          unless article 
+            article = Article.new
+            article.novel_id = novel_id
+            article.link = url
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+            article.subject = subject
+            article.num = novel.num + 1
+            novel.num = novel.num + 1
+            novel.save
+            # puts node.text
+            article.save
+          end
+          ArticleWorker.perform_async(article.id)
+        end
       end
     elsif (@page_url.index('zuiyq'))
       url = @page_url.sub("index.html","")
@@ -3369,6 +3396,23 @@ class NovelCrawler
       node.css("font,a").remove
       text = change_node_br_to_newline(node).strip
       article.text = ZhConv.convert("zh-tw", text.strip)
+      article.save
+    elsif (@page_url.index('ttzw.com'))
+      text = @page_html.css("#chapter_content script").text
+      if text.index('outputImg')
+        /\"(.*)\"/ =~ text
+        text_img = "http://r.xsjob.net:88/novel" + $1 + "*&&$$*"
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        article.text = text_img
+      else
+        /\"(.*)\"/ =~ text
+        url = "http://r.xsjob.net:88/novel" + $1
+        c = CrawlerAdapter.get_instance url
+        c.fetch url
+        text = c.change_node_br_to_newline(c.page_html).strip
+        text = text.gsub("document.write(","")
+        article.text = ZhConv.convert("zh-tw", text.strip)
+      end
       article.save
     end
   end

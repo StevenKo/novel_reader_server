@@ -121,7 +121,7 @@ class BestoryNovelCrawler
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
         article = Article.find_by_link("http://www.bestory.com" + node[:href])
         # article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
-        next if (article != nil && article.text != nil)
+        # next if (article != nil && article.text != nil)
 
         unless article 
           article = Article.new
@@ -144,14 +144,8 @@ class BestoryNovelCrawler
   def crawl_article article
     nodes = @page_html.css(".content")
     nodes = nodes[0].children
-    text = ""
-    nodes.each do |node|
-      next if node.text.nil?
-      if node.text.index("bookview")
-        node.css("script").remove
-      end
-      text = text + change_node_br_to_newline(node)
-    end
+    nodes.css("a,script,table").remove
+    text = change_node_br_to_newline(nodes)
     text = text.gsub("◎ 精品文學網 Bestory.com  ◎", "")
     text = text.gsub("※ 精 品 文 學 網 B e s t o r y  .c o m  ※", "")
     text = text.gsub("精品文學網  歡迎廣大書友光臨閱讀", "")
