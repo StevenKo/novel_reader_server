@@ -7,7 +7,7 @@ class CrawlWorker
     novel = Novel.select("id, link, is_show").find(novel_id)
     # return if novel.is_show == false
 
-    crawler = NovelCrawler.new
+    crawler = CrawlerAdapter.get_instance novel.link
     if(novel.link.index('bestory'))
       crawler.fetch novel.link
       crawler.crawl_novel_detail novel.id
