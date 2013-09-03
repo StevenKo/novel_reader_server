@@ -55,7 +55,7 @@ class KanunuNovelCrawler
 
   def crawl_novel_description link, novel
     c = KanunuNovelCrawler.new
-    c.fetch_other_site link
+    c.fetch link
     novel.description = ZhConv.convert("zh-tw",c.page_html.css(".p10-24").text.strip)
   end
 

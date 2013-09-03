@@ -8,12 +8,8 @@ class CrawlWorker
     # return if novel.is_show == false
 
     crawler = CrawlerAdapter.get_instance novel.link
-    if(novel.link.index('bestory'))
-      crawler.fetch novel.link
-      crawler.crawl_novel_detail novel.id
-    else
-      crawler.fetch_other_site novel.link
-    end
+    crawler.fetch novel.link
+    crawler.crawl_novel_detail novel.id if(novel.link.index('bestory'))
     crawler.crawl_articles novel.id
     puts novel.id
   end
