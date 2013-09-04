@@ -17,7 +17,7 @@ class NovelCrawler
           url = "http://ck101.com/" + "thread-#{$1}-#{page}-2.html"
         end
         article = Article.find_by_link(url)
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -38,7 +38,7 @@ class NovelCrawler
       nodes = @page_html.css("table")[3].css("a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -60,7 +60,7 @@ class NovelCrawler
       nodes = @page_html.css(".chapterNum a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -82,7 +82,7 @@ class NovelCrawler
       nodes = @page_html.css("#chapterlist a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -104,7 +104,7 @@ class NovelCrawler
       nodes.each do |node|
           next unless node[:href].index("page")
           article = Article.find_by_link(node[:href])
-          next if (article != nil && article.text != nil && article.text.size > 100)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -135,7 +135,7 @@ class NovelCrawler
           end
           article = Article.find_by_link(url)
 
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
           next if (node.text == "上一页")
           unless article 
             article = Article.new
@@ -158,7 +158,7 @@ class NovelCrawler
       /(\d*)-(\d*)/ =~ last_node[:href]
       (1..$2.to_i).each do |i|
         article = Article.find_by_link("http://book.sto.cc/" + $1 + "-" + i.to_s)
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
         unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -180,7 +180,7 @@ class NovelCrawler
       (1..$1.to_i).each do |i|
         url = @page_url.sub(/page=\d*/,"page=#{i}")
         article = Article.find_by_link(url)
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
         unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -201,7 +201,7 @@ class NovelCrawler
       nodes = @page_html.css("#readtext a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -225,7 +225,7 @@ class NovelCrawler
       nodes = @page_html.css(".ListRow a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -246,7 +246,7 @@ class NovelCrawler
       nodes = @page_html.css("#catalog_list a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -270,7 +270,7 @@ class NovelCrawler
       nodes = @page_html.css("ul a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -291,7 +291,7 @@ class NovelCrawler
       nodes = @page_html.css(".acss tr a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil && article.text.length > 100)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -312,7 +312,7 @@ class NovelCrawler
       nodes = @page_html.css(".ChapterList_Item a")
       nodes.each do |node|
         article = Article.find_by_link("http://www.ttshuo.com" + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -333,7 +333,7 @@ class NovelCrawler
       nodes = @page_html.css(".clearfix ul li[itemprop='itemListElement'] a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -362,7 +362,7 @@ class NovelCrawler
           node = node.css("a")[0]
           url = @page_url + node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 150)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -383,7 +383,7 @@ class NovelCrawler
       nodes = @page_html.css(".TabCss a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url+ node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -404,7 +404,7 @@ class NovelCrawler
       nodes = @page_html.css("#tbchapterlist tr a")
       nodes.each do |node|
         article = Article.find_by_link("http://tw.hjwzw.com" + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -426,7 +426,7 @@ class NovelCrawler
       nodes.each do |node|
         url = @page_url + node[:href]
         article = Article.find_by_link(url)
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -447,7 +447,7 @@ class NovelCrawler
       nodes = @page_html.css(".zl a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -468,7 +468,7 @@ class NovelCrawler
       nodes = @page_html.css(".acss tr a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil && article.text.length > 250)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -489,7 +489,7 @@ class NovelCrawler
       nodes = @page_html.css(".xsyd_ml_2 a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -510,7 +510,7 @@ class NovelCrawler
       nodes = @page_html.css(".listPanel li a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -539,7 +539,7 @@ class NovelCrawler
           inside_nodes.each do |n|
             if n.name == "a"
               article = Article.find_by_link(@page_url + n[:href])
-              next if (article != nil && article.text != nil)
+              next if isSkipCrawlArticle(article)
 
               unless article 
               article = Article.new
@@ -565,7 +565,7 @@ class NovelCrawler
       subject = novel.name
       nodes.each do |node|
         article = Article.find_by_link("http://www.d586.com" + node[:href])
-        next if (article != nil && article.text != nil && article.text.length > 100)
+        next if isSkipCrawlArticle(article)
 
         unless article 
         article = Article.new
@@ -583,34 +583,12 @@ class NovelCrawler
         # novel.save
         ArticleWorker.perform_async(article.id)
       end
-
-      # nodes = @page_html.css(".acss tr .ccss a")
-      # novel = Novel.select("id,num,name").find(novel_id)
-      # nodes.each do |node|
-      #   article = Article.find_by_link(@page_url + node[:href])
-      #   next if (article != nil && article.text != nil)
-
-      #   unless article 
-      #     article = Article.new
-      #     article.novel_id = novel_id
-      #     article.link = @page_url + node[:href]
-      #     article.title = ZhConv.convert("zh-tw",node.text.strip)
-      #     article.subject = novel.name
-      #     /(\d*)/ =~ node[:href]
-      #     article.num = $1.to_i
-      #     # puts node.text
-      #     article.save
-      #   end
-      #   novel.num = article.num + 1
-      #   novel.save
-      #   ArticleWorker.perform_async(article.id)
-      # end
     elsif(@page_url.index('shu88.net'))
       url = @page_url.gsub("index.html","")
       nodes = @page_html.css('ol li')
       nodes.each do |node|
         article = Article.find_by_link(url+node.child[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -632,7 +610,7 @@ class NovelCrawler
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -653,7 +631,7 @@ class NovelCrawler
       nodes = @page_html.css("dd a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -694,7 +672,7 @@ class NovelCrawler
               article.subject = subject_titles[index]
               article.save
             end
-            next if (article != nil && article.text != nil && article.text.size > 100)
+            next if isSkipCrawlArticle(article)
 
             unless article 
               article = Article.new
@@ -727,7 +705,7 @@ class NovelCrawler
             a_node = c_node.css("a")[0]
             next if a_node.nil?
             article = Article.find_by_link(a_node[:href])
-            next if (article != nil && article.text != nil)
+            next if isSkipCrawlArticle(article)
             unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -756,7 +734,7 @@ class NovelCrawler
           a_node = node.css("a")[0]
           next if a_node.nil?
           article = Article.find_by_link(url + a_node[:href])
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -784,7 +762,7 @@ class NovelCrawler
           a_node = node.css("a")[0]
           next if a_node.nil?
           article = Article.find_by_link(url + a_node[:href])
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -813,7 +791,7 @@ class NovelCrawler
           a_nodes.each do |a_node|
             next if a_node.nil?
             article = Article.find_by_link(url + a_node[:href])
-            next if (article != nil && article.text != nil && article.text.length > 100)
+            next if isSkipCrawlArticle(article)
             unless article 
               article = Article.new
               article.novel_id = novel_id
@@ -843,7 +821,7 @@ class NovelCrawler
           subject = ZhConv.convert("zh-tw",node.text.strip)
         elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
           article = Article.find_by_link(url + node.children[0][:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
           article = Article.new
@@ -871,7 +849,7 @@ class NovelCrawler
           subject = ZhConv.convert("zh-tw",node.text.strip)
         elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
           article = Article.find_by_link(url + node.children[0][:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
           article = Article.new
@@ -899,7 +877,7 @@ class NovelCrawler
           subject = ZhConv.convert("zh-tw",node.text.strip)
         elsif (node.name == "dd" && node.css("a").present?)
           article = Article.find_by_link(url + node.children[0][:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
           article = Article.new
@@ -922,7 +900,7 @@ class NovelCrawler
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
         article = Article.find_by_link(url+node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -943,7 +921,7 @@ class NovelCrawler
       nodes = @page_html.css(".chapterlist a")
       nodes.each do |node|
         article = Article.find_by_link("http://tw.mingzw.com/" + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -964,7 +942,7 @@ class NovelCrawler
       nodes = @page_html.css(".bookdetail a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -992,7 +970,7 @@ class NovelCrawler
         elsif node.css("a")[0]
           node = node.css("a")[0]
           article = Article.find_by_link("http://www.520xs.com" + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article
             article = Article.new
@@ -1024,7 +1002,7 @@ class NovelCrawler
           a_node = node.css("a")[0]
           url = "http://tw.xiaoshuokan.com" + a_node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -1045,7 +1023,7 @@ class NovelCrawler
       nodes = @page_html.css(".booklist a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1066,7 +1044,7 @@ class NovelCrawler
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1088,7 +1066,7 @@ class NovelCrawler
       nodes = @page_html.css("div.uclist dd a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil && article.text.size > 100)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1110,7 +1088,7 @@ class NovelCrawler
       nodes = @page_html.css("div#defaulthtml4 a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        # next if (article != nil && article.text != nil && article.text.size > 100)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1132,7 +1110,7 @@ class NovelCrawler
       nodes = @page_html.css("div.bookdetail a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1154,7 +1132,7 @@ class NovelCrawler
       nodes = @page_html.css(".booklist a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1176,7 +1154,7 @@ class NovelCrawler
       nodes = @page_html.css("td.ccss a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1198,7 +1176,7 @@ class NovelCrawler
       nodes = @page_html.css(".chapterlist a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1219,7 +1197,7 @@ class NovelCrawler
       nodes = @page_html.css(".uclist a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1241,7 +1219,7 @@ class NovelCrawler
       nodes = @page_html.css("div#defaulthtml4 td a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1264,7 +1242,7 @@ class NovelCrawler
       nodes.each do |node|
         if (node.text.index("yawen8") ==nil)
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1291,7 +1269,7 @@ class NovelCrawler
       nodes.each do |node|
           url = @page_url.sub("index.html","") + node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.size > 100)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1314,7 +1292,7 @@ class NovelCrawler
       nodes = @page_html.css("a.J_chapter")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1340,7 +1318,7 @@ class NovelCrawler
             article.is_show = true
             article.save
           end
-          next if (article != nil && article.text != nil && article.text.size > 150)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1362,7 +1340,7 @@ class NovelCrawler
       nodes = @page_html.css("div.chdb li a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1390,7 +1368,7 @@ class NovelCrawler
           inside_nodes = node.css("a")
           inside_nodes.each do |in_node|
             article = Article.find_by_link(url + in_node[:href])
-            next if (article != nil && article.text != nil)
+            next if isSkipCrawlArticle(article)
 
             unless article 
               article = Article.new
@@ -1419,7 +1397,7 @@ class NovelCrawler
           inside_nodes = node.css("a")
           inside_nodes.each do |in_node|
             article = Article.find_by_link(in_node[:href])
-            next if (article != nil && article.text != nil && article.text.length > 100)
+            next if isSkipCrawlArticle(article)
 
             unless article 
               article = Article.new
@@ -1443,7 +1421,7 @@ class NovelCrawler
       nodes = @page_html.css("div.mod_container a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1465,7 +1443,7 @@ class NovelCrawler
       nodes = @page_html.css("div.chapter a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1491,7 +1469,7 @@ class NovelCrawler
           subject = ZhConv.convert("zh-tw",node.text.strip)
         elsif (node.name == "dd" && node.css("a").present?)
           article = Article.find_by_link(url + node.children[0][:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
           article = Article.new
@@ -1516,7 +1494,7 @@ class NovelCrawler
         a_nodes = node.css(".inline a")
         a_nodes.each do |a_node|
           article = Article.find_by_link(a_node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
           article = Article.new
@@ -1539,7 +1517,7 @@ class NovelCrawler
       nodes = @page_html.css("td a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1561,7 +1539,7 @@ class NovelCrawler
       nodes = @page_html.css("li a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1586,7 +1564,7 @@ class NovelCrawler
       nodes = @page_html.css("#BookText ul li a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1612,7 +1590,7 @@ class NovelCrawler
       nodes = @page_html.css("div tr td a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1635,7 +1613,7 @@ class NovelCrawler
       nodes = @page_html.css(".booklist span a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1657,7 +1635,7 @@ class NovelCrawler
       nodes = @page_html.css("td.chapterlist a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1680,7 +1658,7 @@ class NovelCrawler
       nodes = @page_html.css(".novel_list li a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1702,7 +1680,7 @@ class NovelCrawler
       nodes = @page_html.css(".novel_list a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1724,7 +1702,7 @@ class NovelCrawler
       nodes = @page_html.css("tr.ccss a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1747,7 +1725,7 @@ class NovelCrawler
       nodes = @page_html.css("div.mulu a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil && article.text.size > 100)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1769,7 +1747,7 @@ class NovelCrawler
       nodes = @page_html.css("ul li a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1792,7 +1770,7 @@ class NovelCrawler
       nodes.each do |node|
           next unless node[:href]
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1815,7 +1793,7 @@ class NovelCrawler
       nodes = nodes[0].css("a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -1837,7 +1815,7 @@ class NovelCrawler
       nodes.each do |node|
         next unless node[:href] && node[:href].index('chapterid')
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
         
 
         unless article 
@@ -1860,7 +1838,7 @@ class NovelCrawler
       nodes = @page_html.css("div.uclist a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1881,7 +1859,7 @@ class NovelCrawler
       nodes = @page_html.css(".insert_list li a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1902,7 +1880,7 @@ class NovelCrawler
       nodes = @page_html.css(".con li a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1930,7 +1908,7 @@ class NovelCrawler
           a_node = node.css("a")[0]
           url = @page_url.gsub("index.html","") + a_node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -1951,7 +1929,7 @@ class NovelCrawler
       nodes = @page_html.css("div#htmlList a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1972,7 +1950,7 @@ class NovelCrawler
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -1993,7 +1971,7 @@ class NovelCrawler
       nodes = @page_html.css(".ccss a")
       nodes.each do |node|
         article = Article.find_by_link(url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2013,7 +1991,7 @@ class NovelCrawler
       nodes = @page_html.css("#tigtag_content4 ul li a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2034,7 +2012,7 @@ class NovelCrawler
       nodes = @page_html.css(".bord a")
       nodes.each do |node|
         article = Article.find_by_link("http://shushu.com.cn" + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2054,7 +2032,7 @@ class NovelCrawler
       nodes = @page_html.css("#db_4_3_1 a")
       nodes.each do |node|
         article = Article.find_by_link("http://www.guanhuaju.com" + node[:href])
-        next if (article != nil && article.text != nil)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2074,7 +2052,7 @@ class NovelCrawler
       nodes = @page_html.css("#BookText a")
       nodes.each do |node|
         article = Article.find_by_link(@page_url + node[:href])
-        next if (article != nil && article.text != nil && article.text > 150)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2094,7 +2072,7 @@ class NovelCrawler
       nodes = @page_html.css(".part a")
       nodes.each do |node|
         article = Article.find_by_link("http://www.shushu5.com" + node[:href])
-        next if (article != nil && article.text != nil && article.text > 150)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2114,7 +2092,7 @@ class NovelCrawler
       nodes = @page_html.css(".chapter .list a")
       nodes.each do |node|
         article = Article.find_by_link(node[:href])
-        next if (article != nil && article.text != nil && article.text > 150)
+        next if isSkipCrawlArticle(article)
 
         unless article 
           article = Article.new
@@ -2142,7 +2120,7 @@ class NovelCrawler
           a_node = node.css("a")[0]
           url = @page_url.gsub("index.html","") + a_node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -2170,7 +2148,7 @@ class NovelCrawler
           a_nodes.each do |a_node|
             url = a_node[:href]
             article = Article.find_by_link(url)
-            next if (article != nil && article.text != nil && article.text.length > 100)
+            next if isSkipCrawlArticle(article)
             unless article 
               article = Article.new
               article.novel_id = novel_id
@@ -2198,7 +2176,7 @@ class NovelCrawler
         a_nodes.each do |a_node|
           url = a_node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -2225,7 +2203,7 @@ class NovelCrawler
         a_nodes.each do |a_node|
           url = "http://read.qidian.com/" + a_node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -2252,7 +2230,7 @@ class NovelCrawler
         a_nodes.each do |a_node|
           url = @page_url.gsub("Index.html","") + a_node[:href]
           article = Article.find_by_link(url)
-          next if (article != nil && article.text != nil && article.text.length > 100)
+          next if isSkipCrawlArticle(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -2278,7 +2256,7 @@ class NovelCrawler
       nodes = @page_html.css(".booklist a")
       nodes.each do |node|
           article = Article.find_by_link(url + node[:href])
-          next if (article != nil && article.text != nil)
+          next if isSkipCrawlArticle(article)
 
           unless article 
             article = Article.new
@@ -2308,7 +2286,7 @@ class NovelCrawler
           inside_nodes.each do |n|
             if n[:href] != nil
               article = Article.find_by_link(url + n[:href])
-              next if (article != nil && article.text != nil)
+              next if isSkipCrawlArticle(article)
 
               unless article 
               article = Article.new

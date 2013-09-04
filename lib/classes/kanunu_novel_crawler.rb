@@ -9,7 +9,7 @@ class KanunuNovelCrawler
       url = @page_url
       url = @page_url.gsub($1,"") if $1
       article = Article.find_by_link(url+ node[:href])
-      next if (article != nil && article.text != nil)
+      next if isSkipCrawlArticle(article)
 
       unless article 
         article = Article.new
