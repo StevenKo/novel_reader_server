@@ -2,6 +2,38 @@
 class KanunuNovelCrawler
   include Crawler
 
+  def crawl_articles novel_id
+    nodes = @page_html.xpath("//tr[@bgcolor='#ffffff']//a")
+    nodes.each do |node|
+      /\/(\d*\.html)/ =~ @page_url
+      url = @page_url
+      url = @page_url.gsub($1,"") if $1
+      article = Article.find_by_link(url+ node[:href])
+      next if (article != nil && article.text != nil)
+
+      unless article 
+        article = Article.new
+        article.novel_id = novel_id
+        article.link = url+ node[:href]
+        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        novel = Novel.select("id,num,name").find(novel_id)
+        article.subject = novel.name
+        article.num = novel.num + 1
+        novel.num = novel.num + 1
+        novel.save
+        # puts node.text
+        article.save
+      end
+      ArticleWorker.perform_async(article.id)
+    end
+  end
+
+  def crawl_text_onther_site article
+    text = @page_html.css("tr p").text.strip
+    article.text = ZhConv.convert("zh-tw", text)
+    article.save
+  end
+
   def crawl_novels category_id
     # puts @page_url
     nodes = @page_html.css("tr[bgcolor='#ffffff']")

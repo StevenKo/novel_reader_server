@@ -74,7 +74,7 @@ class ArticlesController < ApplicationController
 
   def crawl_text_onther_site
     article = Article.select("id, text, link").find(params[:article_id])
-    crawler = CrawlerAdapter.get_instance article.link
+    crawler = CrawlerAdapter.get_instance params[:url]
     crawler.fetch params[:url]
     crawler.crawl_text_onther_site article
     redirect_to :action => 'show', :id => article.id
