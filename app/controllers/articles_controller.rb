@@ -62,21 +62,16 @@ class ArticlesController < ApplicationController
     article = Article.select("id, text, link").find(params[:article_id])
     crawler = CrawlerAdapter.get_instance article.link
     crawler.fetch article.link
-
-    if (article.link.index("bestory"))
-      crawler.crawl_article article
-    else
-      crawler.crawl_text_onther_site article
-    end
+    crawler.crawl_article article
       
     redirect_to :action => 'show', :id => article.id
   end
 
-  def crawl_text_onther_site
+  def crawl_article
     article = Article.select("id, text, link").find(params[:article_id])
     crawler = CrawlerAdapter.get_instance params[:url]
     crawler.fetch params[:url]
-    crawler.crawl_text_onther_site article
+    crawler.crawl_article article
     redirect_to :action => 'show', :id => article.id
   end
 
