@@ -85,7 +85,7 @@ new article: <%= link_to 'New', new_article_path({:novel_id => @novel.id}) %> <b
   <tr>
     <% url = info['pattern'][1..info['pattern'].length-4] %>
     <th><%= website_name %></th>
-    <th><%= link_to url,"https://www.google.com/search?q=#{@novel.name}+site%3A#{url}" %></th>
+    <th><%= link_to url,"https://www.google.com/search?q=#{@novel.name}+site%3A#{url}",:target => "_blank" %></th>
     <th><%= info['crawl_site_articles'] %></th>
     <th><%= info['recommend'] %></th> 
   </tr>

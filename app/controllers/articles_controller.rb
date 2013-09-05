@@ -2,6 +2,7 @@ class ArticlesController < ApplicationController
   
   def edit
     @article = Article.find(params[:id])
+    @websites = CrawlerAdapter.adapter_map
   end
 
   def update

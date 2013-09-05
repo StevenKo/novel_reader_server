@@ -6,17 +6,17 @@ class CrawlerAdapter
 
   def self.adapter_map
     {
-      '努努' => {'pattern'=>'/book.kanunu.org/si','name'=>'Kanunu','crawl_site_articles' => true,'recommend' => true},
-      'SF轻小说' => {'pattern'=>'/book.sfacg.com/si','name'=>'Sfacg','crawl_site_articles' => true,'recommend' => true},
-      '《小说阅读网》' => {'pattern'=>'/www.readnovel.com/si','name'=>'Readnovel','crawl_site_articles' => true,'recommend' => true},
-      '轻小说文库' => {'pattern'=>'/wenku8.cn/si','name'=>'Wenku8','crawl_site_articles' => true,'recommend' => true},
-      '我看书斋' => {'pattern'=>'/5ccc.net/si','name'=>'Ccc5','crawl_site_articles' => true,'recommend' => true},
       '燃文小说网net' => {'pattern'=>'/www.ranwen.net/si','name'=>'Ranwen','crawl_site_articles' => true,'recommend' => true},
       '穿越小说吧131' => {'pattern'=>'/www.sj131.com/si','name'=>'Sj131','crawl_site_articles' => true,'recommend' => true},
+      '我看书斋' => {'pattern'=>'/5ccc.net/si','name'=>'Ccc5','crawl_site_articles' => true,'recommend' => true},
       '落秋中文' => {'pattern'=>'/www.luoqiu.com/si','name'=>'Luoqiu','crawl_site_articles' => true,'recommend' => true},
       '飞卢小说网' => {'pattern'=>'/b.faloo.com/si','name'=>'Faloo','crawl_site_articles' => true,'recommend' => true},
       '伍九文学' => {'pattern'=>'/www.59to.com/si','name'=>'To59','crawl_site_articles' => true,'recommend' => true},
       '59文学' => {'pattern'=>'/www.59to.org/si','name'=>'To59Org','crawl_site_articles' => true,'recommend' => true},
+      'SF轻小说' => {'pattern'=>'/book.sfacg.com/si','name'=>'Sfacg','crawl_site_articles' => true,'recommend' => true},
+      '《小说阅读网》' => {'pattern'=>'/www.readnovel.com/si','name'=>'Readnovel','crawl_site_articles' => true,'recommend' => true},
+      '轻小说文库' => {'pattern'=>'/wenku8.cn/si','name'=>'Wenku8','crawl_site_articles' => true,'recommend' => true},
+      '努努' => {'pattern'=>'/book.kanunu.org/si','name'=>'Kanunu','crawl_site_articles' => true,'recommend' => true},
 
       '轻之国度-论坛' => {'pattern'=>'/www.lightnovel.cn/si','name'=>'Lightnovel','crawl_site_articles' => true,'recommend' => false},
       '读一读小说网' => {'pattern'=>'/www.duyidu.com/si','name'=>'Duyidu','crawl_site_articles' => true,'recommend' => false},
