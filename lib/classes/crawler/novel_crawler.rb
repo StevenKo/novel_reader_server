@@ -1,5 +1,5 @@
 # encoding: utf-8
-class NovelCrawler
+class Crawler::NovelCrawler
   include Crawler
 
   def crawl_articles novel_id
@@ -2446,7 +2446,7 @@ class NovelCrawler
       if article_text.index('本章未完')
         nodes = @page_html.css("#pagelink a")
         nodes.each do |page_node|
-          c = NovelCrawler.new
+          c = Crawler::NovelCrawler.new
           c.fetch @page_url.sub(/\d*\.html/,"")+page_node[:href]
           text = ZhConv.convert("zh-tw",c.page_html.css("div.txtc").text.strip)
           article_text += text

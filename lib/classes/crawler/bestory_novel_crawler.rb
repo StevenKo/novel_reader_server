@@ -1,5 +1,5 @@
 # encoding: utf-8
-class BestoryNovelCrawler
+class Crawler::BestoryNovelCrawler
   include Crawler
 
   def crawl_novels category_id

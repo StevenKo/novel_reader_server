@@ -1,5 +1,5 @@
 # encoding: utf-8
-class KanunuNovelCrawler
+class Crawler::KanunuNovelCrawler
   include Crawler
 
   def crawl_articles novel_id
@@ -86,7 +86,7 @@ class KanunuNovelCrawler
   end
 
   def crawl_novel_description link, novel
-    c = KanunuNovelCrawler.new
+    c = Crawler::KanunuNovelCrawler.new
     c.fetch link
     novel.description = ZhConv.convert("zh-tw",c.page_html.css(".p10-24").text.strip)
   end

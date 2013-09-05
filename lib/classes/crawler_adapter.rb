@@ -20,7 +20,7 @@ class CrawlerAdapter
       @match = {'name' => 'NovelCrawler'}
     end
 
-    @adapter = eval @match['name'] + ".new"
+    @adapter = eval 'Crawler::'+@match['name'] + ".new"
   end
 
   private
