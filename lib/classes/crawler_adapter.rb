@@ -1,11 +1,13 @@
+# encoding: UTF-8
+
 class CrawlerAdapter
   
   attr_accessor :adapter_map
 
   def self.adapter_map
     {
-      'KanunuNovelCrawler' => {'pattern'=>'/book.kanunu.org/si','name'=>'KanunuNovelCrawler'},
-      'BestoryNovelCrawler' => {'pattern'=>'/www.bestory.com/si','name'=>'BestoryNovelCrawler'}
+      '努努' => {'pattern'=>'/book.kanunu.org/si','name'=>'KanunuNovelCrawler','crawl_site_articles' => true,'recommend' => true},
+      '精品文學' => {'pattern'=>'/www.bestory.com/si','name'=>'BestoryNovelCrawler','crawl_site_articles' => true,'recommend' => false}
     }
   end
 

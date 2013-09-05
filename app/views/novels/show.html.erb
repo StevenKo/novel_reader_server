@@ -70,3 +70,25 @@ show:   <%= @novel.is_show %> </br>
 new article: <%= link_to 'New', new_article_path({:novel_id => @novel.id}) %> <br>
 <br>
 
+<br>#########################################################################<br>
+
+<table>
+  <tr>
+    <th>網站</th>
+    <th>Google search(click to google search)</th>
+    <th>能不能爬網站的文章列表</th>
+    <th>推薦使用的網站</th>
+    <th></th>
+  </tr>
+
+<% @websites.each do |website_name, info| %>
+  <tr>
+    <% url = info['pattern'][1..info['pattern'].length-4] %>
+    <th><%= website_name %></th>
+    <th><%= link_to url,"https://www.google.com/search?q=#{@novel.name}+site%3A#{url}" %></th>
+    <th><%= info['crawl_site_articles'] %></th>
+    <th><%= info['recommend'] %></th> 
+  </tr>
+<% end %>
+
+</table>
