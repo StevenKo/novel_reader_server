@@ -26,4 +26,13 @@ class Crawler::Quanshu
     end
   end
 
+  def crawl_article article
+    node = @page_html.css("#content")
+    node.css("a,script").remove
+    text = change_node_br_to_newline(node)
+    article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    article.save
+  end
+
 end
