@@ -14,7 +14,7 @@ class Crawler::Faloo
         a_nodes.each do |a_node|
           url = a_node[:href]
           article = Article.find_by_link(url)
-          next if isSkipCrawlArticle(article)
+          next if isArticleTextOK(article)
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -38,6 +38,7 @@ class Crawler::Faloo
     node.css(".p_gonggao").remove
     text = change_node_br_to_newline(node).strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

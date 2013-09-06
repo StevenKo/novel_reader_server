@@ -8,7 +8,7 @@ class Crawler::D586
     subject = novel.name
     nodes.each do |node|
       article = Article.find_by_link("http://www.d586.com" + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
       article = Article.new
@@ -34,6 +34,7 @@ class Crawler::D586
     node.css("script").remove
     text = change_node_br_to_newline(node)
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

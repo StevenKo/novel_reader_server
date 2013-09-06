@@ -7,7 +7,7 @@ class Crawler::Mgyqw
     nodes.each do |node|
         url = @page_url.sub("index.html","") + node[:href]
         article = Article.find_by_link(url)
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
 
         unless article 
           article = Article.new
@@ -32,6 +32,7 @@ class Crawler::Mgyqw
     node.css("script").remove
     text = change_node_br_to_newline(node)
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

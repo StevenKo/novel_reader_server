@@ -7,7 +7,7 @@ class Crawler::Zwxiaoshuo
     nodes = @page_html.css(".insert_list li a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -29,7 +29,8 @@ class Crawler::Zwxiaoshuo
     @page_html.css(".contentbox div").remove
     text = @page_html.css(".contentbox").text.strip
     article.text = ZhConv.convert("zh-tw", text)
-    article.save  
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    article.save
   end
 
 end

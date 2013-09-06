@@ -15,7 +15,7 @@ class Crawler::Daomubiji
           a_node = c_node.css("a")[0]
           next if a_node.nil?
           article = Article.find_by_link(a_node[:href])
-          next if isSkipCrawlArticle(article)
+          next if isArticleTextOK(article)
           unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -44,6 +44,7 @@ class Crawler::Daomubiji
     node.css("span").remove
     text = node.text
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

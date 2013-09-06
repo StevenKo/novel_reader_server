@@ -8,7 +8,7 @@ class Crawler::Yawen8
     nodes.each do |node|
       if (node.text.index("yawen8") ==nil)
         article = Article.find_by_link(url + node[:href])
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
 
         unless article 
           article = Article.new
@@ -61,6 +61,7 @@ class Crawler::Yawen8
       article.text = text_img
       article.save
     end
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

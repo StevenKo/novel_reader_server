@@ -13,7 +13,7 @@ class Crawler::Wenku8
         a_node = node.css("a")[0]
         next if a_node.nil?
         article = Article.find_by_link(url + a_node[:href])
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
         unless article 
         article = Article.new
         article.novel_id = novel_id
@@ -46,6 +46,7 @@ class Crawler::Wenku8
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article.text = text_img
     end
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

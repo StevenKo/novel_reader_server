@@ -7,7 +7,7 @@ class Crawler::Jjwxc
     nodes.each do |node|
       next unless node[:href] && node[:href].index('chapterid')
       article = Article.find_by_link(node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
       
 
       unless article 
@@ -35,6 +35,7 @@ class Crawler::Jjwxc
     node.css("script").remove
     text = change_node_br_to_newline(node).strip.gsub("[]","").gsub("  ","").gsub("\n\n","")
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

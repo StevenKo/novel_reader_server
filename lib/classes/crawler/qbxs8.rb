@@ -7,7 +7,7 @@ class Crawler::Qbxs8
     nodes = @page_html.css("ul li a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -35,6 +35,7 @@ class Crawler::Qbxs8
     text = @page_html.css("div.text").text.strip
     text = text.gsub("*  * 女  生 小  说  网 - http://www.qbxs8.com - 好  看  的  女  生 小  说     ★★★★★薄情锦郁★★★★★ ","")
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save    
   end
 

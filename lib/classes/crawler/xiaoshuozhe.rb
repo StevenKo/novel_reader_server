@@ -14,7 +14,7 @@ class Crawler::Xiaoshuozhe
         node = node.css("a")[0]
         url = @page_url + node[:href]
         article = Article.find_by_link(url)
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
 
         unless article 
           article = Article.new
@@ -39,6 +39,7 @@ class Crawler::Xiaoshuozhe
     node.css("font").remove
     text = node.text.strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

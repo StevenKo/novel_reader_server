@@ -6,7 +6,7 @@ class Crawler::Hjwzw
     nodes = @page_html.css("#tbchapterlist tr a")
     nodes.each do |node|
       article = Article.find_by_link("http://tw.hjwzw.com" + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -38,6 +38,7 @@ class Crawler::Hjwzw
     text = text.gsub("就可以找到本書","")
     text = text.gsub("最快,最新TXT更新盡在書友天下:本文由“網”書友更新上傳我們的網址是“”如章節錯誤/舉報謝","")
     article.text = text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

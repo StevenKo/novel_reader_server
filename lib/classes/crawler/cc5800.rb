@@ -6,7 +6,7 @@ class Crawler::Cc5800
     nodes = @page_html.css(".TabCss a")
     nodes.each do |node|
       article = Article.find_by_link(@page_url+ node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -30,6 +30,7 @@ class Crawler::Cc5800
     text = @page_html.css("#content").text.strip
     text = text.gsub("*** 即刻参加58小说，和广大书友共享阅读乐趣！58小说永久地址：www.5800.cc ***","")
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save  
   end
 

@@ -9,7 +9,7 @@ class Crawler::Yqxs
     nodes = @page_html.css("ul a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -34,6 +34,7 @@ class Crawler::Yqxs
     text = text.gsub("WWW.YQWXC.COM","")
     text = text.gsub("免费看VIP全本小说","")
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

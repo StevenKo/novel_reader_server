@@ -10,6 +10,7 @@ class Crawler::Ttshu
     end
     text_img = text_img + "如果看不到圖片, 請更新至新版APP"
     article.text = text_img
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

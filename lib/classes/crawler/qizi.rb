@@ -9,7 +9,7 @@ class Crawler::Qizi
     nodes = @page_html.css(".ListRow a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -39,6 +39,7 @@ class Crawler::Qizi
     text = text.gsub("欢迎你","")
     text = text.gsub("最快更新","")
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

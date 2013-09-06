@@ -16,7 +16,7 @@ class Crawler::Xybook
       end
       article = Article.find_by_link(url)
 
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
       next if (node.text == "上一页")
       unless article 
         article = Article.new
@@ -40,6 +40,7 @@ class Crawler::Xybook
     node.css("a").remove
     text = node.text.strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

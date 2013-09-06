@@ -13,7 +13,7 @@ class Crawler::Dzxsw
         inside_nodes = node.css("a")
         inside_nodes.each do |in_node|
           article = Article.find_by_link(url + in_node[:href])
-          next if isSkipCrawlArticle(article)
+          next if isArticleTextOK(article)
 
           unless article 
             article = Article.new
@@ -41,6 +41,7 @@ class Crawler::Dzxsw
     text = text.gsub(".+?","")
     article_text = ZhConv.convert("zh-tw",text)
     article.text = article_text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

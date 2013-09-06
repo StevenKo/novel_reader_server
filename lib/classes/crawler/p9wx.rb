@@ -8,7 +8,7 @@ class Crawler::P9wx
     nodes.each do |node|
       next unless node[:href]
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -42,7 +42,8 @@ class Crawler::P9wx
       article_text = text.gsub("鍗兼雞銇264264-官家求魔殺神武動乾坤最終進化神印王座|","")
       article_text = text.gsub("www.9pwx.com","")
       article.text = article_text.strip
-    end     
+    end
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)   
     article.save
   end
 

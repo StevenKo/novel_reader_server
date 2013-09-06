@@ -7,7 +7,7 @@ class Crawler::Ranwen
     nodes = @page_html.css("div#defaulthtml4 a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -41,7 +41,7 @@ class Crawler::Ranwen
     else
       article.text = ZhConv.convert("zh-tw", text)
     end
-
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

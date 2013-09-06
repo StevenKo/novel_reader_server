@@ -11,7 +11,7 @@ class Crawler::Siluke
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.css("a").present?)
         article = Article.find_by_link(url + node.children[0][:href])
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
 
         unless article 
         article = Article.new
@@ -36,6 +36,7 @@ class Crawler::Siluke
     node.css("script").remove
     text = change_node_br_to_newline(node).strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

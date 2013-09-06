@@ -7,7 +7,7 @@ class Crawler::Shu88
     nodes = @page_html.css('ol li')
     nodes.each do |node|
       article = Article.find_by_link(url+node.child[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -29,6 +29,7 @@ class Crawler::Shu88
   def crawl_article article
     text = @page_html.css(".contentbox").text.strip
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

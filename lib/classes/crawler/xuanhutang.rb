@@ -6,7 +6,7 @@ class Crawler::Xuanhutang
     nodes = @page_html.css(".acss tr a")
     nodes.each do |node|
       article = Article.find_by_link(@page_url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -43,6 +43,7 @@ class Crawler::Xuanhutang
       article_text = text_img
     end
     article.text = article_text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

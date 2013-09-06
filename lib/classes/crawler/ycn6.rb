@@ -7,6 +7,7 @@ class Crawler::Ycn6
     text = @page_html.css("#content").text.strip
     article_text = ZhConv.convert("zh-tw",text)
     article.text = article_text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

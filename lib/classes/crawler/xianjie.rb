@@ -11,7 +11,7 @@ class Crawler::Xianjie
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
         article = Article.find_by_link(url + node.children[0][:href])
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
 
         unless article 
         article = Article.new
@@ -37,6 +37,7 @@ class Crawler::Xianjie
     text = text.gsub("阅读最好的小说，就上仙界小说网www.xianjie.me","")
     article_text = ZhConv.convert("zh-tw",text)
     article.text = article_text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

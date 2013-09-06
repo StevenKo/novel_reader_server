@@ -13,7 +13,7 @@ class Crawler::Xs520
       elsif node.css("a")[0]
         node = node.css("a")[0]
         article = Article.find_by_link("http://www.520xs.com" + node[:href])
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
 
         unless article
           article = Article.new
@@ -46,6 +46,7 @@ class Crawler::Xs520
     text = text.gsub(/本章节是.*地址为/,"")
     text = text.gsub("如果你觉的本章节还不错的话请不要忘记向您QQ群和微博里的朋友推荐哦！","")
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

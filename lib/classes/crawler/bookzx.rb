@@ -6,7 +6,7 @@ class Crawler::Bookzx
     nodes = @page_html.css("#tigtag_content4 ul li a")
     nodes.each do |node|
       article = Article.find_by_link(@page_url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -40,6 +40,7 @@ class Crawler::Bookzx
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article.text = text_img
     end
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

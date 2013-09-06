@@ -11,7 +11,7 @@ class Crawler::Duyidu
         article.is_show = true
         article.save
       end
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -33,6 +33,7 @@ class Crawler::Duyidu
   def crawl_article article
     text = @page_html.css("div#content").text.strip
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

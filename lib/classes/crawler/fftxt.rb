@@ -7,7 +7,7 @@ class Crawler::Fftxt
     nodes = @page_html.css("#chapterlist a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -35,7 +35,8 @@ class Crawler::Fftxt
     text = text.gsub("创作改变人生","")
     text = text.gsub("一秒记住【非凡TXT下载】www.fftxt.net，为您提供精彩小说阅读。","")
     article.text = ZhConv.convert("zh-tw", text)
-    article.save  
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    article.save
   end
 
 end

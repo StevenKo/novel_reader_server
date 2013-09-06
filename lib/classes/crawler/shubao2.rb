@@ -6,7 +6,7 @@ class Crawler::Shubao2
     nodes = @page_html.css(".chapter .list a")
     nodes.each do |node|
       article = Article.find_by_link(node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -29,6 +29,7 @@ class Crawler::Shubao2
     node.css("font,a").remove
     text = change_node_br_to_newline(node).strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

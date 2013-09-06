@@ -6,7 +6,7 @@ class Crawler::Mingzw
     nodes = @page_html.css(".chapterlist a")
     nodes.each do |node|
       article = Article.find_by_link("http://tw.mingzw.com/" + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -36,6 +36,7 @@ class Crawler::Mingzw
     text = text.gsub("沒有彈窗","")
     text = text.gsub("更新及時","")
     article.text = text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

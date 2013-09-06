@@ -13,7 +13,7 @@ class Crawler::Xiaoshuokan
         a_node = node.css("a")[0]
         url = "http://tw.xiaoshuokan.com" + a_node[:href]
         article = Article.find_by_link(url)
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
         unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -46,6 +46,7 @@ class Crawler::Xiaoshuokan
     text = text.gsub("&nWww.xiaoｓhuoｋａn.Com","")
     text = text.gsub("WWW.ｘｉａｏｓｈｕｏｋａｎ.ｃｏｍ","")
     article.text = text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

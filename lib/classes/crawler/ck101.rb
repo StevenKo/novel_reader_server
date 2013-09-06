@@ -15,7 +15,7 @@ class Crawler::Ck101
         url = "http://ck101.com/" + "thread-#{$1}-#{page}-2.html"
       end
       article = Article.find_by_link(url)
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -37,6 +37,7 @@ class Crawler::Ck101
     node = @page_html.css(".t_f")
     text = node.text.strip
     article.text = text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

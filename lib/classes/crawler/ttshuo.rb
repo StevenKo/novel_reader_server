@@ -6,7 +6,7 @@ class Crawler::Ttshuo
     nodes = @page_html.css(".ChapterList_Item a")
     nodes.each do |node|
       article = Article.find_by_link("http://www.ttshuo.com" + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -35,6 +35,7 @@ class Crawler::Ttshuo
     text = text.gsub("永久免费阅读","")
     text = text.gsub("敬请收藏关注","")
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

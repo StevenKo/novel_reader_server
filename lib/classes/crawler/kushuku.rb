@@ -7,6 +7,7 @@ class Crawler::Kushuku
     node = @page_html.css("#content")
     text = change_node_br_to_newline(node)
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

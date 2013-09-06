@@ -7,7 +7,7 @@ class Crawler::Bsxsw
     nodes = @page_html.css(".chapterlist a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -39,6 +39,7 @@ class Crawler::Bsxsw
     text = text.gsub("处理SSI文件时出错","")
     text = text.gsub("收费章节(12点)","")
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

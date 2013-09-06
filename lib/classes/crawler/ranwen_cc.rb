@@ -13,7 +13,7 @@ class Crawler::RanwenCc
       a_nodes.each do |a_node|
         url = @page_url.gsub("Index.html","") + a_node[:href]
         article = Article.find_by_link(url)
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
         unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -36,6 +36,7 @@ class Crawler::RanwenCc
     node.css("script").remove
     text = change_node_br_to_newline(node).strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

@@ -8,6 +8,7 @@ class Crawler::Book108
     text2 = text.gsub("1０８尒説WWW.Book１０８。com鯁","")
     article_text = ZhConv.convert("zh-tw",text2)
     article.text = article_text
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

@@ -8,7 +8,7 @@ class Crawler::Sto
     /(\d*)-(\d*)/ =~ last_node[:href]
     (1..$2.to_i).each do |i|
       article = Article.find_by_link("http://book.sto.cc/" + $1 + "-" + i.to_s)
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
       unless article 
         article = Article.new
         article.novel_id = novel_id
@@ -31,6 +31,7 @@ class Crawler::Sto
     node.css("span,script").remove
     text = node.text.strip
     article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

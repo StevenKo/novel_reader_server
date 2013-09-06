@@ -7,7 +7,7 @@ class Crawler::Quanshu
     nodes = @page_html.css(".chapterNum a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -24,9 +24,6 @@ class Crawler::Quanshu
       end
       ArticleWorker.perform_async(article.id)
     end
-  end
-
-  def crawl_article article
   end
 
 end

@@ -7,7 +7,7 @@ class Crawler::Dz320
     nodes = @page_html.css("div.mulu a")
     nodes.each do |node|
       article = Article.find_by_link(url + node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -30,6 +30,7 @@ class Crawler::Dz320
     @page_html.css("div.cmt").remove
     text = @page_html.css("div.content").text.strip
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

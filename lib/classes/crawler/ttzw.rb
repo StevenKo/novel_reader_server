@@ -13,7 +13,7 @@ class Crawler::Ttzw
         a_node = node.css("a")[0]
         url = @page_url.gsub("index.html","") + a_node[:href]
         article = Article.find_by_link(url)
-        next if isSkipCrawlArticle(article)
+        next if isArticleTextOK(article)
         unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -47,6 +47,7 @@ class Crawler::Ttzw
       text = text.gsub("document.write(","")
       article.text = ZhConv.convert("zh-tw", text.strip)
     end
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 

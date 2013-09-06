@@ -9,7 +9,7 @@ class Crawler::Kanunu
       url = @page_url
       url = @page_url.gsub($1,"") if $1
       article = Article.find_by_link(url+ node[:href])
-      next if isSkipCrawlArticle(article)
+      next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
@@ -31,6 +31,7 @@ class Crawler::Kanunu
   def crawl_article article
     text = @page_html.css("tr p").text.strip
     article.text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
 
