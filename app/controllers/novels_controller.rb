@@ -1,5 +1,5 @@
 class NovelsController < ApplicationController
-
+  helper_method :sort_column, :sort_direction
   before_filter :require_admin, only: [:new, :create, :edit, :update, :index, :show, :destroy]
 
   def index
@@ -18,7 +18,7 @@ class NovelsController < ApplicationController
 
   def show
     @novel = Novel.find(params[:id])
-    @articles = Article.select("id,title,subject,num,is_show, text, novel_id").where("novel_id = #{params[:id]}").paginate(:page => params[:page], :per_page => 50).order("num ASC")
+    @articles = Article.select("id,title,subject,num,is_show, text, novel_id").where("novel_id = #{params[:id]}").order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 50).order("num ASC")
     @websites = CrawlerAdapter.adapter_map
   end
 
@@ -63,6 +63,16 @@ class NovelsController < ApplicationController
   def recrawl_all_articles
     CrawlWorker.perform_async(params[:id])
     redirect_to novel_path(params[:id])
+  end
+
+  private
+
+  def sort_column
+    Article.column_names.include?(params[:sort]) ? params[:sort] : "is_show"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
   end
 
 end

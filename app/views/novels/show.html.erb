@@ -27,8 +27,8 @@ show:   <%= @novel.is_show %> </br>
   <tr>
     <th>分類</th>
     <th>篇名</th>
-    <th>篇數</th>
-    <th>show</th>
+    <th><%= sortable "num","篇數" %></th>
+    <th><%= sortable "is_show","show"%></th>
     <th></th>
   </tr>
 
