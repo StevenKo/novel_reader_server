@@ -39,6 +39,7 @@ class NovelsController < ApplicationController
 
   def create
     @novel = Novel.new(params[:novel])
+    @websites = CrawlerAdapter.adapter_map
     if @novel.save
       render :action => 'show', :id => @novel.id
     else

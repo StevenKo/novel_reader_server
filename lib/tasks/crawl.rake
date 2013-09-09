@@ -40,6 +40,18 @@ namespace :crawl do
     end
   end
 
+  task :set_novel_last_update => :environment do
+    Novel.select("id,last_update").find_in_batches do |novels|
+      novels.each do |novel|
+        if novel.articles.size > 0
+          time = novel.articles.last.created_at.strftime("%y-%m-%d")
+          novel.last_update = time
+          novel.save
+        end
+      end
+    end
+  end
+
   task :send_notification => :environment do
     gcm = GCM.new("AIzaSyBSeIzNxqXm2Rr4UnThWTBDXiDchjINbrc")
     u = User.find(2)

@@ -3,7 +3,7 @@ class Crawler::Mingzw
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".chapterlist a")
+    nodes = @page_html.css(".content a")
     nodes.each do |node|
       article = Article.find_by_link("http://tw.mingzw.com/" + node[:href])
       next if isArticleTextOK(article)
@@ -26,10 +26,9 @@ class Crawler::Mingzw
   end
 
   def crawl_article article
-    @page_html.css("div[@style='text-align: center']").remove
-    @page_html.css("div[@style='border: 1px solid #a6a6a6; width: 850px; margin: 0 auto;'] script").remove
-    node = @page_html.css("div[@style='border: 1px solid #a6a6a6; width: 850px; margin: 0 auto;']")
-    text = node.text.strip
+    node = @page_html.css(".content")
+    node.css("a,script").remove
+    text = change_node_br_to_newline(node).strip
     text = text.gsub("如需請通過此鏈接進入沖囍下載頁面","")
     text = text.gsub("明智屋中文","")
     text = text.gsub("wWw.MinGzw.cOm","")
