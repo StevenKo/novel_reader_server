@@ -4,7 +4,7 @@ class ArticleWorker
   sidekiq_options queue: "novel"
   
   def perform(article_id)
-    article = Article.select("id, text, link").find(article_id)
+    article = Article.select("id, text, link, is_show").find(article_id)
     crawler = CrawlerAdapter.get_instance article.link
     crawler.fetch article.link
     crawler.crawl_article article

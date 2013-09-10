@@ -41,6 +41,23 @@ class Crawler::Dzxsw
     text = text.gsub(".+?","")
     article_text = ZhConv.convert("zh-tw",text)
     article.text = article_text
+    
+    if article.text .length < 100
+      
+      if @page_html.css("#content img").present?
+        imgs = @page_html.css("#content img")
+      else
+        imgs = @page_html.css("#contents img")
+      end
+
+      text_img = ""
+      imgs.each do |img|
+        text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版"
+      article.text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save
   end
