@@ -59,7 +59,7 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def re_crawl
+  def crawl_text_onther_site
     article = Article.select("id, text, link, is_show").find(params[:article_id])
     crawler = CrawlerAdapter.get_instance article.link
     crawler.fetch article.link
