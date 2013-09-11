@@ -3,7 +3,7 @@ class Crawler::Sj131
   include Crawler
 
   def crawl_articles novel_id
-    url = @page_url
+    url = @page_url.gsub("index.html","")
     subject = ""
     nodes = @page_html.css(".booklist dl").children
     nodes.each do |node|
@@ -27,6 +27,61 @@ class Crawler::Sj131
         article.save
         end
         ArticleWorker.perform_async(article.id)          
+      end
+    end
+
+    unless nodes.present?
+      nodes = @page_html.css(".zjbox")
+      nodes.each do |node|
+        sub_nodes = node.children
+        sub_nodes.each do |sub_node|
+          if sub_node[:class] == "tt gtt"
+            subject = ZhConv.convert("zh-tw",sub_node.text.strip)
+          elsif (sub_node[:class] == "zjlist4" && sub_node.css("a").present?)
+            a_nodes = sub_node.css("a")
+            a_nodes.each do|a_node|
+              article = Article.find_by_link(url + a_node[:href])
+              next if isArticleTextOK(article)
+
+              unless article 
+              article = Article.new
+              article.novel_id = novel_id
+              article.link = url + a_node[:href]
+              article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+              novel = Novel.select("id,num,name").find(novel_id)
+              article.subject = subject
+              article.num = novel.num + 1
+              novel.num = novel.num + 1
+              novel.save
+              article.save
+              end
+              ArticleWorker.perform_async(article.id)
+            end
+          end
+        end
+      end
+    end
+
+    unless nodes.present?
+      nodes = @page_html.css(".zjlist4 a")
+      nodes.each do |node|
+        article = Article.find_by_link(url+ node[:href])
+        next if isArticleTextOK(article)
+
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = url+ node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = novel.name
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+          # puts node.text
+          article.save
+        end
+        ArticleWorker.perform_async(article.id)
       end
     end
   end

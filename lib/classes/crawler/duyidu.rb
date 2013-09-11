@@ -32,6 +32,9 @@ class Crawler::Duyidu
 
   def crawl_article article
     text = @page_html.css("div#content").text.strip
+    if text.length < 100
+      text = @page_html.css("div#content2").text.strip
+    end
     article.text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article)
     article.save

@@ -3,15 +3,16 @@ class Crawler::Zhaishu
   include Crawler
 
   def crawl_articles novel_id
+    url = @page_url.gsub("Index.shtm","")
     nodes = @page_html.css("#BookText a")
     nodes.each do |node|
-      article = Article.find_by_link(@page_url + node[:href])
+      article = Article.find_by_link(url + node[:href])
       next if isArticleTextOK(article)
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url + node[:href]
+        article.link = url + node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
