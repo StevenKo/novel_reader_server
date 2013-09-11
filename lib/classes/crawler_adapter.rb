@@ -104,6 +104,8 @@ class CrawlerAdapter
       '纵横中文网' => {'pattern'=>'/big5.zongheng.com/si','name'=>'Zongheng','crawl_site_articles' => true,'recommend' => false},
       '起點中文' => {'pattern'=>'/read.qidian.com/si','name'=>'Qidian','crawl_site_articles' => true,'recommend' => false},
       '燃文小说阅读网cc' => {'pattern'=>'/ranwen.cc/si','name'=>'RanwenCc','crawl_site_articles' => true,'recommend' => false},
+      '海天中文' => {'pattern'=>'/htzw.net/si','name'=>'Htzw','crawl_site_articles' => true,'recommend' => false},
+      
       
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},
       '艳腾中文' => {'pattern'=>'/yantengzw.com/si','name'=>'Yantengzw','crawl_site_articles' => false,'recommend' => false},
