@@ -49,6 +49,7 @@ class CrawlerAdapter
       '大文学' => {'pattern'=>'/dawenxue.net/si','name'=>'Dawenxue','crawl_site_articles' => true,'recommend' => false},
       '燃痕' => {'pattern'=>'/ranhen.net/si','name'=>'Ranhen','crawl_site_articles' => true,'recommend' => false},
       '盗墓笔记-盗墓笔记全集' => {'pattern'=>'/daomubiji.com/si','name'=>'Daomubiji','crawl_site_articles' => true,'recommend' => false},
+      '御前侍卫 ' => {'pattern'=>'/yuqianshiwei.com/si','name'=>'Yuqianshiwei','crawl_site_articles' => true,'recommend' => false},
       '冒險者天堂' => {'pattern'=>'/paradise.ezla.com/si','name'=>'Paradise','crawl_site_articles' => true,'recommend' => false},
       '盗墓小说网' => {'pattern'=>'/daomuxsw.com/si','name'=>'Daomuxsw','crawl_site_articles' => true,'recommend' => false},
       '仙界小说网' => {'pattern'=>'/xianjie.me/si','name'=>'Xianjie','crawl_site_articles' => true,'recommend' => false},
@@ -105,6 +106,8 @@ class CrawlerAdapter
       '起點中文' => {'pattern'=>'/read.qidian.com/si','name'=>'Qidian','crawl_site_articles' => true,'recommend' => false},
       '燃文小说阅读网cc' => {'pattern'=>'/ranwen.cc/si','name'=>'RanwenCc','crawl_site_articles' => true,'recommend' => false},
       '海天中文' => {'pattern'=>'/htzw.net/si','name'=>'Htzw','crawl_site_articles' => true,'recommend' => false},
+      'YY書屋' => {'pattern'=>'/bbs.yys5.com/si','name'=>'Yys5','crawl_site_articles' => true,'recommend' => false},
+      '言情小屋' => {'pattern'=>'/yqxw.net/si','name'=>'Yqxw','crawl_site_articles' => true,'recommend' => false},
       
       
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},

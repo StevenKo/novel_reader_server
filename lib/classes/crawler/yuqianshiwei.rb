@@ -1,0 +1,37 @@
+# encoding: utf-8
+class Crawler::Yuqianshiwei
+  include Crawler
+
+  def crawl_articles novel_id
+    nodes = @page_html.css(".bg .mulu .box a")
+    url = "http://www.yuqianshiwei.com/"
+    nodes.each do |node|
+      article = Article.find_by_link(url + node[:href])
+      next if isArticleTextOK(article)
+      next if node[:style]
+      unless article 
+        article = Article.new
+        article.novel_id = novel_id
+        article.link = url + node[:href]
+        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        novel = Novel.select("id,num,name").find(novel_id)
+        article.subject = novel.name
+        article.num = novel.num + 1
+        novel.num = novel.num + 1
+        novel.save
+        article.save
+      end
+      ArticleWorker.perform_async(article.id)
+    end
+  end
+
+  def crawl_article article
+    node = @page_html.css(".content-body")
+    node.css("a,.shangxia,.cmt,script,style").remove
+    text = node.text
+    article.text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    article.save
+  end
+
+end

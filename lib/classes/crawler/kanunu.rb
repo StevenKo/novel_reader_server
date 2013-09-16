@@ -4,10 +4,8 @@ class Crawler::Kanunu
 
   def crawl_articles novel_id
     nodes = @page_html.xpath("//tr[@bgcolor='#ffffff']//a")
+    url = @page_url.gsub("index.html","")
     nodes.each do |node|
-      /\/(\d*\.html)/ =~ @page_url
-      url = @page_url
-      url = @page_url.gsub($1,"") if $1
       article = Article.find_by_link(url+ node[:href])
       next if isArticleTextOK(article)
 
