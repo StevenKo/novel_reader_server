@@ -25,12 +25,12 @@ class Api::V1::ArticlesController < Api::ApiController
     begin
       article = Article.select("text, title").find(params[:id])
       if article.text.nil?
-        render :json => {title: "", text: "\n抱歉，目前伺服器有問題，請稍微等候一下(估計需要一天)，待伺服器重整，謝謝（因為伺服器的資料出了問題，書籤會有點亂掉，請刪除書籤，造成不便，十分抱歉，謝謝"}.to_json
+        render :json => {title: "", text: "\n抱歉，目前伺服器有問題，請稍微等候一下(估計需要一天)，待伺服器重整，謝謝\n（因為伺服器的資料出了問題，書籤會有點亂掉，請刪除書籤，造成不便，十分抱歉!)"}.to_json
       else
         render :json => article
       end
     rescue
-      render :json => {title: "", text: "\n抱歉，目前伺服器有問題，請稍微等候一下(估計需要一天)，待伺服器重整，謝謝（因為伺服器的資料出了問題，書籤會有點亂掉，請刪除書籤，造成不便，十分抱歉，謝謝"}.to_json
+      render :json => {title: "", text: "\n抱歉，目前伺服器有問題，請稍微等候一下(估計需要一天)，待伺服器重整，謝謝\n（因為伺服器的資料出了問題，書籤會有點亂掉，請刪除書籤，造成不便，十分抱歉!)"}.to_json
     end
   end
 
