@@ -54,6 +54,11 @@ class Api::V1::NovelsController < Api::ApiController
     render :json => novels
   end
 
+  def all_novel_update
+    novels = Novel.show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 15)
+    render :json => novels
+  end
+
   def search
     keyword = params[:search].strip
     keyword_cn = keyword.clone
