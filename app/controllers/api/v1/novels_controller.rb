@@ -36,6 +36,12 @@ class Api::V1::NovelsController < Api::ApiController
     render :json => novels
   end
 
+  def category_latest_update
+    category_id = params[:category_id]
+    novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 15)
+    render :json => novels
+  end
+
   def hot
     novels_id = HotShip.all.map{|ship| ship.novel_id}.join(',')
     novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing")
