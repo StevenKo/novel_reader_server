@@ -6,8 +6,8 @@ class Crawler::Ranwen
     url = @page_url.gsub("index.html","")
     nodes = @page_html.css("div#defaulthtml4 a")
     nodes.each do |node|
-      article = Article.find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -37,12 +37,12 @@ class Crawler::Ranwen
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版"
-      article.text = text_img
+      text = text_img
     else
-      article.text = ZhConv.convert("zh-tw", text)
+      text = ZhConv.convert("zh-tw", text)
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
-    article.save
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
+    ArticleText.create(article_id: article.id, text: text)
   end
 
 end
