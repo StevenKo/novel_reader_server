@@ -6,7 +6,7 @@ class Crawler::Yys5
     nodes = @page_html.css(".f_title > a")
     url = "http://bbs.yys5.com/"
     nodes.each do |node|
-      article = Article.find_by_link(url + node[:href])
+      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
       next if isArticleTextOK(article)
       next if node[:style]
       unless article 

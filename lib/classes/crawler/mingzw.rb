@@ -5,7 +5,7 @@ class Crawler::Mingzw
   def crawl_articles novel_id
     nodes = @page_html.css(".content a")
     nodes.each do |node|
-      article = Article.find_by_link("http://tw.mingzw.com/" + node[:href])
+      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://tw.mingzw.com/" + node[:href])
       next if isArticleTextOK(article)
 
       unless article 

@@ -119,7 +119,7 @@ class Crawler::Bestory
     nodes = @page_html.css("a")
     nodes.each do |node|
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
-        article = Article.find_by_link("http://www.bestory.com" + node[:href])
+        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://www.bestory.com" + node[:href])
         # article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
         next if isArticleTextOK(article)
 

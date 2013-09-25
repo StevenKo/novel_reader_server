@@ -8,7 +8,7 @@ class Crawler::Lightnovel
       subject = ZhConv.convert("zh-tw",node.css(".ft-24").text.gsub("\n","").gsub("\r","").gsub("\t",""))
       a_nodes = node.css(".inline a")
       a_nodes.each do |a_node|
-        article = Article.find_by_link(a_node[:href])
+        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(a_node[:href])
         next if isArticleTextOK(article)
 
         unless article 

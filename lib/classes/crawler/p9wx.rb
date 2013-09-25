@@ -7,7 +7,7 @@ class Crawler::P9wx
     nodes = @page_html.css(".booklist a")
     nodes.each do |node|
       next unless node[:href]
-      article = Article.find_by_link(url + node[:href])
+      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
       next if isArticleTextOK(article)
 
       unless article 

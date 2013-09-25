@@ -13,7 +13,7 @@ class Crawler::Faloo
         a_nodes = node.css("a")
         a_nodes.each do |a_node|
           url = a_node[:href]
-          article = Article.find_by_link(url)
+          article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url)
           next if isArticleTextOK(article)
           unless article 
             article = Article.new

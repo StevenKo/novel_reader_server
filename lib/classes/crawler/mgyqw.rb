@@ -6,7 +6,7 @@ class Crawler::Mgyqw
     nodes = @page_html.css(".td_con a")
     nodes.each do |node|
         url = @page_url.sub("index.html","") + node[:href]
-        article = Article.find_by_link(url)
+        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url)
         next if isArticleTextOK(article)
 
         unless article 

@@ -6,7 +6,7 @@ class Crawler::Xxsy
     url = @page_url.sub("default.html","")
     nodes = @page_html.css("#catalog_list a")
     nodes.each do |node|
-      article = Article.find_by_link(url + node[:href])
+      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
       next if isArticleTextOK(article)
 
       unless article 

@@ -10,7 +10,7 @@ class Crawler::Xianjie
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
-        article = Article.find_by_link(url + node.children[0][:href])
+        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node.children[0][:href])
         next if isArticleTextOK(article)
 
         unless article 

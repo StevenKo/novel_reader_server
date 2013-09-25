@@ -7,7 +7,7 @@ class Crawler::Aka99
     /page=(\d*)/ =~ node[:href]
     (1..$1.to_i).each do |i|
       url = @page_url.sub(/page=\d*/,"page=#{i}")
-      article = Article.find_by_link(url)
+      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url)
       next if isArticleTextOK(article)
       unless article 
         article = Article.new

@@ -11,7 +11,8 @@ class Crawler::Zwwx
       else
         inside_nodes = node.css("a")
         inside_nodes.each do |in_node|
-          article = Article.find_by_link(in_node[:href])
+          article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(in_node[:href])
+
           next if isArticleTextOK(article)
 
           unless article 

@@ -12,7 +12,7 @@ class Crawler::Xs520
         puts subject
       elsif node.css("a")[0]
         node = node.css("a")[0]
-        article = Article.find_by_link("http://www.520xs.com" + node[:href])
+        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://www.520xs.com" + node[:href])
         next if isArticleTextOK(article)
 
         unless article
