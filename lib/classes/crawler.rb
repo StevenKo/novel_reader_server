@@ -2,7 +2,6 @@ module Crawler
   
   require 'nokogiri'
   require 'open-uri'
-  require 'iconv'
   require 'net/http'
   
   attr_accessor :page_url, :page_html, :fake_browser_urls, :do_not_encode_urls, :match_url_pattern
