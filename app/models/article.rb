@@ -13,7 +13,7 @@ class Article < ActiveRecord::Base
     articles = novel_articles(origin_novel_id).show
     (0..articles.length-2).each do |i|
       if(articles[i].id == origin_article_id)
-        return Article.select('id, novel_id, text, title').find(articles[i+1].id)
+        return Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[i+1].id)
       end
     end
     return nil
@@ -23,7 +23,7 @@ class Article < ActiveRecord::Base
     articles = novel_articles(origin_novel_id).show
     (1..articles.length-1).each do |i|
       if(articles[i].id == origin_article_id)
-        return Article.select('id, novel_id, text, title').find(articles[i-1].id)
+        return Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[i-1].id)
       end
     end
     return nil

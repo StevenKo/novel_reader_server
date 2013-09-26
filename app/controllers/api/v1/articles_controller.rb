@@ -23,7 +23,7 @@ class Api::V1::ArticlesController < Api::ApiController
 
   def show
     begin
-      article = Article.select("text, title").find(params[:id])
+      article = Article.joins(:article_text).select("text, title").find(params[:id])
       if article.text.nil?
         render :json => {title: article.title, text: "\n抱歉，目前伺服器有問題，請稍微等候一下(估計需要一天)，待伺服器重整，謝謝\n（因為伺服器的資料出了問題，書籤會有點亂掉，請刪除書籤，造成不便，十分抱歉!)"}.to_json
       else
@@ -61,7 +61,7 @@ class Api::V1::ArticlesController < Api::ApiController
     params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
     articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num > #{params[:num]}").show
     if articles.length > 0
-      render :json => Article.select('id, novel_id, text, title,num').find(articles[0].id)
+      render :json => Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[0].id)
     else
       render :json => nil
     end
@@ -71,7 +71,7 @@ class Api::V1::ArticlesController < Api::ApiController
     params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
     articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show
     if articles.length > 0
-      render :json => Article.select('id, novel_id, text, title,num').find(articles[articles.length-1].id)
+      render :json => Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[articles.length-1].id)
     else
       render :json => nil
     end
