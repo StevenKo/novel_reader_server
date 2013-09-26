@@ -11,7 +11,7 @@ class Crawler::Sj131
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.css("a").present?)
         article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node.children[0][:href])
-        next if isArticleTextOK(article)
+        next if isArticleTextOK(article,article.text) if article
 
         unless article 
         article = Article.new
@@ -41,7 +41,7 @@ class Crawler::Sj131
             a_nodes = sub_node.css("a")
             a_nodes.each do|a_node|
               article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + a_node[:href])
-              next if isArticleTextOK(article)
+              next if isArticleTextOK(article,article.text) if article
 
               unless article 
               article = Article.new
@@ -66,7 +66,7 @@ class Crawler::Sj131
       nodes = @page_html.css(".zjlist4 a")
       nodes.each do |node|
         article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url+ node[:href])
-        next if isArticleTextOK(article)
+        next if isArticleTextOK(article,article.text) if article
 
         unless article 
           article = Article.new
@@ -116,7 +116,7 @@ class Crawler::Sj131
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article.text = text_img
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

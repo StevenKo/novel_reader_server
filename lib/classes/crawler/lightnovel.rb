@@ -9,7 +9,7 @@ class Crawler::Lightnovel
       a_nodes = node.css(".inline a")
       a_nodes.each do |a_node|
         article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(a_node[:href])
-        next if isArticleTextOK(article)
+        next if isArticleTextOK(article,article.text) if article
 
         unless article 
         article = Article.new
@@ -33,7 +33,7 @@ class Crawler::Lightnovel
     node = @page_html.css("#J_view")
     text = change_node_br_to_newline(node)
     article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

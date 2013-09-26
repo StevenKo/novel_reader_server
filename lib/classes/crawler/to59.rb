@@ -14,7 +14,7 @@ class Crawler::To59
         inside_nodes.each do |n|
           if n[:href] != nil
             article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + n[:href])
-            next if isArticleTextOK(article)
+            next if isArticleTextOK(article,article.text) if article
 
             unless article 
             article = Article.new
@@ -51,7 +51,7 @@ class Crawler::To59
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article_text = text_img
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

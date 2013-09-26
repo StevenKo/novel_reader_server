@@ -13,7 +13,7 @@ class Crawler::Zwwx
         inside_nodes.each do |in_node|
           article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(in_node[:href])
 
-          next if isArticleTextOK(article)
+          next if isArticleTextOK(article,article.text) if article
 
           unless article 
             article = Article.new
@@ -38,7 +38,7 @@ class Crawler::Zwwx
     node = @page_html.css("#content")
     text = node.text.strip
     article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

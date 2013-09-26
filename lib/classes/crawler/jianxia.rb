@@ -6,7 +6,7 @@ class Crawler::Jianxia
     nodes = @page_html.css(".xsyd_ml_2 a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -29,7 +29,7 @@ class Crawler::Jianxia
     node = @page_html.css("#article p")[0]
     node.css("span").remove
     article.text = ZhConv.convert("zh-tw", node.text)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save 
   end
 

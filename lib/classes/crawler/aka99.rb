@@ -8,7 +8,7 @@ class Crawler::Aka99
     (1..$1.to_i).each do |i|
       url = @page_url.sub(/page=\d*/,"page=#{i}")
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url)
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
       unless article 
         article = Article.new
         article.novel_id = novel_id
@@ -29,9 +29,9 @@ class Crawler::Aka99
   def crawl_article article
     node = @page_html.css(".postmessage")
     text = change_node_br_to_newline(node).strip
-    article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
-    article.save
+    text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

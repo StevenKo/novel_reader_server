@@ -13,7 +13,7 @@ class Crawler::Luoqiu
         a_node = node.css("a")[0]
         url = @page_url.gsub("index.html","") + a_node[:href]
         article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url)
-        next if isArticleTextOK(article)
+        next if isArticleTextOK(article,article.text) if article
         unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -45,7 +45,7 @@ class Crawler::Luoqiu
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article.text = text_img
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

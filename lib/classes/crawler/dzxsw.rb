@@ -13,7 +13,7 @@ class Crawler::Dzxsw
         inside_nodes = node.css("a")
         inside_nodes.each do |in_node|
           article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + in_node[:href])
-          next if isArticleTextOK(article)
+          next if isArticleTextOK(article,article.text) if article
 
           unless article 
             article = Article.new
@@ -58,7 +58,7 @@ class Crawler::Dzxsw
       article.text = text_img
     end
 
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

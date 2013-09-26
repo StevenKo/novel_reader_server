@@ -7,7 +7,7 @@ class Crawler::Bjxiaoshuo
     nodes = @page_html.css("li a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -28,9 +28,9 @@ class Crawler::Bjxiaoshuo
 
   def crawl_article article
     text = @page_html.css("#htmlContent").text.strip
-    article.text = ZhConv.convert("zh-tw", text)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
-    article.save 
+    text = ZhConv.convert("zh-tw", text)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

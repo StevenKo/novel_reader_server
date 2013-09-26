@@ -14,7 +14,7 @@ class Crawler::Daomuxsw
         a_nodes.each do |a_node|
           next if a_node.nil?
           article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + a_node[:href])
-          next if isArticleTextOK(article)
+          next if isArticleTextOK(article,article.text) if article
           unless article 
             article = Article.new
             article.novel_id = novel_id
@@ -40,7 +40,7 @@ class Crawler::Daomuxsw
     node = @page_html.css("#content")
     text = node.text.strip
     article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

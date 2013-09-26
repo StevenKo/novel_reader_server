@@ -6,7 +6,7 @@ class Crawler::U8xs
     text = change_node_br_to_newline(@page_html.css("#content"))
     article_text = ZhConv.convert("zh-tw",text)
     article.text = article_text
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

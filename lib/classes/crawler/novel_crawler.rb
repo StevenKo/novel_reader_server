@@ -6,7 +6,7 @@ class Crawler::NovelCrawler
     if (@page_url.index('qiuwu'))
       text = @page_html.css("#content").text.strip
       article.text = ZhConv.convert("zh-tw", text)
-      raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+      raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
       article.save
     end
   end

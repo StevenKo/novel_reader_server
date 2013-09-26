@@ -6,7 +6,7 @@ class Crawler::Ranhen
     nodes = @page_html.css("dd a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(@page_url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -30,7 +30,7 @@ class Crawler::Ranhen
     text2 = text.gsub('小技巧：按 Ctrl+D 快速保存当前章节页面至浏览器收藏夹；按 回车[Enter]键 返回章节目录，按 ←键 回到上一章，按 →键 进入下一章。','')
     article_text = ZhConv.convert("zh-tw",text2)
     article.text = article_text
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

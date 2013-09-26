@@ -15,7 +15,7 @@ class Crawler::Sy250
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article.text = text_img
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

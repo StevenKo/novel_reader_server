@@ -26,7 +26,7 @@ class Crawler::Sfacg
             article.subject = subject_titles[index]
             article.save
           end
-          next if isArticleTextOK(article)
+          next if isArticleTextOK(article,article.text) if article
 
           unless article 
             article = Article.new
@@ -66,7 +66,7 @@ class Crawler::Sfacg
     else
       article.text = ZhConv.convert("zh-tw", text)
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

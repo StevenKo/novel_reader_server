@@ -7,7 +7,7 @@ class Crawler::Y6zw
     nodes = @page_html.css(".ccss a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -38,7 +38,7 @@ class Crawler::Y6zw
     else
       article.text = ZhConv.convert("zh-tw", text)
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

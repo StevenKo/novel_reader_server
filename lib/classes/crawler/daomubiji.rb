@@ -15,7 +15,7 @@ class Crawler::Daomubiji
           a_node = c_node.css("a")[0]
           next if a_node.nil?
           article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(a_node[:href])
-          next if isArticleTextOK(article)
+          next if isArticleTextOK(article,article.text) if article
           unless article 
           article = Article.new
           article.novel_id = novel_id
@@ -44,7 +44,7 @@ class Crawler::Daomubiji
     node.css("span").remove
     text = node.text
     article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

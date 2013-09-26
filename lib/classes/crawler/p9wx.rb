@@ -8,7 +8,7 @@ class Crawler::P9wx
     nodes.each do |node|
       next unless node[:href]
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -43,7 +43,7 @@ class Crawler::P9wx
       article_text = text.gsub("www.9pwx.com","")
       article.text = article_text.strip
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)   
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)   
     article.save
   end
 

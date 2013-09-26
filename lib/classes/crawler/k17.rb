@@ -7,7 +7,7 @@ class Crawler::K17
     nodes = @page_html.css(".con li a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -31,7 +31,7 @@ class Crawler::K17
     node.css("script,a,.ct0416,.recent_read,#bdshare,.like_box").remove
     text = change_node_br_to_newline(node).strip
     article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

@@ -121,7 +121,7 @@ class Crawler::Bestory
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
         article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://www.bestory.com" + node[:href])
         # article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
-        next if isArticleTextOK(article)
+        next if isArticleTextOK(article,article.text) if article
 
         unless article 
           article = Article.new
@@ -151,9 +151,9 @@ class Crawler::Bestory
     text = text.gsub("精品文學網  歡迎廣大書友光臨閱讀", "")
     text = text.gsub("手 機 用 戶 請 登 陸  隨 時 隨 地 看 小 說!","")
     text = text.gsub("精品文學 iPhone App現已推出！支持離線下載看小說，請使用iPhone下載安裝！","")
-    article.text = text.strip
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
-    article.save
+    text = text.strip
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
   def crawl_rank

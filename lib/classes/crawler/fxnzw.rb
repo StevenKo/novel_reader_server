@@ -10,7 +10,7 @@ class Crawler::Fxnzw
     nodes = @page_html.css("#BookText ul li a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -34,7 +34,7 @@ class Crawler::Fxnzw
     text = text.gsub("請記住:飛翔鳥中文小說網 www.fxnzw.com 沒有彈窗,更新及時 !","")
     text = text.gsub("()","")
     article.text = ZhConv.convert("zh-tw", text)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

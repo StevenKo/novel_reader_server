@@ -6,7 +6,7 @@ class Crawler::Readnovel
     nodes = @page_html.css(".listPanel li a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -29,7 +29,7 @@ class Crawler::Readnovel
     text = @page_html.css(".mainContentNew").text.strip
     text = text.gsub("温馨提示：手机小说阅读网请访问m.xs.cn，随时随地看小说！公车、地铁、睡觉前、下班后想看就看。查看详情","")
     article.text = ZhConv.convert("zh-tw", text.strip)
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save    
   end
 

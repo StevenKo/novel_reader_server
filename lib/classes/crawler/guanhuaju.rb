@@ -6,7 +6,7 @@ class Crawler::Guanhuaju
     nodes = @page_html.css("#db_4_3_1 a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://www.guanhuaju.com" + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -36,7 +36,7 @@ class Crawler::Guanhuaju
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article.text = text_img
     end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

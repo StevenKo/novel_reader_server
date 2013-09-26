@@ -42,7 +42,7 @@ class Crawler::Ranwen
       text = ZhConv.convert("zh-tw", text)
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    ArticleText.create(article_id: article.id, text: text)
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

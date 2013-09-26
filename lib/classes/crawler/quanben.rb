@@ -14,7 +14,7 @@ class Crawler::Quanben
         inside_nodes.each do |n|
           if n.name == "a"
             article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(@page_url + n[:href])
-            next if isArticleTextOK(article)
+            next if isArticleTextOK(article,article.text) if article
 
             unless article 
             article = Article.new
@@ -44,7 +44,7 @@ class Crawler::Quanben
     text = text.gsub("(www.quanben.com)","")
     article_text = ZhConv.convert("zh-tw",text)
     article.text = article_text
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 

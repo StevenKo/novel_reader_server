@@ -7,7 +7,7 @@ class Crawler::Zizaidu
     nodes = @page_html.css("div.uclist a")
     nodes.each do |node|
       article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node[:href])
-      next if isArticleTextOK(article)
+      next if isArticleTextOK(article,article.text) if article
 
       unless article 
         article = Article.new
@@ -30,7 +30,7 @@ class Crawler::Zizaidu
     text  = change_node_br_to_newline(nodes).strip
     article_text = text.gsub("（最好的全文字小說網︰自在讀小說網 www.zizaidu.com）","")
     article.text = article_text
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     article.save
   end
 
