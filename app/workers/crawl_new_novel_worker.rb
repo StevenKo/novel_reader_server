@@ -1,7 +1,7 @@
 # encoding: utf-8
 class CrawlNewNovelWorker
   include Sidekiq::Worker
-  sidekiq_options queue: "novel_new", :retry => 2
+  sidekiq_options queue: "novel", :retry => 2
   
   def perform(category_id, page)
     cat_hash = { 1=>1, 2=>2, 3=>3,4=>4,5=>8,6=>5,7=>6,8=>9,9=>10,10=>11,11=>14,12=>15}

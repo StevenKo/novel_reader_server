@@ -1,7 +1,7 @@
 # encoding: utf-8
 class CrawlWorker
   include Sidekiq::Worker
-  sidekiq_options queue: "novel_new", :retry => 2
+  sidekiq_options queue: "novel", :retry => 2
   
   def perform(novel_id)
     novel = Novel.select("id, link, is_show").find(novel_id)
