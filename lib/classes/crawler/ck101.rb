@@ -36,9 +36,9 @@ class Crawler::Ck101
   def crawl_article article
     node = @page_html.css(".t_f")
     text = node.text.strip
-    article.text = text
+    text = text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

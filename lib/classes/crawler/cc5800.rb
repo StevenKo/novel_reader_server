@@ -29,9 +29,9 @@ class Crawler::Cc5800
     @page_html.css("#content a").remove
     text = @page_html.css("#content").text.strip
     text = text.gsub("*** 即刻参加58小说，和广大书友共享阅读乐趣！58小说永久地址：www.5800.cc ***","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save  
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

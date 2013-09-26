@@ -37,9 +37,9 @@ class Crawler::Zwwx
   def crawl_article article
     node = @page_html.css("#content")
     text = node.text.strip
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

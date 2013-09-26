@@ -41,13 +41,13 @@ class Crawler::Dawenxue
         text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版"
-      article.text = text_img
+      text = text_img
     else
       article_text = ZhConv.convert("zh-tw",text2)
-      article.text = article_text
+      text = article_text
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

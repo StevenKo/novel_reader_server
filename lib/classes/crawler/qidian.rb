@@ -50,9 +50,9 @@ class Crawler::Qidian
     text = text.gsub("<a href=http://www.qidian.com>起点中文网 www.qidian.com 欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！</a>');","")
     node = Nokogiri::HTML.parse text
     text = change_node_br_to_newline(node).strip
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

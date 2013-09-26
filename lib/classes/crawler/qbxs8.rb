@@ -34,9 +34,9 @@ class Crawler::Qbxs8
     @page_html.css("div.text script").remove
     text = @page_html.css("div.text").text.strip
     text = text.gsub("*  * 女  生 小  说  网 - http://www.qbxs8.com - 好  看  的  女  生 小  说     ★★★★★薄情锦郁★★★★★ ","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save    
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

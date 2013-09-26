@@ -38,9 +38,9 @@ class Crawler::Bsxsw
     text = text.gsub("三月果","")
     text = text.gsub("处理SSI文件时出错","")
     text = text.gsub("收费章节(12点)","")
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

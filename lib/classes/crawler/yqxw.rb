@@ -29,9 +29,9 @@ class Crawler::Yqxw
     nodes.css("a").remove
     text  = change_node_br_to_newline(nodes).strip
     article.text = ZhConv.convert("zh-tw", text)
-    article.text = text
+    text = text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

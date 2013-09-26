@@ -92,20 +92,20 @@ class Crawler::Sj131
       article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
       article_text = article_text.gsub("如果您喜歡這個章節","")
       article_text = article_text.gsub("精品小說推薦","")
-      article.text = article_text
+      text = article_text
     elsif @page_html.css(".contentbox").text != ""
       @page_html.css(".contentbox a").remove
       article_text = ZhConv.convert("zh-tw",@page_html.css(".contentbox").text.strip)
       article_text = article_text.gsub("如果您喜歡這個章節","")
       article_text = article_text.gsub("精品小說推薦","")
-      article.text = article_text
+      text = article_text
     else
       @page_html.css("#table_container a").remove
       @page_html.css("#table_container span").remove
       article_text = ZhConv.convert("zh-tw",@page_html.css("#table_container").text.strip)
       article_text = article_text.gsub("如果您喜歡這個章節","")
       article_text = article_text.gsub("精品小說推薦","")
-      article.text = article_text
+      text = article_text
     end
     if (article.text.length < 150 )
       imgs = @page_html.css("img.imagecontent")
@@ -114,10 +114,10 @@ class Crawler::Sj131
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -34,9 +34,9 @@ class Crawler::Fftxt
     text = text.gsub("17k火热连载阅读分享世界","")
     text = text.gsub("创作改变人生","")
     text = text.gsub("一秒记住【非凡TXT下载】www.fftxt.net，为您提供精彩小说阅读。","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

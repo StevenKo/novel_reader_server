@@ -30,9 +30,9 @@ class Crawler::Txt92
     text = change_node_br_to_newline(node)
     text = text.gsub("www.92txt.net 就爱网","")
     text = text.gsub("亲们记得多给戚惜【投推荐票】、【投月票】，【加入书架】，【留言评论】哦，鞠躬敬谢","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

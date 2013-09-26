@@ -32,7 +32,7 @@ class Crawler::Ranwenxiaoshuo
     text = @page_html.css("p").text.strip
     text = text.gsub("求金牌、求收藏、求推荐、求点击、求评论、求红包、求礼物，各种求，有什么要什么，都砸过来吧！","").strip
     text = text.gsub("小窍门：按左右键快速翻到上下章节","").strip
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     
     if text.length < 100
       imgs = @page_html.css("p img")
@@ -41,10 +41,10 @@ class Crawler::Ranwenxiaoshuo
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

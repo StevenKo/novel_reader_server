@@ -29,9 +29,9 @@ class Crawler::Zizaidu
     nodes = @page_html.css("#content")
     text  = change_node_br_to_newline(nodes).strip
     article_text = text.gsub("（最好的全文字小說網︰自在讀小說網 www.zizaidu.com）","")
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

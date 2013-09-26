@@ -35,9 +35,9 @@ class Crawler::To59Org
     @page_html.css(".bookcontent div").remove
     text = @page_html.css(".bookcontent").text.strip
     article_text  = ZhConv.convert("zh-tw",text)
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

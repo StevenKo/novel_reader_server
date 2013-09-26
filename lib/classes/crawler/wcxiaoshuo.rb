@@ -8,9 +8,9 @@ class Crawler::Wcxiaoshuo
     text = @page_html.css("#htmlContent").text.strip
     text = text.gsub("由【无*错】【小-说-网】会员手打，更多章节请到网址：www.wcxiaoshuo.com","")
     article_text = ZhConv.convert("zh-tw",text)
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

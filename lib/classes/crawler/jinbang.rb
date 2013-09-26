@@ -30,9 +30,9 @@ class Crawler::Jinbang
   def crawl_article article
     @page_html.css("a").remove
     text = @page_html.css("div.novel_content").text.strip
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

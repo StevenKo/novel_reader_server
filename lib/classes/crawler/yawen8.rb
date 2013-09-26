@@ -49,20 +49,19 @@ class Crawler::Yawen8
 
     article_text = article_text.gsub("［本章未完，請點擊下一頁繼續閱讀！］","")
     article_text = article_text.gsub("...   ","")
-    article.text = article_text
+    text = article_text
 
-    if (article.text.length < 150 )
+    if (text.length < 150 )
       imgs = @page_html.css(".piccontent img")
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
-      article.save
+      text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

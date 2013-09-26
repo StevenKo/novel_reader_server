@@ -34,9 +34,9 @@ class Crawler::Book57
     text = text.gsub("無極小說~~","")
     text = text.gsub("三藏小說免費小說手打網","")
     text = text.gsub("()","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

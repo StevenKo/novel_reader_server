@@ -37,7 +37,7 @@ class Crawler::Ttzw
       /\"(.*)\"/ =~ text
       text_img = "http://r.xsjob.net:88/novel" + $1 + "*&&$$*"
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     else
       /\"(.*)\"/ =~ text
       url = "http://r.xsjob.net:88/novel" + $1
@@ -45,10 +45,10 @@ class Crawler::Ttzw
       c.fetch url
       text = c.change_node_br_to_newline(c.page_html).strip
       text = text.gsub("document.write(","")
-      article.text = ZhConv.convert("zh-tw", text.strip)
+      text = ZhConv.convert("zh-tw", text.strip)
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

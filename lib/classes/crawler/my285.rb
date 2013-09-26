@@ -32,9 +32,9 @@ class Crawler::My285
 
   def crawl_article article
     text = change_node_br_to_newline(@page_html.css("tr")[4]).strip
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

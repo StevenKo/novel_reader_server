@@ -30,9 +30,9 @@ class Crawler::Qbxiaoshuo
     text = @page_html.css(".bookcontent").text.strip
     text = text.gsub("[www.16Kbook.com]","")
     text = text.gsub("www.qbxiaoshuo.com全本小说网","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -31,7 +31,7 @@ class Crawler::Htzw
     node = @page_html.css("#contenthtzw")
     node.css("script,a,h2").remove
     text = change_node_br_to_newline(node).strip
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
 
     if text.size < 100
       imgs = @page_html.css(".divimage img")
@@ -40,11 +40,11 @@ class Crawler::Htzw
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     end
 
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -34,17 +34,17 @@ class Crawler::P9wx
       begin
         url = "http://tw.9pwx.com"
         text = @page_html.css(".divimage img")[0][:src]
-        article.text = url + text + "*&&$$*" + "如果看不到圖片, 請更新至新版"  
+        text = url + text + "*&&$$*" + "如果看不到圖片, 請更新至新版"  
       rescue Exception => e      
       end
     else
       article_text = text.gsub("鑾勾絏ュ庤鎷誨潒濯兼煉鐪磭榪惰琚氣-官家求魔殺神武動乾坤最終進化神印王座| www.9pwx.com","")
       article_text = text.gsub("鍗兼雞銇264264-官家求魔殺神武動乾坤最終進化神印王座|","")
       article_text = text.gsub("www.9pwx.com","")
-      article.text = article_text.strip
+      text = article_text.strip
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)   
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

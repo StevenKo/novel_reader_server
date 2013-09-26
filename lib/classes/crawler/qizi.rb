@@ -38,9 +38,9 @@ class Crawler::Qizi
     text = text.gsub("据说时常阅读本站,可增加艳遇哦","")
     text = text.gsub("欢迎你","")
     text = text.gsub("最快更新","")
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -29,7 +29,7 @@ class Crawler::Bookzx
     node.css("a").remove
     node.css("script").remove
     text = change_node_br_to_newline(node)
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
 
     if text.length < 100
       imgs = @page_html.css("#tigtag_size img")
@@ -38,10 +38,10 @@ class Crawler::Bookzx
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

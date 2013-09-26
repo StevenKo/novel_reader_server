@@ -34,9 +34,9 @@ class Crawler::Ttshuo
     text = text.gsub("大量精品小说","")
     text = text.gsub("永久免费阅读","")
     text = text.gsub("敬请收藏关注","")
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

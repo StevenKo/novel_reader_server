@@ -32,14 +32,14 @@ class Crawler::Orion34g
     if text.length < 100
       begin
         text = @page_html.css(".divimage img")[0][:src]
-        article.text = text + "*&&$$*" + "如果看不到圖片, 請更新至新版"
+        text = text + "*&&$$*" + "如果看不到圖片, 請更新至新版"
       rescue Exception => e      
       end
     else
-      article.text = ZhConv.convert("zh-tw", text)
+      text = ZhConv.convert("zh-tw", text)
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save  
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

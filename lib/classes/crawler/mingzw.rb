@@ -34,9 +34,9 @@ class Crawler::Mingzw
     text = text.gsub("wWw.MinGzw.cOm","")
     text = text.gsub("沒有彈窗","")
     text = text.gsub("更新及時","")
-    article.text = text
+    text = text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

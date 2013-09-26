@@ -41,7 +41,7 @@ class Crawler::To59
     text = @page_html.css("#content").text
     article_text = text.gsub("*** 现在加入59文学，和万千书友交流阅读乐趣！59文学永久地址：www.59to.com ***", "")
     final_text = ZhConv.convert("zh-tw",article_text.strip)
-    article.text = final_text
+    text = final_text
     if (article_text.length < 250)
       imgs = @page_html.css(".divimage img")
       text_img = ""
@@ -52,7 +52,7 @@ class Crawler::To59
       article_text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

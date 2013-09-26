@@ -30,9 +30,9 @@ class Crawler::Xs555
     node = @page_html.css("body")
     node.css("script,a,.tipinfo,#breadCrumb,#shop,#thumb,#tips,#feit2,#copyRight").remove
     text = change_node_br_to_newline(node)
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -42,9 +42,9 @@ class Crawler::Xuanhutang
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       article_text = text_img
     end
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

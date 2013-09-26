@@ -29,9 +29,9 @@ class Crawler::Ranhen
     text = @page_html.css("#content p").text
     text2 = text.gsub('小技巧：按 Ctrl+D 快速保存当前章节页面至浏览器收藏夹；按 回车[Enter]键 返回章节目录，按 ←键 回到上一章，按 →键 进入下一章。','')
     article_text = ZhConv.convert("zh-tw",text2)
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -31,9 +31,9 @@ class Crawler::Shunong
     @page_html.css(".bookcontent script").remove
     @page_html.css(".bookcontent a").remove
     text = @page_html.css(".bookcontent").text.strip
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

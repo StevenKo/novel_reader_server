@@ -31,9 +31,9 @@ class Crawler::Ccc5
     @page_html.css("#content script").remove
     node = @page_html.css("#content")
     text = change_node_br_to_newline(node).strip
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

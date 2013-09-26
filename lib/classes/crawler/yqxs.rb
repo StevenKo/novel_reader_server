@@ -33,9 +33,9 @@ class Crawler::Yqxs
     text = text.gsub("言情文学城","")
     text = text.gsub("WWW.YQWXC.COM","")
     text = text.gsub("免费看VIP全本小说","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

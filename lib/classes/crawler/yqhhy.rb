@@ -32,9 +32,9 @@ class Crawler::Yqhhy
     text = @page_html.css("#content").text.strip
     text = text.gsub("尽在言情后花园。","")
     text = text.gsub("www.yqhhy.cc","")
-    article.text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

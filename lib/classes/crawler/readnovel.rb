@@ -28,9 +28,9 @@ class Crawler::Readnovel
   def crawl_article article
     text = @page_html.css(".mainContentNew").text.strip
     text = text.gsub("温馨提示：手机小说阅读网请访问m.xs.cn，随时随地看小说！公车、地铁、睡觉前、下班后想看就看。查看详情","")
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save    
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

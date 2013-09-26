@@ -36,9 +36,9 @@ class Crawler::Xianjie
     text = @page_html.css(".para").text
     text = text.gsub("阅读最好的小说，就上仙界小说网www.xianjie.me","")
     article_text = ZhConv.convert("zh-tw",text)
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

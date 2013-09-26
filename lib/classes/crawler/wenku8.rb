@@ -36,7 +36,7 @@ class Crawler::Wenku8
     node = @page_html.css("#content")
     node.css("#contentdp").remove
     text = node.text
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     if text.length < 100
       imgs = @page_html.css("#content .divimage img")
       text_img = ""
@@ -44,10 +44,10 @@ class Crawler::Wenku8
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

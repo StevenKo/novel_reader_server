@@ -45,9 +45,8 @@ class Crawler::Xiaoshuokan
     text = text.gsub("ｏ","")
     text = text.gsub("&nWww.xiaoｓhuoｋａn.Com","")
     text = text.gsub("WWW.ｘｉａｏｓｈｕｏｋａｎ.ｃｏｍ","")
-    article.text = text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

@@ -28,9 +28,9 @@ class Crawler::Jianxia
   def crawl_article article
     node = @page_html.css("#article p")[0]
     node.css("span").remove
-    article.text = ZhConv.convert("zh-tw", node.text)
+    text = ZhConv.convert("zh-tw", node.text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save 
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

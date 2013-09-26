@@ -30,9 +30,9 @@ class Crawler::K17
     node = @page_html.css("#chapterContent")
     node.css("script,a,.ct0416,.recent_read,#bdshare,.like_box").remove
     text = change_node_br_to_newline(node).strip
-    article.text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

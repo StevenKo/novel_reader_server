@@ -29,17 +29,17 @@ class Crawler::Shushu
     @page_html.css("#content script,#content a").remove
     article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
     article.text = article_text
-    if article.text.length < 150
+    if text.length < 150
       imgs = @page_html.css(".divimage img")
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      article.text = text_img
+      text = text_img
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

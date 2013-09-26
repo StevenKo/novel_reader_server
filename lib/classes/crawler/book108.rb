@@ -7,9 +7,9 @@ class Crawler::Book108
     text = @page_html.css("#content p").text
     text2 = text.gsub("1０８尒説WWW.Book１０８。com鯁","")
     article_text = ZhConv.convert("zh-tw",text2)
-    article.text = article_text
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    article.save
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end
