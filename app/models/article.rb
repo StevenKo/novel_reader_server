@@ -6,6 +6,7 @@ class Article < ActiveRecord::Base
   scope :by_num_asc, order('num ASC')
   scope :show, where(:is_show => true)
   has_one :article_text
+  delegate :text, to: :article_text, prefix: "article_all"
 
   scope :novel_articles, lambda { |novel_id| where('novel_id = (?)', novel_id).select('id') }
 
