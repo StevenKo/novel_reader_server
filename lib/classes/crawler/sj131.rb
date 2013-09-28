@@ -12,7 +12,7 @@ class Crawler::Sj131
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.css("a").present?)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
-        next if isArticleTextOK(article,article.article_all_text) if article
+        next if article
 
         unless article 
         article = Article.new
@@ -43,7 +43,7 @@ class Crawler::Sj131
             a_nodes = sub_node.css("a")
             a_nodes.each do|a_node|
               article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + a_node[:href])
-              next if isArticleTextOK(article,article.article_all_text) if article
+              next if article
 
               unless article 
               article = Article.new
@@ -68,7 +68,7 @@ class Crawler::Sj131
       nodes = @page_html.css(".zjlist4 a")
       nodes.each do |node|
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
-        next if isArticleTextOK(article,article.article_all_text) if article
+        next if article
 
         unless article 
           article = Article.new

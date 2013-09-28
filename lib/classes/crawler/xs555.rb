@@ -7,7 +7,7 @@ class Crawler::Xs555
     nodes.each do |node|
       url = @page_url + node[:href]
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
-      next if isArticleTextOK(article,article.article_all_text) if article
+      next if article
 
       unless article 
         article = Article.new

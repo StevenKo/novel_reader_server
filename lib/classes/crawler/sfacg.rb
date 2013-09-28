@@ -26,7 +26,7 @@ class Crawler::Sfacg
             article.subject = subject_titles[index]
             article.save
           end
-          next if isArticleTextOK(article,article.article_all_text) if article
+          next if article
 
           unless article 
             article = Article.new

@@ -6,7 +6,7 @@ class Crawler::Guanhuaju
     nodes = @page_html.css("#db_4_3_1 a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.guanhuaju.com" + node[:href])
-      next if isArticleTextOK(article,article.article_all_text) if article
+      next if article
 
       unless article 
         article = Article.new

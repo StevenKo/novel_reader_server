@@ -13,7 +13,7 @@ class Crawler::RanwenCc
       a_nodes.each do |a_node|
         url = @page_url.gsub("Index.html","") + a_node[:href]
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
-        next if isArticleTextOK(article,article.article_all_text) if article
+        next if article
         unless article 
           article = Article.new
           article.novel_id = novel_id

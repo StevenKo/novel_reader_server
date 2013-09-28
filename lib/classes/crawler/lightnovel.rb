@@ -9,7 +9,7 @@ class Crawler::Lightnovel
       a_nodes = node.css(".inline a")
       a_nodes.each do |a_node|
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href])
-        next if isArticleTextOK(article,article.article_all_text) if article
+        next if article
 
         unless article 
         article = Article.new

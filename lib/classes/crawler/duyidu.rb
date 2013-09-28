@@ -11,7 +11,7 @@ class Crawler::Duyidu
         article.is_show = true
         article.save
       end
-      next if isArticleTextOK(article,article.article_all_text) if article
+      next if article
 
       unless article 
         article = Article.new

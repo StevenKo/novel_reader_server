@@ -8,7 +8,7 @@ class Crawler::D586
     subject = novel.name
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.d586.com" + node[:href])
-      next if isArticleTextOK(article,article.article_all_text) if article
+      next if article
 
       unless article 
       article = Article.new

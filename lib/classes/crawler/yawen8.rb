@@ -8,7 +8,7 @@ class Crawler::Yawen8
     nodes.each do |node|
       if (node.text.index("yawen8") ==nil)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
-        next if isArticleTextOK(article,article.article_all_text) if article
+        next if article
 
         unless article 
           article = Article.new

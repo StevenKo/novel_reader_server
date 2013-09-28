@@ -121,7 +121,7 @@ class Crawler::Bestory
       if (node[:href].index("/novel/") || node[:href].index("/view/"))
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.bestory.com" + node[:href])
         # article = Article.where("novel_id = #{novel_id} and title = ?",node.text.strip)[0]
-        next if isArticleTextOK(article,article.article_all_text) if article
+        next if article
 
         unless article 
           article = Article.new

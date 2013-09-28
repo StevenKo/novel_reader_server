@@ -7,7 +7,7 @@ class Crawler::Yys5
     url = "http://bbs.yys5.com/"
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
-      next if isArticleTextOK(article,article.article_all_text) if article
+      next if article
       next if node[:style]
       unless article 
         article = Article.new
