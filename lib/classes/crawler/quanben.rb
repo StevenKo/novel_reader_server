@@ -13,8 +13,8 @@ class Crawler::Quanben
         inside_nodes = node.children.children
         inside_nodes.each do |n|
           if n.name == "a"
-            article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(@page_url + n[:href])
-            next if isArticleTextOK(article,article.text) if article
+            article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + n[:href])
+            next if isArticleTextOK(article,article.article_all_text) if article
 
             unless article 
             article = Article.new

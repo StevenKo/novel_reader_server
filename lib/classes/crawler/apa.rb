@@ -6,8 +6,8 @@ class Crawler::Apa
     nodes = @page_html.css("a[target=_self]")
     nodes.each do |node|
       next unless node[:href].index("page")
-      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(node[:href])
-      next if isArticleTextOK(article,article.text) if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      next if isArticleTextOK(article,article.article_all_text) if article
 
       unless article 
         article = Article.new

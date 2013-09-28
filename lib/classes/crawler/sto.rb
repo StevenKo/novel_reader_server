@@ -7,8 +7,8 @@ class Crawler::Sto
     last_node = nodes.last
     /(\d*)-(\d*)/ =~ last_node[:href]
     (1..$2.to_i).each do |i|
-      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://book.sto.cc/" + $1 + "-" + i.to_s)
-      next if isArticleTextOK(article,article.text) if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://book.sto.cc/" + $1 + "-" + i.to_s)
+      next if isArticleTextOK(article,article.article_all_text) if article
       unless article 
         article = Article.new
         article.novel_id = novel_id

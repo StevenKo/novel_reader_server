@@ -10,8 +10,8 @@ class Crawler::Siluke
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.css("a").present?)
-        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node.children[0][:href])
-        next if isArticleTextOK(article,article.text) if article
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
+        next if isArticleTextOK(article,article.article_all_text) if article
 
         unless article 
         article = Article.new

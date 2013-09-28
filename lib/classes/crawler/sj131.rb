@@ -11,8 +11,8 @@ class Crawler::Sj131
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.css("a").present?)
-        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + node.children[0][:href])
-        next if isArticleTextOK(article,article.text) if article
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
+        next if isArticleTextOK(article,article.article_all_text) if article
 
         unless article 
         article = Article.new
@@ -42,8 +42,8 @@ class Crawler::Sj131
           elsif (sub_node[:class] == "zjlist4" && sub_node.css("a").present?)
             a_nodes = sub_node.css("a")
             a_nodes.each do|a_node|
-              article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url + a_node[:href])
-              next if isArticleTextOK(article,article.text) if article
+              article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + a_node[:href])
+              next if isArticleTextOK(article,article.article_all_text) if article
 
               unless article 
               article = Article.new
@@ -67,8 +67,8 @@ class Crawler::Sj131
     unless nodes.present?
       nodes = @page_html.css(".zjlist4 a")
       nodes.each do |node|
-        article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url+ node[:href])
-        next if isArticleTextOK(article,article.text) if article
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
+        next if isArticleTextOK(article,article.article_all_text) if article
 
         unless article 
           article = Article.new

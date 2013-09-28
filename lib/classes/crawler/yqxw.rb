@@ -5,8 +5,8 @@ class Crawler::Yqxw
   def crawl_articles novel_id
     nodes = @page_html.css(".contents_body_nr_02 a")
     nodes.each do |node|
-      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(node[:href])
-      next if isArticleTextOK(article,article.text) if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      next if isArticleTextOK(article,article.article_all_text) if article
 
       unless article 
         article = Article.new
@@ -28,7 +28,7 @@ class Crawler::Yqxw
     nodes = @page_html.css(".readpage_body_nr_02")
     nodes.css("a").remove
     text  = change_node_br_to_newline(nodes).strip
-    article.text = ZhConv.convert("zh-tw", text)
+    article.article_all_text = ZhConv.convert("zh-tw", text)
     text = text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

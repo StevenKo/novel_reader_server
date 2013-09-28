@@ -6,8 +6,8 @@ class Crawler::Shu88
     url = @page_url.gsub("index.html","")
     nodes = @page_html.css('ol li')
     nodes.each do |node|
-      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link(url+node.child[:href])
-      next if isArticleTextOK(article,article.text) if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+node.child[:href])
+      next if isArticleTextOK(article,article.article_all_text) if article
 
       unless article 
         article = Article.new

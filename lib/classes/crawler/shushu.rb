@@ -6,8 +6,8 @@ class Crawler::Shushu
     @page_html.css(".box").remove
     nodes = @page_html.css(".bord a")
     nodes.each do |node|
-      article = Article.joins(:article_text).select("articles.id, is_show, title, link, novel_id, subject, num, article_texts.text").find_by_link("http://shushu.com.cn" + node[:href])
-      next if isArticleTextOK(article,article.text) if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://shushu.com.cn" + node[:href])
+      next if isArticleTextOK(article,article.article_all_text) if article
 
       unless article 
         article = Article.new
@@ -28,7 +28,7 @@ class Crawler::Shushu
   def crawl_article article
     @page_html.css("#content script,#content a").remove
     article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
-    article.text = article_text
+    article.article_all_text = article_text
     if text.length < 150
       imgs = @page_html.css(".divimage img")
       text_img = ""
