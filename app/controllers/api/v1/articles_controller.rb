@@ -59,9 +59,9 @@ class Api::V1::ArticlesController < Api::ApiController
 
   def next_article_by_num
     params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
-    articles = Article.joins(:article_text).select('articles.id, novel_id, text, title,num').where("novel_id = #{params[:novel_id]} and num > #{params[:num]}").show.by_num_asc.limit(1)
+    articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num > #{params[:num]}").show.limit(1)
     if articles.length > 0
-      render :json => articles[0].id
+      render :json => Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[0].id)
     else
       render :json => nil
     end
@@ -69,9 +69,9 @@ class Api::V1::ArticlesController < Api::ApiController
 
   def previous_article_by_num
     params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
-    articles = Article.joins(:article_text).select('articles.id, novel_id, text, title,num').where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show.by_num_desc.limit(1)
+    articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show.limit(1)
     if articles.length > 0
-      render :json => articles[articles.length-1]
+      render :json => Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[articles.length-1].id)
     else
       render :json => nil
     end
