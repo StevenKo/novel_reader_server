@@ -71,6 +71,7 @@ module Crawler
       body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
       @page_html = Nokogiri::HTML(body,nil)
     else
+      body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
       @page_html = Nokogiri::HTML(body)
     end
   end
