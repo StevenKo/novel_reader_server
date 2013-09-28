@@ -6,6 +6,7 @@ class Crawler::Sj131
     url = @page_url.gsub("index.html","")
     subject = ""
     nodes = @page_html.css(".booklist dl").children
+    nodes = @page_html.css(".dirbox dl").children unless nodes.present?
     nodes.each do |node|
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip)
@@ -29,6 +30,7 @@ class Crawler::Sj131
         ArticleWorker.perform_async(article.id)          
       end
     end
+
 
     unless nodes.present?
       nodes = @page_html.css(".zjbox")
