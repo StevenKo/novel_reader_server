@@ -107,7 +107,7 @@ class Crawler::Sj131
       article_text = article_text.gsub("精品小說推薦","")
       text = article_text
     end
-    if (article.text.length < 150 )
+    if (text.length < 150 )
       imgs = @page_html.css("img.imagecontent")
       text_img = ""
       imgs.each do |img|
