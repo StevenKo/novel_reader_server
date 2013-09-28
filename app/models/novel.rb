@@ -4,4 +4,12 @@ class Novel < ActiveRecord::Base
   has_many :articles
 
   scope :show, where(:is_show => true)
+
+  def recrawl_articles_text
+    Article.where("novel_id = #{id}").select("id").find_in_batches(:batch_size => 10) do |articles|
+      articles.each do |article|
+        ArticleWorker.perform_async(article.id)
+      end 
+    end
+  end
 end
