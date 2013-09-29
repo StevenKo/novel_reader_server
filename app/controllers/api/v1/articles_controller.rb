@@ -1,6 +1,9 @@
 # encoding: UTF-8
 
 class Api::V1::ArticlesController < Api::ApiController
+
+  MESSAGE = "\n十分抱歉，因為之前伺服器出了問題，所以用暫時的伺服器給大家使用！\n目前更換到新伺服器，如果你從書籤進入，看到這個訊息, 請你\n  (1)刪除書籤\n  (2)從小說介紹頁重新進入小說閱讀頁即可 \n  如果不是, 可能是沒這篇文章，你可以使用上方的問題回報按鈕寄信給我們，謝謝！"
+
   def index
     novel_id = params[:novel_id]
     order = params[:order]
@@ -25,12 +28,12 @@ class Api::V1::ArticlesController < Api::ApiController
     begin
       article = Article.joins(:article_text).select("text, title").find(params[:id])
       if article.text.nil?
-        render :json => {title: article.title, text: "\n十分抱歉，因為之前伺服器出了問題，目前新伺服器在進行測試，待會兒再使用即可！"}.to_json
+        render :json => {title: article.title, text: MESSAGE}.to_json
       else
         render :json => article
       end
     rescue
-      render :json => {title: "", text: "\n十分抱歉，因為之前伺服器出了問題，目前新伺服器在進行測試，待會兒再使用即可！"}.to_json
+      render :json => {title: "", text: MESSAGE}.to_json
     end
   end
 
