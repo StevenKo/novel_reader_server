@@ -6,9 +6,10 @@ class Novel < ActiveRecord::Base
   scope :show, where(:is_show => true)
 
   def recrawl_articles_text
-    Article.where("novel_id = #{id}").select("id").find_in_batches(:batch_size => 10) do |articles|
+    Article.where("novel_id = #{id} and is_show = true").select("id").find_in_batches(:batch_size => 10) do |articles|
       articles.each do |article|
-        ArticleWorker.perform_async(article.id)
+        texts = ArticleText.select("id").where("article_id = #{article.id}")
+        ArticleWorker.perform_async(article.id) unless texts.present?
       end 
     end
   end
