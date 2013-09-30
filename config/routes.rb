@@ -16,6 +16,7 @@ NovelServer::Application.routes.draw do
     member do
       get 'set_all_articles_to_invisiable'
       get 'recrawl_all_articles'
+      get 'recrawl_blank_articles'
     end
   end
 

@@ -66,6 +66,12 @@ class NovelsController < ApplicationController
     redirect_to novel_path(params[:id])
   end
 
+  def recrawl_blank_articles
+    novel = Novel.find(params[:id])
+    novel.recrawl_articles_text
+    redirect_to novel_path(params[:id])
+  end
+
   private
 
   def sort_column
