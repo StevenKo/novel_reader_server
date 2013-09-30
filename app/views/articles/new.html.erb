@@ -1,8 +1,8 @@
 <%= form_for Article.new do |f|%>
   <%= f.text_field :novel_id, :value => @novel_id,:type => "hidden"%>
   
-  <%= f.label :text %>:
-  <%= f.text_area :text ,:cols => "400"%><br />
+  <%= f.label :article_all_text %>:
+  <%= f.text_area :article_all_text ,:cols => "400"%><br />
 
   <%= f.label :link %>:
   <%= f.text_field :link %><br />

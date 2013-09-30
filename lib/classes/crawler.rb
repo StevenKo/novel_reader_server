@@ -8,7 +8,7 @@ module Crawler
   
   def fetch url
     @fake_browser_urls = ["www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com"]
-    @do_not_encode_urls = ['ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','lightnovel.cn','tw.xiaoshuokan','tw.57book','b.faloo.com/p/','9pwx.com','wcxiaoshuo']
+    @do_not_encode_urls = ['book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','lightnovel.cn','tw.xiaoshuokan','tw.57book','b.faloo.com/p/','9pwx.com','wcxiaoshuo']
     @page_url = url
     get_page(@page_url)   
   end

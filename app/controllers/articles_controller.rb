@@ -52,11 +52,14 @@ class ArticlesController < ApplicationController
   end
 
   def create
+    text = params[:article][:article_all_text]
+    params[:article].delete(:article_all_text)
     article = Article.new(params[:article])
     novel = Novel.select("id,num").find(article.novel_id)
     article.num = novel.num + 1
     novel.num = novel.num + 1
     if article.save && novel.save
+      ArticleText.create(article_id: article.id, text: text)
       redirect_to article_path(article.id)
     else
       render :action => "new", :novel_id => article.novel_id

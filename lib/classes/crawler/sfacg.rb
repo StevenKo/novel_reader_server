@@ -22,10 +22,10 @@ class Crawler::Sfacg
       nodes.each do |node|
           next unless node[:href]
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://book.sfacg.com" + node[:href])
-          if (article != nil)
-            article.subject = subject_titles[index]
-            article.save
-          end
+          # if (article != nil)
+          #   article.subject = subject_titles[index]
+          #   article.save
+          # end
           next if article
 
           unless article 
