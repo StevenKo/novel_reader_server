@@ -5,6 +5,7 @@ class Crawler::Kanunu
   def crawl_articles novel_id
     nodes = @page_html.xpath("//tr[@bgcolor='#ffffff']//a")
     url = @page_url.gsub("index.html","")
+    url = @page_url.gsub(/\d*\.html/,"")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
       next if article
