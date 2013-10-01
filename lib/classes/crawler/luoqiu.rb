@@ -37,7 +37,7 @@ class Crawler::Luoqiu
     text = ZhConv.convert("zh-tw", text.strip)
 
     if text.length < 100
-      imgs = @page_html.css("#content img")
+      imgs = @page_html.css(".bookcontent img")
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
