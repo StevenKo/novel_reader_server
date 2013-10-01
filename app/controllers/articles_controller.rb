@@ -10,8 +10,9 @@ class ArticlesController < ApplicationController
     text = params[:article][:article_all_text]
     params[:article].delete(:article_all_text)
     if @article.update_attributes(params[:article])
-      article_text = ArticleText.find_by_article_id(params[:id])
-      article_text.update_attribute(:text, text) if article_text
+      article_text = ArticleText.find_or_initialize_by_article_id(params[:id])
+      article_text.text = text
+      article_text.save
       render :action => 'show'
     else
       render :action => "edit" 
