@@ -32,8 +32,8 @@ class Crawler::Luoqiu
   end
 
   def crawl_article article
-    node = @page_html.css("#content")
-    text = node.text
+    node = @page_html.css(".bookcontent")
+    text = change_node_br_to_newline(node)
     text = ZhConv.convert("zh-tw", text.strip)
 
     if text.length < 100
