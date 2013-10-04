@@ -27,7 +27,6 @@ class Crawler::Qbxs8
   end
 
   def crawl_article article
-    @page_html.css("div.text div").remove
     @page_html.css("div.text a").remove
     @page_html.css("div.text h1").remove
     @page_html.css("div.text h2").remove
@@ -35,6 +34,17 @@ class Crawler::Qbxs8
     text = @page_html.css("div.text").text.strip
     text = text.gsub("*  * 女  生 小  说  网 - http://www.qbxs8.com - 好  看  的  女  生 小  说     ★★★★★薄情锦郁★★★★★ ","")
     text = ZhConv.convert("zh-tw", text)
+    
+    if text.length < 100
+      imgs = @page_html.css("div.text img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*" if img[:src].include?("qbxs8.com")
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
