@@ -29,9 +29,10 @@ class Crawler::Guanhuaju
     text = ZhConv.convert("zh-tw", text)
     if text.length < 100
       imgs = @page_html.css(".divimage img")
+      imgs = @page_html.css("#content_text img") unless imgs.present?
       text_img = ""
       imgs.each do |img|
-          text_img = text_img + img[:src] + "*&&$$*"
+          text_img = text_img + "http://www.guanhuaju.com" + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       text = text_img
