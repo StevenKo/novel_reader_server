@@ -5,7 +5,7 @@ class Crawler::Kanunu
   def crawl_articles novel_id
     nodes = @page_html.xpath("//tr[@bgcolor='#ffffff']//a")
     url = @page_url.gsub("index.html","")
-    url = @page_url.gsub(/\d*\.html/,"")
+    url = url.gsub(/\d*\.html/,"")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
       next if article
@@ -43,7 +43,8 @@ class Crawler::Kanunu
       author = @page_html.css("h2").text.strip.sub("作品集","")
       name = novel_row.css("strong").text.sub("在线阅读","").strip
       description = novel_row.css("td[valign='top']").text.strip
-      pic = "http://book.kanunu.org" + novel_row.css("img")[0][:src]
+      description = novel_row.css("td.p10-24").text.strip if description.size < 20
+      pic = "http://book.kanunu.org" + novel_row.css("img")[0][:src] if novel_row.css("img")[0]
       novel =  Novel.find_by_link link
       unless novel
         novel = Novel.new
