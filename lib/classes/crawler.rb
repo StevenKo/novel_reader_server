@@ -8,7 +8,7 @@ module Crawler
   
   def fetch url
     @fake_browser_urls = ["b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com"]
-    @do_not_encode_urls = ['59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','lightnovel.cn','tw.xiaoshuokan','tw.57book','9pwx.com','wcxiaoshuo']
+    @do_not_encode_urls = ['59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','lightnovel.cn','tw.xiaoshuokan','tw.57book','b.faloo.com/p/','9pwx.com','wcxiaoshuo']
     @page_url = url
     get_page(@page_url)   
   end
@@ -43,15 +43,15 @@ module Crawler
     rescue
     end
 
-    if isDoNotNeedReEncodeUrl(url)
-      @page_html = Nokogiri::HTML(body)
-    elsif isNeedFakeBrowserUrl(url)
+    if isNeedFakeBrowserUrl(url)
       /#{@match_url_pattern}(.*)/ =~ url
       url = $1
       http = Net::HTTP.new(@match_url_pattern, 80)
       res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
       content = res.body
       get_nokogiri_html(content)
+    elsif isDoNotNeedReEncodeUrl(url)
+      @page_html = Nokogiri::HTML(body)
     else
       get_nokogiri_html(body)
     end
@@ -62,13 +62,13 @@ module Crawler
     @page_html = Nokogiri::HTML(tmp)
     encoding = @page_html.meta_encoding
 
-    if (encoding == "gbk" || encoding == "gb2312")
+    if(encoding == "gbk" || encoding == "gb2312")
       body.force_encoding("gbk")
-      body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+      body.encode!("utf-8", :undef => :replace, :replace => "", :invalid => :replace)
       @page_html = Nokogiri::HTML.parse body
     elsif(encoding == "big5")
       body.force_encoding("big5")
-      body.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+      body.encode!("utf-8", :undef => :replace, :replace => "", :invalid => :replace)
       @page_html = Nokogiri::HTML(body,nil)
     else
       # some need encode, some needn't , need check
