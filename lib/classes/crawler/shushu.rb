@@ -27,8 +27,8 @@ class Crawler::Shushu
 
   def crawl_article article
     @page_html.css("#content script,#content a").remove
-    article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
-    article.article_all_text = article_text
+    text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+
     if text.length < 150
       imgs = @page_html.css(".divimage img")
       text_img = ""
