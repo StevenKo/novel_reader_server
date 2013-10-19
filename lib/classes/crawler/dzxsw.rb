@@ -39,7 +39,7 @@ class Crawler::Dzxsw
     node = @page_html.css("#content")
     node.css(".ad_chapter, script, .announce, .ud, .local, a").remove
 
-    text = node.text.sctrip
+    text = node.text.strip
     text = text.gsub(/\/\d*/,"")
     text = text.gsub("'>","")
     text = text.gsub(".+?","")
