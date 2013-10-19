@@ -35,7 +35,11 @@ class Crawler::Dzxsw
   end
 
   def crawl_article article
-    text = @page_html.css("#content").text
+
+    node = @page_html.css("#content")
+    node.css(".ad_chapter, script, .announce, .ud, .local, a").remove
+
+    text = node.text.sctrip
     text = text.gsub(/\/\d*/,"")
     text = text.gsub("'>","")
     text = text.gsub(".+?","")

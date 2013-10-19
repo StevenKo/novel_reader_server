@@ -108,6 +108,7 @@ class CrawlerAdapter
       '海天中文' => {'pattern'=>'/htzw.net/si','name'=>'Htzw','crawl_site_articles' => true,'recommend' => false},
       'YY書屋' => {'pattern'=>'/bbs.yys5.com/si','name'=>'Yys5','crawl_site_articles' => true,'recommend' => false},
       '言情小屋' => {'pattern'=>'/yqxw.net/si','name'=>'Yqxw','crawl_site_articles' => true,'recommend' => false},
+      '天天书吧' => {'pattern'=>'/ttshu8.com/si','name'=>'Ttshu8','crawl_site_articles' => true,'recommend' => false},
       
       
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},
@@ -121,7 +122,7 @@ class CrawlerAdapter
       'u8小说' => {'pattern'=>'/u8xs.com/si','name'=>'U8xs','crawl_site_articles' => false,'recommend' => false},
       '六叶中文网' => {'pattern'=>'/6ycn.net/si','name'=>'Ycn6','crawl_site_articles' => false,'recommend' => false},
       '108小说网' => {'pattern'=>'/book108.com/si','name'=>'Book108','crawl_site_articles' => false,'recommend' => false},
-      '谷粒网' => {'pattern'=>'/guli.cc/si','name'=>'Guli','crawl_site_articles' => false,'recommend' => false},
+      '谷粒网' => {'pattern'=>'/guli.cc/si','name'=>'Guli','crawl_site_articles' => true,'recommend' => false},
       '酷书库' => {'pattern'=>'/kushuku.com/si','name'=>'Kushuku','crawl_site_articles' => false,'recommend' => false},
       '云书阁' => {'pattern'=>'/yunshuge.com/si','name'=>'Yunshuge','crawl_site_articles' => false,'recommend' => false},
       'TXT小说下载' => {'pattern'=>'/txtbbs.com/si','name'=>'Txtbbs','crawl_site_articles' => false,'recommend' => false},
