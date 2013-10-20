@@ -76,6 +76,7 @@ class CrawlerAdapter
       'Zwwx' => {'pattern'=>'/zwwx.com/si','name'=>'Zwwx','crawl_site_articles' => true,'recommend' => true},
       '言情小说吧' => {'pattern'=>'/xs8.cn/si','name'=>'Xs8','crawl_site_articles' => true,'recommend' => false},
       '5200小说网-吾爱小说' => {'pattern'=>'/5200xs.net/si','name'=>'Xs5200','crawl_site_articles' => true,'recommend' => false},
+      '5200小说网' => {'pattern'=>'/5200.net/si','name'=>'Net5200','crawl_site_articles' => true,'recommend' => false},
       '爱尚小说网' => {'pattern'=>'/23hh.com/si','name'=>'Hh23','crawl_site_articles' => true,'recommend' => false},
       '白金小说网' => {'pattern'=>'/bjxiaoshuo.com/si','name'=>'Bjxiaoshuo','crawl_site_articles' => true,'recommend' => false},
       '飞翔鸟中文网' => {'pattern'=>'/fxnzw.com/si','name'=>'Fxnzw','crawl_site_articles' => true,'recommend' => false},
