@@ -4,11 +4,6 @@ class Crawler::To59Org
 
   def crawl_articles novel_id
     url = "http://tw.59to.org"
-    @page_html.css(".booklist a").last.remove
-    @page_html.css(".booklist a").last.remove
-    @page_html.css(".booklist a").last.remove
-    @page_html.css(".booklist a").last.remove
-    @page_html.css(".booklist a").last.remove
     nodes = @page_html.css(".booklist a")
     nodes.each do |node|
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
