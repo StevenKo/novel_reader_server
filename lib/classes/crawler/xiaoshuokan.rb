@@ -50,6 +50,17 @@ class Crawler::Xiaoshuokan
     text = text.gsub("ｏ","")
     text = text.gsub("&nWww.xiaoｓhuoｋａn.Com","")
     text = text.gsub("WWW.ｘｉａｏｓｈｕｏｋａｎ.ｃｏｍ","")
+
+    if text.length < 100
+      imgs = @page_html.css(".bookcontent .divimage img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
