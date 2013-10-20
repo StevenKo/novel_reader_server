@@ -40,6 +40,7 @@ class Crawler::Luoqiu
 
     if text.length < 100
       imgs = @page_html.css(".bookcontent img")
+      imgs = @page_html.css("#content img") unless imgs.present?
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
