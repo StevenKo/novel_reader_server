@@ -49,8 +49,9 @@ class Crawler::Sfacg
 
   def crawl_article article
     node = @page_html.css("#ChapterBody")
-    text = change_node_br_to_newline(node)
-    if text.length < 50
+    text = change_node_br_to_newline(node).strip
+    
+    if text.gsub("\n","").gsub(" ","").length < 50
       url = "http://book.sfacg.com"
       imgs = @page_html.css("#ChapterBody img")
       text_img = ""

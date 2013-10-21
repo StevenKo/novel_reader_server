@@ -38,6 +38,17 @@ class Crawler::Hjwzw
     text = text.gsub("就可以找到本書","")
     text = text.gsub("最快,最新TXT更新盡在書友天下:本文由“網”書友更新上傳我們的網址是“”如章節錯誤/舉報謝","")
     text = text
+
+    if text.length < 100
+      imgs = @page_html.css("#AllySite")[0].next.next.css("img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
