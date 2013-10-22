@@ -104,14 +104,15 @@ class CrawlerAdapter
       '书书屋' => {'pattern'=>'/shushu5.com/si','name'=>'Shushu5','crawl_site_articles' => true,'recommend' => false},
       '第二书包网' => {'pattern'=>'/shubao2.com/si','name'=>'Shubao2','crawl_site_articles' => true,'recommend' => false},
       '纵横中文网' => {'pattern'=>'/big5.zongheng.com/si','name'=>'Zongheng','crawl_site_articles' => true,'recommend' => false},
-      '起點中文' => {'pattern'=>'/read.qidian.com/si','name'=>'Qidian','crawl_site_articles' => true,'recommend' => false},
+      '起點中文' => {'pattern'=>'/qidian.com/si','name'=>'Qidian','crawl_site_articles' => true,'recommend' => false},
       '燃文小说阅读网cc' => {'pattern'=>'/ranwen.cc/si','name'=>'RanwenCc','crawl_site_articles' => true,'recommend' => false},
       '海天中文' => {'pattern'=>'/htzw.net/si','name'=>'Htzw','crawl_site_articles' => true,'recommend' => false},
       'YY書屋' => {'pattern'=>'/bbs.yys5.com/si','name'=>'Yys5','crawl_site_articles' => true,'recommend' => false},
       '言情小屋' => {'pattern'=>'/yqxw.net/si','name'=>'Yqxw','crawl_site_articles' => true,'recommend' => false},
       '天天书吧' => {'pattern'=>'/ttshu8.com/si','name'=>'Ttshu8','crawl_site_articles' => true,'recommend' => false},
-      
-      
+      'TXT小说下载' => {'pattern'=>'/txtbbs.com/si','name'=>'Txtbbs','crawl_site_articles' => true,'recommend' => false},
+
+      '全本書庫' => {'pattern'=>'/qbshuku.com/si','name'=>'Qbshuku','crawl_site_articles' => false,'recommend' => false},
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},
       '艳腾中文' => {'pattern'=>'/yantengzw.com/si','name'=>'Yantengzw','crawl_site_articles' => false,'recommend' => false},
       '腾讯原创' => {'pattern'=>'/book.qq.com/si','name'=>'BookQq','crawl_site_articles' => false,'recommend' => false},
@@ -126,7 +127,6 @@ class CrawlerAdapter
       '谷粒网' => {'pattern'=>'/guli.cc/si','name'=>'Guli','crawl_site_articles' => true,'recommend' => false},
       '酷书库' => {'pattern'=>'/kushuku.com/si','name'=>'Kushuku','crawl_site_articles' => false,'recommend' => false},
       '云书阁' => {'pattern'=>'/yunshuge.com/si','name'=>'Yunshuge','crawl_site_articles' => false,'recommend' => false},
-      'TXT小说下载' => {'pattern'=>'/txtbbs.com/si','name'=>'Txtbbs','crawl_site_articles' => false,'recommend' => false},
       '迪文小说网' => {'pattern'=>'/dwxs.net/si','name'=>'Dwxs','crawl_site_articles' => false,'recommend' => false},
       '燃文吧' => {'pattern'=>'/ranwenba.net/si','name'=>'Ranwenba','crawl_site_articles' => false,'recommend' => false},
       '二百五书院' => {'pattern'=>'/250sy.com/si','name'=>'Sy250','crawl_site_articles' => false,'recommend' => false},

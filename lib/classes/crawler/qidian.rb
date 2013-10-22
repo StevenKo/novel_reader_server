@@ -32,23 +32,30 @@ class Crawler::Qidian
   end
 
   def crawl_article article
-    nodes = @page_html.css("script")
-    url = ""
-    nodes.each do |node|
-      url = node[:src] if (node[:src].index('txt')) if node[:src]
+    node = @page_html.css("#content")
+
+    if @page_url.index('big5')
+      node.css("a,script").remove
+    else
+      nodes = @page_html.css("script")
+      url = ""
+      nodes.each do |node|
+        url = node[:src] if (node[:src].index('txt')) if node[:src]
+      end
+      text = ''
+      begin
+        open(url){ |io|
+            text = io.read
+        }
+      rescue
+      end
+      text.force_encoding("gbk")
+      text.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
+      text = text.gsub("document.write(","")
+      text = text.gsub("<a href=http://www.qidian.com>起点中文网 www.qidian.com 欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！</a>');","")
+      node = Nokogiri::HTML.parse text
     end
-    text = ''
-    begin
-      open(url){ |io|
-          text = io.read
-      }
-    rescue
-    end
-    text.force_encoding("gbk")
-    text.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
-    text = text.gsub("document.write(","")
-    text = text.gsub("<a href=http://www.qidian.com>起点中文网 www.qidian.com 欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！</a>');","")
-    node = Nokogiri::HTML.parse text
+
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
