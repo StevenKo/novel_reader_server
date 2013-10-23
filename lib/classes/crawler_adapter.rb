@@ -111,6 +111,7 @@ class CrawlerAdapter
       '言情小屋' => {'pattern'=>'/yqxw.net/si','name'=>'Yqxw','crawl_site_articles' => true,'recommend' => false},
       '天天书吧' => {'pattern'=>'/ttshu8.com/si','name'=>'Ttshu8','crawl_site_articles' => true,'recommend' => false},
       'TXT小说下载' => {'pattern'=>'/txtbbs.com/si','name'=>'Txtbbs','crawl_site_articles' => true,'recommend' => false},
+      '熱閱讀' => {'pattern'=>'/reyuedu.com/si','name'=>'Reyuedu','crawl_site_articles' => true,'recommend' => false},
 
       '全本書庫' => {'pattern'=>'/qbshuku.com/si','name'=>'Qbshuku','crawl_site_articles' => false,'recommend' => false},
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},

@@ -25,7 +25,7 @@ class Crawler::U8xs
           article.num = $1.to_i
           article.save
         end
-        # ArticleWorker.perform_async(article.id)
+        ArticleWorker.perform_async(article.id)
       end
     end
   end
