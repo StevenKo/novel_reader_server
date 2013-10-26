@@ -11,6 +11,10 @@ class Crawler::Xianjie
         subject = ZhConv.convert("zh-tw",node.text.strip)
       elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
+        if article
+          article.is_show = true
+          article.save
+        end
         next if article
 
         unless article 
@@ -26,7 +30,7 @@ class Crawler::Xianjie
         # puts node.text
         article.save
         end
-        ArticleWorker.perform_async(article.id)          
+        # ArticleWorker.perform_async(article.id)          
       end
     end
   end

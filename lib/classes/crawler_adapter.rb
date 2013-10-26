@@ -75,6 +75,7 @@ class CrawlerAdapter
       '大众小说网' => {'pattern'=>'/dzxsw.net/si','name'=>'Dzxsw','crawl_site_articles' => true,'recommend' => false},
       'Zwwx' => {'pattern'=>'/zwwx.com/si','name'=>'Zwwx','crawl_site_articles' => true,'recommend' => true},
       '言情小说吧' => {'pattern'=>'/xs8.cn/si','name'=>'Xs8','crawl_site_articles' => true,'recommend' => false},
+      '言情小说吧2' => {'pattern'=>'/xs8.com.cn/si','name'=>'Xs8','crawl_site_articles' => true,'recommend' => false},
       '5200小说网-吾爱小说' => {'pattern'=>'/5200xs.net/si','name'=>'Xs5200','crawl_site_articles' => true,'recommend' => false},
       '5200小说网' => {'pattern'=>'/5200.net/si','name'=>'Net5200','crawl_site_articles' => true,'recommend' => false},
       '爱尚小说网' => {'pattern'=>'/23hh.com/si','name'=>'Hh23','crawl_site_articles' => true,'recommend' => false},
@@ -112,6 +113,7 @@ class CrawlerAdapter
       '天天书吧' => {'pattern'=>'/ttshu8.com/si','name'=>'Ttshu8','crawl_site_articles' => true,'recommend' => false},
       'TXT小说下载' => {'pattern'=>'/txtbbs.com/si','name'=>'Txtbbs','crawl_site_articles' => true,'recommend' => false},
       '熱閱讀' => {'pattern'=>'/reyuedu.com/si','name'=>'Reyuedu','crawl_site_articles' => true,'recommend' => false},
+      '天異文學' => {'pattern'=>'/tianyibook.com/si','name'=>'Tianyibook','crawl_site_articles' => true,'recommend' => false},
 
       '全本書庫' => {'pattern'=>'/qbshuku.com/si','name'=>'Qbshuku','crawl_site_articles' => false,'recommend' => false},
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},

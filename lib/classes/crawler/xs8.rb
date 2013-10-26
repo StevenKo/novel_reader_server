@@ -5,7 +5,10 @@ class Crawler::Xs8
   def crawl_articles novel_id
     url = ""
     nodes = @page_html.css("div.mod_container a")
+    nodes = @page_html.css("#zjlist a") unless nodes.present?
+ 
     nodes.each do |node|
+        url = "http://www.xs8.com.cn" unless node[:href].index("xs8")
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
         next if article
 
@@ -27,7 +30,7 @@ class Crawler::Xs8
   end
 
   def crawl_article article
-    text = @page_html.css("div.chapter_content").text.strip
+    text = @page_html.css("#content").text.strip
     text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
