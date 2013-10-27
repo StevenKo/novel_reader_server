@@ -28,7 +28,7 @@ class Crawler::Ranwen
 
   def crawl_article article
     node = @page_html.css("div#content")
-    node.css('script,font,#fenye,div[align=center],.ads,style').remove
+    node.css('script,#fenye,div[align=center],.ads,style').remove
     text = node.text.strip
     if text.length < 50
       imgs = @page_html.css(".divimage img")
