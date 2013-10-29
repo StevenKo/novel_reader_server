@@ -22,7 +22,7 @@ class Crawler::Net5200
         # puts node.text
         article.save
       end
-      # ArticleWorker.perform_async(article.id)
+      ArticleWorker.perform_async(article.id)
     end
   end
 

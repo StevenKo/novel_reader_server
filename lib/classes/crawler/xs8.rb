@@ -30,7 +30,8 @@ class Crawler::Xs8
   end
 
   def crawl_article article
-    text = @page_html.css("#content").text.strip
+    node = @page_html.css(".chapter_content")
+    text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
