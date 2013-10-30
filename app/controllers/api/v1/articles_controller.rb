@@ -74,7 +74,7 @@ class Api::V1::ArticlesController < Api::ApiController
     params[:num] = Article.select("num").find(params[:article_id]).num if(params[:num] == "0")
     articles = Article.select("id").where("novel_id = #{params[:novel_id]} and num < #{params[:num]}").show.by_num_desc
     if articles.length > 0
-      render :json => Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[articles.length-1].id)
+      render :json => Article.joins(:article_text).select('articles.id, novel_id, text, title,num').find(articles[0].id)
     else
       render :json => nil
     end
