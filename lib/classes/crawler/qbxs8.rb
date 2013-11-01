@@ -31,7 +31,7 @@ class Crawler::Qbxs8
     @page_html.css("div.text h1").remove
     @page_html.css("div.text h2").remove
     @page_html.css("div.text script").remove
-    text = @page_html.css("div.text").text.strip
+    text = change_node_br_to_newline(@page_html.css("div.text")).strip
     text = text.gsub("*  * 女  生 小  说  网 - http://www.qbxs8.com - 好  看  的  女  生 小  说     ★★★★★薄情锦郁★★★★★ ","")
     text = ZhConv.convert("zh-tw", text)
     
