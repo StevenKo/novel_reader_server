@@ -33,8 +33,13 @@ class Crawler::P9wx
     if text.length < 100
       begin
         url = "http://tw.9pwx.com"
-        text = @page_html.css(".divimage img")[0][:src]
-        text = url + text + "*&&$$*" + "如果看不到圖片, 請更新至新版"  
+        imgs = @page_html.css(".divimage img")
+        text_img = ""
+        imgs.each do |img|
+            text_img = text_img + url + img[:src] + "*&&$$*"
+        end
+        text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+        text = text_img
       rescue Exception => e      
       end
     else
