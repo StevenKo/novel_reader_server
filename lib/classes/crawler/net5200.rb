@@ -32,7 +32,8 @@ class Crawler::Net5200
     @page_html.css("script,a,table,td,.header,#www5200_net_topimg,.title,#shop,head,center,.copyright,#shop1").remove
     node = @page_html
     text = change_node_br_to_newline(node).strip
-
+    text = ZhConv.convert("zh-tw", text.strip)
+    
     if text .length < 80
       imgs = @page_html.css("img")
       text_img = ""
