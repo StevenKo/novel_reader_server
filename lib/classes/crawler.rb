@@ -119,7 +119,7 @@ module Crawler
 
   def isArticleTextOK article,text
     return true unless article.is_show if article
-    article != nil && text != nil && (text.size > 80 || text.index('.gif') || text.index('.jpg'))
+    article != nil && text != nil && (text.size > 80 || text.index('.gif') || text.index('.jpg') || text.index('.png'))
   end
 
   
