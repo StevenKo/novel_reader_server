@@ -6,7 +6,7 @@ class Crawler::Zwxiaoshuo
   def crawl_novels category_id
     nodes = @page_html.css("#lbox ul")
     nodes.each do |node|
-      link = "http://www.zwxiaoshuo.com/" + node.css(".t3 a")[0][:href]
+      link = "http://www.zwxiaoshuo.com" + node.css(".t3 a")[0][:href]
       description = node.css(".t3 a")[0][:title]
       author = node.css(".t4 a")[0].text
       update_time = Time.now.strftime("%Y-%m-%d")
