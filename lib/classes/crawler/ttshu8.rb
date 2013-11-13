@@ -31,7 +31,7 @@ class Crawler::Ttshu8
 
     node = @page_html.css("#content")
     text = change_node_br_to_newline(node).strip
-
+    text = ZhConv.convert("zh-tw", text)
 
     if text.length < 70
       imgs = @page_html.css("#content img")

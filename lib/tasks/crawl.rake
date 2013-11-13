@@ -33,19 +33,20 @@ namespace :crawl do
   end
 
   task :crawl_articles_and_update_novel => :environment do
-    Novel.select("id").find_in_batches do |novels|
+    Novel.where("is_show = true").select("id").find_in_batches do |novels|
       novels.each do |novel|
         CrawlWorker.perform_async(novel.id)
       end
     end
   end
 
-  task :set_novel_last_update => :environment do
-    Novel.select("id,last_update").find_in_batches do |novels|
+  task :set_novel_last_update_and_num => :environment do
+    Novel.select("id,last_update,article_num").find_in_batches do |novels|
       novels.each do |novel|
-        if novel.articles.size > 0
-          time = novel.articles.last.created_at.strftime("%y-%m-%d")
+        if novel.articles.show.size > 0
+          time = novel.articles.show.last.created_at.strftime("%y-%m-%d")
           novel.last_update = time
+          novel.article_num = novel.articles.show.size.to_s + "篇"
           novel.save
         end
       end
