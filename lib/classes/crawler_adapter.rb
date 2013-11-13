@@ -116,6 +116,7 @@ class CrawlerAdapter
       '天異文學' => {'pattern'=>'/tianyibook.com/si','name'=>'Tianyibook','crawl_site_articles' => true,'recommend' => false},
       '看啦又看小说网' => {'pattern'=>'/k6uk.com/si','name'=>'K6uk','crawl_site_articles' => true,'recommend' => false},
       '笔下阁' => {'pattern'=>'/bixiage.com/si','name'=>'Bixiage','crawl_site_articles' => true,'recommend' => false},
+      '皮皮小說網' => {'pattern'=>'/ppxsw.com/si','name'=>'Ppxsw','crawl_site_articles' => true,'recommend' => false},
 
       '天天中文網' => {'pattern'=>'/ttzw365.com/si','name'=>'Ttzw365','crawl_site_articles' => false,'recommend' => false},
       '全本書庫' => {'pattern'=>'/qbshuku.com/si','name'=>'Qbshuku','crawl_site_articles' => false,'recommend' => false},
