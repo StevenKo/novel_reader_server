@@ -4,8 +4,9 @@ class Crawler::Kanunu
 
   def crawl_articles novel_id
     nodes = @page_html.xpath("//tr[@bgcolor='#ffffff']//a")
-    url = @page_url.gsub("index.html","")
-    url = url.gsub(/\d*\.html/,"")
+    # url = @page_url.gsub("index.html","")
+    # url = url.gsub(/\d*\.html/,"")
+    url = "http://book.kanunu.org"
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
       next if article
@@ -28,7 +29,7 @@ class Crawler::Kanunu
   end
 
   def crawl_article article
-    text = @page_html.css("tr p").text.strip
+    text = @page_html.css("#content").text.strip
     text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
@@ -64,7 +65,7 @@ class Crawler::Kanunu
     if(nodes.size == 0)
       nodes = @page_html.css("tr[bgcolor='#fff7e7'] a")
       nodes.each do |node|
-        link = link = "http://book.kanunu.org" + node[:href]
+        link = "http://book.kanunu.org" + node[:href]
         author = @page_html.css("h2").text.strip.sub("作品集","")
         name = node.text.strip
         novel = Novel.find_by_link link
