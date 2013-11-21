@@ -8,6 +8,10 @@ class Crawler::Kanunu
     # url = url.gsub(/\d*\.html/,"")
     url = "http://book.kanunu.org"
     nodes.each do |node|
+      unless node[:href].index('book')
+        url = @page_url.gsub("index.html","")
+        url = url.gsub(/\d*\.html/,"")
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
       next if article
 
@@ -30,6 +34,9 @@ class Crawler::Kanunu
 
   def crawl_article article
     text = @page_html.css("#content").text.strip
+    unless text.size > 100
+      text = @page_html.css("td[width='820']").text
+    end
     text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
