@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130928084809) do
+ActiveRecord::Schema.define(:version => 20131127154922) do
 
   create_table "admins", :force => true do |t|
     t.string   "password_digest"
@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(:version => 20130928084809) do
   add_index "articles", ["link"], :name => "index_articles_on_link"
   add_index "articles", ["novel_id"], :name => "index_articles_on_novel_id"
   add_index "articles", ["num"], :name => "index_articles_on_num"
-  add_index "articles", ["title"], :name => "index_articles_on_title"
 
   create_table "categories", :force => true do |t|
     t.string   "name"
