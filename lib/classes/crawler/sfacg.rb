@@ -56,7 +56,7 @@ class Crawler::Sfacg
       imgs = @page_html.css("#ChapterBody img")
       text_img = ""
       imgs.each do |img|
-        if img[:src].index("sfacg.com")
+        if img[:src].index("ttp://")
           text_img = text_img + img[:src] + "*&&$$*"
         else
           text_img = text_img + url + img[:src] + "*&&$$*"
