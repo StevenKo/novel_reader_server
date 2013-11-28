@@ -117,7 +117,10 @@ class CrawlerAdapter
       '看啦又看小说网' => {'pattern'=>'/k6uk.com/si','name'=>'K6uk','crawl_site_articles' => true,'recommend' => false},
       '笔下阁' => {'pattern'=>'/bixiage.com/si','name'=>'Bixiage','crawl_site_articles' => true,'recommend' => false},
       '皮皮小說網' => {'pattern'=>'/ppxsw.com/si','name'=>'Ppxsw','crawl_site_articles' => true,'recommend' => false},
+      '无错小说网' => {'pattern'=>'/wcxiaoshuo.com/si','name'=>'Wcxiaoshuo','crawl_site_articles' => true,'recommend' => false},
 
+
+      '螞蟻創作網' => {'pattern'=>'/antscreation.com/si','name'=>'Antscreation','crawl_site_articles' => false,'recommend' => false},
       '天天中文網' => {'pattern'=>'/ttzw365.com/si','name'=>'Ttzw365','crawl_site_articles' => false,'recommend' => false},
       '全本書庫' => {'pattern'=>'/qbshuku.com/si','name'=>'Qbshuku','crawl_site_articles' => false,'recommend' => false},
       '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},
@@ -126,7 +129,6 @@ class CrawlerAdapter
       '四海网' => {'pattern'=>'/4hw.com.cn/si','name'=>'Hw4','crawl_site_articles' => false,'recommend' => false},
       '热门小说阅读' => {'pattern'=>'/52buk.com/si','name'=>'Buk52','crawl_site_articles' => false,'recommend' => false},
       '阿甘小说网' => {'pattern'=>'/8535.org/si','name'=>'Org8535','crawl_site_articles' => false,'recommend' => false},
-      '无错小说网' => {'pattern'=>'/wcxiaoshuo.com/si','name'=>'Wcxiaoshuo','crawl_site_articles' => false,'recommend' => false},
       'u8小说' => {'pattern'=>'/u8xs.com/si','name'=>'U8xs','crawl_site_articles' => false,'recommend' => false},
       '六叶中文网' => {'pattern'=>'/6ycn.net/si','name'=>'Ycn6','crawl_site_articles' => false,'recommend' => false},
       '108小说网' => {'pattern'=>'/book108.com/si','name'=>'Book108','crawl_site_articles' => false,'recommend' => false},
