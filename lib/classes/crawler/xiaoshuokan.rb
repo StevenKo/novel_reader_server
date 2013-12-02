@@ -46,7 +46,7 @@ class Crawler::Xiaoshuokan
     text = text.gsub("&nWww.xiaoｓhuoｋａn.Com","")
     text = text.gsub("WWW.ｘｉａｏｓｈｕｏｋａｎ.ｃｏｍ","")
 
-    if text.length < 100
+    if text.length < 250 || article.title.index("T")
       imgs = @page_html.css(".bookcontent .divimage img")
       text_img = ""
       imgs.each do |img|
