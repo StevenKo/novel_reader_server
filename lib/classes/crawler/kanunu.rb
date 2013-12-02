@@ -8,7 +8,7 @@ class Crawler::Kanunu
     # url = url.gsub(/\d*\.html/,"")
     url = "http://book.kanunu.org"
     nodes.each do |node|
-      unless node[:href].index('book')
+      unless node[:href].index('book') || node[:href].index('files')
         url = @page_url.gsub("index.html","")
         url = url.gsub(/\d*\.html/,"")
       end
