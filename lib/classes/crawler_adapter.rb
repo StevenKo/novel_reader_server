@@ -120,8 +120,10 @@ class CrawlerAdapter
       '笔下阁' => {'pattern'=>'/bixiage.com/si','name'=>'Bixiage','crawl_site_articles' => true,'recommend' => false},
       '皮皮小說網' => {'pattern'=>'/ppxsw.com/si','name'=>'Ppxsw','crawl_site_articles' => true,'recommend' => false},
       '无错小说网' => {'pattern'=>'/wcxiaoshuo.com/si','name'=>'Wcxiaoshuo','crawl_site_articles' => true,'recommend' => false},
-      
+      '夢想島中文' => {'pattern'=>'/tw.mxdzw.com/si','name'=>'Mxdzw','crawl_site_articles' => true,'recommend' => false},
+      '书客居' => {'pattern'=>'/shukeju.com/si','name'=>'Shukeju','crawl_site_articles' => true,'recommend' => false},
 
+      '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
       '寶馬小說網' => {'pattern'=>'/baomaxs.com/si','name'=>'Baomaxs','crawl_site_articles' => false,'recommend' => false},
       '7788' => {'pattern'=>'/7788xiaoshuo.com/si','name'=>'Xiaoshuo7788','crawl_site_articles' => false,'recommend' => false},
       '螞蟻創作網' => {'pattern'=>'/antscreation.com/si','name'=>'Antscreation','crawl_site_articles' => false,'recommend' => false},
