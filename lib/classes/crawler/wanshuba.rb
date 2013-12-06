@@ -6,7 +6,7 @@ class Crawler::Wanshuba
     imgs = @page_html.css("img#imgbook")
     text_img = ""
     imgs.each do |img|
-        text_img = text_img + img[:src] + "*&&$$*"
+        text_img = text_img + "http://www.wanshuba.com" + img[:src] + "*&&$$*"
     end
     text_img = text_img + "如果看不到圖片, 請更新至新版"
     text = text_img

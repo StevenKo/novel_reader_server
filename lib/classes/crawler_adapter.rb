@@ -122,6 +122,7 @@ class CrawlerAdapter
       '无错小说网' => {'pattern'=>'/wcxiaoshuo.com/si','name'=>'Wcxiaoshuo','crawl_site_articles' => true,'recommend' => false},
       '夢想島中文' => {'pattern'=>'/tw.mxdzw.com/si','name'=>'Mxdzw','crawl_site_articles' => true,'recommend' => false},
       '书客居' => {'pattern'=>'/shukeju.com/si','name'=>'Shukeju','crawl_site_articles' => true,'recommend' => false},
+      '乐读窝' => {'pattern'=>'/leduwo.com/si','name'=>'Leduwo','crawl_site_articles' => true,'recommend' => false},
 
       '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
       '寶馬小說網' => {'pattern'=>'/baomaxs.com/si','name'=>'Baomaxs','crawl_site_articles' => false,'recommend' => false},
