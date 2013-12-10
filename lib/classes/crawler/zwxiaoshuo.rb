@@ -33,6 +33,7 @@ class Crawler::Zwxiaoshuo
         novel.save
       end
       CrawlWorker.perform_async(novel.id)
+      sleep 10
     end
   end
 

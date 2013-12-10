@@ -1,18 +1,19 @@
 # encoding: utf-8
-class Crawler::Ranwenba
+class Crawler::Txt136
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".contentandborder a")
+    url = "http://www.136txt.com"
+    nodes = @page_html.css(".con a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url + node[:href]
-        article.title = node.text.strip
+        article.link = url + node[:href]
+        article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -24,12 +25,14 @@ class Crawler::Ranwenba
       ArticleWorker.perform_async(article.id)
     end
   end
-  
+
   def crawl_article article
-    node = @page_html.css("#booktext")
-    node.css("script").remove
-    text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = change_node_br_to_newline(@page_html.css("#chapterContent"))
+    text = text.gsub("&nbsp;","")
+    text = text.gsub("http://www.136txt.com","")
+    text = text.gsub("136ｔｘｔ.com","")
+    text = text.gsub("136txt.ｃｏｍ","")
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

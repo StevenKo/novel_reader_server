@@ -37,12 +37,14 @@ class Crawler::Quanben
   end
 
   def crawl_article article
-    text = @page_html.css("#content").text.strip
+
+    text = change_node_br_to_newline(@page_html.css("#content"))
     text = text.gsub(/[a-zA-Z]/,"")
     text = text.gsub("全本小说网","")
     text = text.gsub("wWw!QuanBEn!CoM","")
     text = text.gsub("(www.quanben.com)","")
     article_text = ZhConv.convert("zh-tw",text)
+    
     text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
