@@ -125,6 +125,7 @@ class CrawlerAdapter
       '乐读窝' => {'pattern'=>'/leduwo.com/si','name'=>'Leduwo','crawl_site_articles' => true,'recommend' => false},
       '17xie' => {'pattern'=>'/17xie.com/si','name'=>'Xie17','crawl_site_articles' => true,'recommend' => false},
       '136txt' => {'pattern'=>'/136txt.com/si','name'=>'Txt136','crawl_site_articles' => true,'recommend' => false},
+      '136书屋' => {'pattern'=>'/136book.com/si','name'=>'Book136','crawl_site_articles' => true,'recommend' => false},
 
       '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
       '寶馬小說網' => {'pattern'=>'/baomaxs.com/si','name'=>'Baomaxs','crawl_site_articles' => false,'recommend' => false},
