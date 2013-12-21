@@ -30,6 +30,7 @@ class Crawler::D586
 
   def crawl_article article
     node = @page_html.css(".content")
+    node = @page_html.css(".yd_text2") unless node.present?
     node.css("a").remove
     node.css("script").remove
     text = change_node_br_to_newline(node)

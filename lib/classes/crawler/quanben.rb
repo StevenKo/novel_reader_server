@@ -8,7 +8,7 @@ class Crawler::Quanben
     subject = ""
     nodes.each do |node|
       if (node.children.size() == 1)
-        subject = ZhConv.convert("zh-tw",node.children.text.strip)
+        subject = novel.name
       elsif (node.children.size() == 4)
         inside_nodes = node.children.children
         inside_nodes.each do |n|

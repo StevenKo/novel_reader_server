@@ -26,10 +26,22 @@ class Crawler::Uuxs
   end
 
   def crawl_article article
-    node = @page_html.css("#content")
-    node.css("#adtop,#notify,script,.divimage,#endtips,.pageTools").remove
-    text = node.text.strip
-    text = ZhConv.convert("zh-tw", text.strip)
+
+    if article.title.index("T")
+      imgs = @page_html.css(".divimage img")
+      text_img = ""
+      imgs.each do |img|
+        text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    else
+      node = @page_html.css("#content")
+      node.css("#adtop,#notify,script,.divimage,#endtips,.pageTools").remove
+      text = node.text.strip
+      text = ZhConv.convert("zh-tw", text.strip)
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
