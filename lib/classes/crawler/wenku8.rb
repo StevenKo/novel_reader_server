@@ -50,4 +50,71 @@ class Crawler::Wenku8
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel category_id
+    link = @page_html.css("span[style='width:125px;display:inline-block;']")[0].css("a")[0][:href]
+    author = @page_html.css("td[width='25%']")[1].text.gsub("小说作者：","")
+    name = @page_html.css("td[width='80%'][align='center'][valign='middle'] b").text
+
+    html = @page_html.css("td[width='80%'][valign='top']")
+    html.css(".hottext, a").remove
+    description = html.text.strip
+    
+    pic = @page_html.css("td[width='20%'][align='center'][valign='top'] img")[0][:src]
+    is_serializing = (@page_html.css("td[width='25%']")[2].text.index("连载中") ? true : false)
+    
+    novel =  Novel.find_by_link link
+    unless novel
+      novel = Novel.new
+      novel.link = link
+      novel.name = ZhConv.convert("zh-tw",name)
+      novel.author = ZhConv.convert("zh-tw",author)
+      novel.description = ZhConv.convert("zh-tw",description)
+      novel.category_id = category_id
+      novel.is_show = true
+      novel.is_serializing = is_serializing
+      novel.pic = pic
+      novel.article_num = "?"
+      novel.last_update = Time.now.strftime("%y-%m-%d")
+      novel.save
+      CrawlWorker.perform_async(novel.id)
+    end
+    novel
+  end
+
+  def crawl_rank
+    nodes = @page_html.css(".ultop")
+
+    nodes.each_with_index do |node,i|
+      a_nodes = node.css("a")
+      a_nodes.each do |a_node|
+
+        novel_intro_link = a_node[:href]
+        novel_name = ZhConv.convert("zh-tw",a_node.text.strip)
+        /id=(\d*)/ =~ a_node[:href]
+        novel_link = "http://www.wenku8.cn/novel/#{$1.to_i / 1000}/#{$1}/index.htm"
+
+        novel =  Novel.find_by_link(novel_link)
+        novel =  Novel.find_by_name(novel_name) unless novel
+        
+        begin
+          unless novel
+            crawler = CrawlerAdapter.get_instance novel_intro_link
+            crawler.fetch novel_intro_link
+            novel = crawler.crawl_novel 23
+          end
+          case i
+          when 0..5
+            novel.is_category_recommend = true
+          when 6..10
+            novel.is_category_this_week_hot = true
+          else
+            novel.is_category_hot = true
+          end
+          novel.save
+        rescue
+        end
+      end
+    end
+  end
+
 end

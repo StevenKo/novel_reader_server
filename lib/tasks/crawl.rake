@@ -11,26 +11,94 @@ namespace :crawl do
     end
   end
 
-  task :crawl_cat_ranks => :environment do
-    Novel.update_all({:is_category_recommend => false , :is_category_hot => false, :is_category_this_week_hot => false})
-    categories = Category.all
+  # task :crawl_cat_ranks => :environment do
+  #   Novel.update_all({:is_category_recommend => false , :is_category_hot => false, :is_category_this_week_hot => false})
+  #   categories = Category.all
     
-    categories.each do |category|
-      crawler = CrawlerAdapter.get_instance category.cat_link
-      crawler.fetch category.cat_link
-      crawler.crawl_cat_rank category.id
+  #   categories.each do |category|
+  #     crawler = CrawlerAdapter.get_instance category.cat_link
+  #     crawler.fetch category.cat_link
+  #     crawler.crawl_cat_rank category.id
+  #   end
+  # end
+
+  # task :crawl_rank => :environment do
+  #   ThisWeekHotShip.delete_all
+  #   ThisMonthHotShip.delete_all
+  #   HotShip.delete_all
+  #   url = "http://www.bestory.com/html/r-1.html"
+  #   crawler = CrawlerAdapter.get_instance url
+  #   crawler.fetch url
+  #   crawler.crawl_rank
+  # end
+
+  task :crawl_this_week_hot_rank => :environment do
+    ThisWeekHotShip.delete_all
+    Novel.update_all("is_category_this_week_hot = false", "category_id > 13 and category_id < 23")
+
+    url = "http://www.ranwen.net/modules/article/toplist.php?sort=weekvisit&page="
+    
+    (1..30).each do |i|
+      crawler = CrawlerAdapter.get_instance "#{url}#{i}"
+      crawler.fetch "#{url}#{i}"
+      crawler.crawl_hot_rank "ThisWeekHotShip" 
     end
   end
 
-  task :crawl_rank => :environment do
-    ThisWeekHotShip.delete_all
+  task :crawl_this_month_hot_rank => :environment do
     ThisMonthHotShip.delete_all
+
+    url = "http://www.ranwen.net/modules/article/toplist.php?sort=monthvisit&page="
+    
+    (1..30).each do |i|
+      crawler = CrawlerAdapter.get_instance "#{url}#{i}"
+      crawler.fetch "#{url}#{i}"
+      crawler.crawl_hot_rank "ThisMonthHotShip"
+    end
+  end
+
+  task :crawl_hot_rank => :environment do
     HotShip.delete_all
-    url = "http://www.bestory.com/html/r-1.html"
+    Novel.update_all("is_category_hot = false", "category_id > 13 and category_id < 23")
+
+    url = "http://www.ranwen.net/modules/article/toplist.php?sort=allvisit&page="
+    
+    (1..30).each do |i|
+      crawler = CrawlerAdapter.get_instance "#{url}#{i}"
+      crawler.fetch "#{url}#{i}"
+      crawler.crawl_hot_rank "HotShip"
+    end
+  end
+
+  task :crawl_category_recommend_rank => :environment do
+    url = "http://www.ranwen.net/modules/article/toplist.php?sort=monthvote&page="
+    Novel.update_all("is_category_recommend = false", "category_id > 13 and category_id < 23")
+
+    (1..30).each do |i|
+      crawler = CrawlerAdapter.get_instance "#{url}#{i}"
+      crawler.fetch "#{url}#{i}"
+      crawler.crawl_category_recommend_rank
+    end
+  end
+
+  task :crawl_light_novel_rank => :environment do
+    #category_23
+    Novel.update_all({:is_category_recommend => false , :is_category_hot => false, :is_category_this_week_hot => false},"category_id = 23")
+    url = "http://www.wenku8.cn/top.php"
     crawler = CrawlerAdapter.get_instance url
     crawler.fetch url
     crawler.crawl_rank
   end
+
+  # task :change_wenku8_link => :environment do
+  #   Novel.where(["link like ?", "%wenku8%"]).each do |novel|
+  #     unless novel.link.index("htm")
+  #       /id=(\d*)/ =~ novel.link
+  #       novel.link = "http://www.wenku8.cn/novel/#{$1.to_i / 1000}/#{$1}/index.htm"
+  #       novel.save
+  #     end
+  #   end
+  # end
 
   task :crawl_articles_and_update_novel => :environment do
     Novel.where("is_show = true").select("id").find_in_batches do |novels|

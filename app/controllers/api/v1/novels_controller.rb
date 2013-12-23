@@ -3,15 +3,13 @@ class Api::V1::NovelsController < Api::ApiController
   def index
     category_id = params[:category_id]
     # order = params[:order]
-    novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15)
+    unless category_id == "13"
+      novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+    else
+      novels = Novel.where('is_serializing = false').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+    end
     render :json => novels
   end
-
-  # def db_transfer_index
-  #   category_id = params[:category_id]
-  #   novels = Novel.where('category_id = (?)', category_id).select("id,link,is_classic,is_classic_action")
-  #   render :json => novels
-  # end
 
   def show
     novel = Novel.find(params[:id])
@@ -20,25 +18,41 @@ class Api::V1::NovelsController < Api::ApiController
 
   def category_hot
     category_id = params[:category_id]
-    novels = Novel.where('category_id = (?) and is_category_hot = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing")
+    unless category_id == "13"
+      novels = Novel.where('category_id = (?) and is_category_hot = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
+    else
+      novels = Novel.where('is_serializing = false and is_category_hot = true').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+    end
     render :json => novels
   end
 
   def category_this_week_hot
     category_id = params[:category_id]
-    novels = Novel.where('category_id = (?) and is_category_this_week_hot = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing")
+    unless category_id == "13"
+      novels = Novel.where('category_id = (?) and is_category_this_week_hot = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
+    else
+      novels = Novel.where('is_serializing = false and is_category_this_week_hot = true').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+    end
     render :json => novels
   end
 
   def category_recommend
     category_id = params[:category_id]
-    novels = Novel.where('category_id = (?) and is_category_recommend = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing")
+    unless category_id == "13"
+      novels = Novel.where('category_id = (?) and is_category_recommend = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
+    else
+      novels = Novel.where('is_serializing = false and is_category_recommend = true').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+    end
     render :json => novels
   end
 
   def category_latest_update
     category_id = params[:category_id]
-    novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 15)
+    unless category_id == "13"
+      novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 15)
+    else
+      novels = Novel.where('is_serializing = false').order("updated_at DESC").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15)
+    end
     render :json => novels
   end
 

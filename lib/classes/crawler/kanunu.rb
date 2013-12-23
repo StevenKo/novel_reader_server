@@ -65,30 +65,29 @@ class Crawler::Kanunu
         novel.is_serializing = 0
         novel.pic = pic
         novel.save
+        CrawlWorker.perform_async(novel.id)
       end
-      CrawlWorker.perform_async(novel.id)
     end
 
-    if(nodes.size == 0)
-      nodes = @page_html.css("tr[bgcolor='#fff7e7'] a")
-      nodes.each do |node|
-        link = "http://book.kanunu.org" + node[:href]
-        author = @page_html.css("h2").text.strip.sub("作品集","")
-        name = node.text.strip
-        novel = Novel.find_by_link link
-        unless novel
-          novel = Novel.new
-          novel.link = link
-          novel.name = ZhConv.convert("zh-tw",name)
-          novel.author = ZhConv.convert("zh-tw",author)
-          novel.category_id = category_id
-          novel.is_show = true
-          novel.is_serializing = 0
-          novel.last_update = Time.now.strftime("%m/%d/%Y")
-          novel.article_num = "?"
-          crawl_novel_description link,novel
-          novel.save
-        end
+    nodes = @page_html.css("tr[bgcolor='#fff7e7'] a strong")
+    nodes.each do |node|
+      node = node.parent
+      link = "http://book.kanunu.org" + node[:href]
+      author = @page_html.css("h2").text.strip.sub("作品集","")
+      name = node.text.strip
+      novel = Novel.find_by_link link
+      unless novel
+        novel = Novel.new
+        novel.link = link
+        novel.name = ZhConv.convert("zh-tw",name)
+        novel.author = ZhConv.convert("zh-tw",author)
+        novel.category_id = category_id
+        novel.is_show = true
+        novel.is_serializing = 0
+        novel.last_update = Time.now.strftime("%m/%d/%Y")
+        novel.article_num = "?"
+        crawl_novel_description link,novel
+        novel.save
         CrawlWorker.perform_async(novel.id)
       end
     end

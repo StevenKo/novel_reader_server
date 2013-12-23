@@ -45,4 +45,98 @@ class Crawler::Ranwen
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel category_id
+    link = @page_html.css("b a#m_reader")[0][:href]
+    author = @page_html.css("td[height='20'][align='center'] a b").text.strip
+    name = @page_html.css("b a#m_reader")[0][:alt]
+    description = @page_html.css("#CrbsSum").text.strip
+    pic = @page_html.css("img.picborder")[0][:src]
+    is_serializing = (@page_html.css("td[height='20'][align='center'][width='19%']").text.strip == "连载中")
+    novel =  Novel.find_by_link link
+    unless novel
+      novel = Novel.new
+      novel.link = link
+      novel.name = ZhConv.convert("zh-tw",name)
+      novel.author = ZhConv.convert("zh-tw",author)
+      novel.description = ZhConv.convert("zh-tw",description)
+      novel.category_id = category_id
+      novel.is_show = true
+      novel.is_serializing = is_serializing
+      novel.pic = pic
+      novel.article_num = "?"
+      novel.last_update = Time.now.strftime("%y-%m-%d")
+      novel.save
+      CrawlWorker.perform_async(novel.id)
+    end
+    novel
+  end
+# 1(魔法異界),2(仙武異能),3(言情敘事),4(時光穿越),5(科幻太空),6(靈異軍事),7(游戲體育),8(動漫日輕),9(曆史紀實),10(名著古典),11(科普其它),12(原創) 
+  def crawl_hot_rank relation
+
+    cs = Category.all.map(&:name)
+    hash = Hash[cs.map.with_index.to_a]
+
+    nodes = @page_html.css(".sf-grid tbody tr")
+    nodes.each do |node|
+      td_nodes = node.css("td")
+      /\[(.*)\]/ =~ td_nodes[0].text
+      category_name = ZhConv.convert("zh-tw",$1)
+      category_id = hash[category_name] + 1
+      novel_name = ZhConv.convert("zh-tw",td_nodes[1].text.strip)
+      novel_link = td_nodes[1].css("a")[0][:href]
+      novel =  Novel.find_by_link(novel_link)
+      novel =  Novel.find_by_name(novel_name) unless novel
+      begin
+        unless novel
+          crawler = CrawlerAdapter.get_instance novel_link
+          crawler.fetch novel_link
+          novel = crawler.crawl_novel category_id
+        end
+
+        if relation == "ThisWeekHotShip"
+          novel.is_category_this_week_hot = true
+          novel.save
+        end
+
+        if relation == "HotShip"
+          novel.is_category_hot = true
+          novel.save
+        end
+
+        ship = eval "#{relation}.new"
+        ship.novel_id = novel.id
+        ship.save
+      rescue
+      end
+    end
+  end
+
+  def crawl_category_recommend_rank
+    cs = Category.all.map(&:name)
+    hash = Hash[cs.map.with_index.to_a]
+
+    nodes = @page_html.css(".sf-grid tbody tr")
+    nodes.each do |node|
+      td_nodes = node.css("td")
+      /\[(.*)\]/ =~ td_nodes[0].text
+      category_name = ZhConv.convert("zh-tw",$1)
+      category_id = hash[category_name]
+      novel_name = ZhConv.convert("zh-tw",td_nodes[1].text.strip)
+      novel_link = td_nodes[1].css("a")[0][:href]
+      novel =  Novel.find_by_link(novel_link)
+      novel =  Novel.find_by_name(novel_name) unless novel
+      begin
+        unless novel
+          crawler = CrawlerAdapter.get_instance novel_link
+          crawler.fetch novel_link
+          novel = crawler.crawl_novel category_id
+        end
+        novel.is_category_recommend = true
+        novel.save
+      rescue
+      end
+    end
+  end
+
+
 end
