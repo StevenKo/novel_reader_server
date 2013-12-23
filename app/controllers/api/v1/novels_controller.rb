@@ -2,11 +2,11 @@ class Api::V1::NovelsController < Api::ApiController
 
   def index
     category_id = params[:category_id]
-    # order = params[:order]
     unless category_id == "13"
-      novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+      categoryies_id = find_same_set_ids(category_id)
+      novels = Novel.where('category_id in (?)', categoryies_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15)
     else
-      novels = Novel.where('is_serializing = false').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
+      novels = Novel.where('is_serializing = false').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15)
     end
     render :json => novels
   end
@@ -19,7 +19,8 @@ class Api::V1::NovelsController < Api::ApiController
   def category_hot
     category_id = params[:category_id]
     unless category_id == "13"
-      novels = Novel.where('category_id = (?) and is_category_hot = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
+      categoryies_id = find_same_set_ids(category_id)
+      novels = Novel.where('category_id in (?) and is_category_hot = true', categoryies_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
     else
       novels = Novel.where('is_serializing = false and is_category_hot = true').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
     end
@@ -29,7 +30,8 @@ class Api::V1::NovelsController < Api::ApiController
   def category_this_week_hot
     category_id = params[:category_id]
     unless category_id == "13"
-      novels = Novel.where('category_id = (?) and is_category_this_week_hot = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
+      categoryies_id = find_same_set_ids(category_id)
+      novels = Novel.where('category_id in (?) and is_category_this_week_hot = true', categoryies_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
     else
       novels = Novel.where('is_serializing = false and is_category_this_week_hot = true').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
     end
@@ -39,7 +41,8 @@ class Api::V1::NovelsController < Api::ApiController
   def category_recommend
     category_id = params[:category_id]
     unless category_id == "13"
-      novels = Novel.where('category_id = (?) and is_category_recommend = true', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
+      categoryies_id = find_same_set_ids(category_id)
+      novels = Novel.where('category_id in (?) and is_category_recommend = true', categoryies_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC")
     else
       novels = Novel.where('is_serializing = false and is_category_recommend = true').show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15).order("updated_at DESC")
     end
@@ -49,7 +52,8 @@ class Api::V1::NovelsController < Api::ApiController
   def category_latest_update
     category_id = params[:category_id]
     unless category_id == "13"
-      novels = Novel.where('category_id = (?)', category_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 15)
+      categoryies_id = find_same_set_ids(category_id)
+      novels = Novel.where('category_id in (?)', categoryies_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 15)
     else
       novels = Novel.where('is_serializing = false').order("updated_at DESC").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 15)
     end
@@ -102,5 +106,33 @@ class Api::V1::NovelsController < Api::ApiController
   def classic_action
     novels = Novel.where('is_classic_action = true').show.select("id,name,author,pic,article_num,last_update,is_serializing")
     render :json => novels
+  end
+
+private
+  def find_same_set_ids(category_id)
+    case category_id
+    when "14"
+      [1,14]
+    when "15"
+      [2,15]
+    when "16"
+      [3,16]
+    when "17"
+      [9,17]
+    when "18"
+      [7,18]
+    when "19"
+      [5,19]
+    when "20"
+      [6,20]
+    when "21"
+      [21]
+    when "22"
+      [22]
+    when "23"
+      [8,23]
+    else
+      [category_id.to_i]
+    end
   end
 end
