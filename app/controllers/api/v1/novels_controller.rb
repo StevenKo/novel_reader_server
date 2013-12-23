@@ -62,19 +62,19 @@ class Api::V1::NovelsController < Api::ApiController
 
   def hot
     novels_id = HotShip.all.map{|ship| ship.novel_id}.join(',')
-    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 30)
+    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 30).order("updated_at DESC")
     render :json => novels
   end
 
   def this_week_hot
     novels_id = ThisWeekHotShip.all.map{|ship| ship.novel_id}.join(',')
-    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 30)
+    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 30).order("updated_at DESC")
     render :json => novels
   end
 
   def this_month_hot
     novels_id = ThisMonthHotShip.all.map{|ship| ship.novel_id}.join(',')
-    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 30)
+    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 30).order("updated_at DESC")
     render :json => novels
   end
 
