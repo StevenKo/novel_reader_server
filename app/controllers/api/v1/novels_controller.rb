@@ -128,7 +128,7 @@ private
     when "21"
       [21]
     when "22"
-      [22]
+      [22,12]
     when "23"
       [8,23]
     else
