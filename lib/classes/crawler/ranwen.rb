@@ -29,7 +29,7 @@ class Crawler::Ranwen
   def crawl_article article
     node = @page_html.css("div#content")
     node.css('script,#fenye,div[align=center],.ads,style').remove
-    text = node.text.strip
+    text = change_node_br_to_newline(node).strip
     if text.length < 150
       imgs = @page_html.css(".divimage img")
       text_img = ""
