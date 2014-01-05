@@ -128,6 +128,7 @@ class CrawlerAdapter
       '136书屋' => {'pattern'=>'/136book.com/si','name'=>'Book136','crawl_site_articles' => true,'recommend' => false},
       '免费小说网' => {'pattern'=>'/xstxw.com/si','name'=>'Xstxw','crawl_site_articles' => true,'recommend' => false},
       '藏海花' => {'pattern'=>'/zanghaihuatxt.com/si','name'=>'Zanghaihuatxt','crawl_site_articles' => true,'recommend' => false},
+      '都市中文網' => {'pattern'=>'/dushi800.com/si','name'=>'Dushi800','crawl_site_articles' => true,'recommend' => false},
 
       '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
       '寶馬小說網' => {'pattern'=>'/baomaxs.com/si','name'=>'Baomaxs','crawl_site_articles' => false,'recommend' => false},

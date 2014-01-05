@@ -8,7 +8,7 @@ class Crawler::Xiaoshuokan
     nodes = @page_html.css(".booklist span")
     nodes.each do |node|
       if(node[:class]=="v")
-        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
+        subject = ZhConv.convert("zh-tw",node.text.gsub(".",""))
       else
         a_node = node.css("a")[0]
         url = "http://tw.xiaoshuokan.com" + a_node[:href]
