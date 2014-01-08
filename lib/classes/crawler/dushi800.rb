@@ -1,7 +1,6 @@
 # encoding: utf-8
 class Crawler::Dushi800
   include Crawler
-  include Crawler
   include Capybara::DSL
 
   def crawl_articles novel_id
@@ -41,6 +40,17 @@ class Crawler::Dushi800
 
     text = page.find('.bookcontent').native.text
     text = ZhConv.convert("zh-tw", text)
+    
+    if text.size < 100
+      imgs = page.all('.divimage img')
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

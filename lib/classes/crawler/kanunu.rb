@@ -45,7 +45,6 @@ class Crawler::Kanunu
   def crawl_novels category_id
     # puts @page_url
     nodes = @page_html.css("tr[bgcolor='#ffffff']")
-
     nodes.each do |novel_row|
       link = "http://book.kanunu.org" + novel_row.css("a")[0][:href]
       author = @page_html.css("h2").text.strip.sub("作品集","")
@@ -69,9 +68,10 @@ class Crawler::Kanunu
       end
     end
 
-    nodes = @page_html.css("tr[bgcolor='#fff7e7'] a strong")
-    nodes.each do |node|
-      node = node.parent
+    nodes = @page_html.css("tr[bgcolor='#fff7e7'] strong a")
+    nodes.each_with_index do |node,i|
+      # next if i > 5
+      # node = node.parent
       link = "http://book.kanunu.org" + node[:href]
       author = @page_html.css("h2").text.strip.sub("作品集","")
       name = node.text.strip
