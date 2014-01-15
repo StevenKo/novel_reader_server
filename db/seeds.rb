@@ -72,57 +72,63 @@
 # c.cat_link = "http://www.bestory.com/category/15.html"
 # c.save
 
-c = Category.new
-c.name = "全本小說"
-c.cat_link = "http://www.ranwen.net/modules/article/index.php?fullflag=1"
-c.save
+# c = Category.new
+# c.name = "全本小說"
+# c.cat_link = "http://www.ranwen.net/modules/article/index.php?fullflag=1"
+# c.save
+
+# c = Category.new
+# c.name = "玄幻魔法"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=1"
+# c.save
+
+# c = Category.new
+# c.name = "武俠修真"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=2"
+# c.save
+
+# c = Category.new
+# c.name = "都市言情"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=3"
+# c.save
+
+# c = Category.new
+# c.name = "歷史軍事"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=4"
+# c.save
+
+# c = Category.new
+# c.name = "游戲競技"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=5"
+# c.save
+
+# c = Category.new
+# c.name = "科幻小說"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=6"
+# c.save
+
+# c = Category.new
+# c.name = "恐怖靈異"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=7"
+# c.save
+
+# c = Category.new
+# c.name = "美文散文"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=8"
+# c.save  
+
+# c = Category.new
+# c.name = "同人小說"
+# c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=9"
+# c.save
+
+# c = Category.new
+# c.name = "輕小說"
+# c.cat_link = "http://www.wenku8.cn/top.php"
+# c.save
+
 
 c = Category.new
-c.name = "玄幻魔法"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=1"
-c.save
-
-c = Category.new
-c.name = "武俠修真"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=2"
-c.save
-
-c = Category.new
-c.name = "都市言情"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=3"
-c.save
-
-c = Category.new
-c.name = "歷史軍事"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=4"
-c.save
-
-c = Category.new
-c.name = "游戲競技"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=5"
-c.save
-
-c = Category.new
-c.name = "科幻小說"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=6"
-c.save
-
-c = Category.new
-c.name = "恐怖靈異"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=7"
-c.save
-
-c = Category.new
-c.name = "美文散文"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=8"
-c.save  
-
-c = Category.new
-c.name = "同人小說"
-c.cat_link = "http://www.ranwen.net/modules/article/articlelist.php?class=9"
-c.save
-
-c = Category.new
-c.name = "輕小說"
-c.cat_link = "http://www.wenku8.cn/top.php"
+c.name = "穿越重生"
+c.cat_link = "http://520xs.com/sort/13/1/"
 c.save

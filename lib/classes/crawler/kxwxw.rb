@@ -13,6 +13,7 @@ class Crawler::Kxwxw
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
+        article.link = URI.escape(article.link)
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
@@ -29,6 +30,17 @@ class Crawler::Kxwxw
   def crawl_article article
     text = @page_html.css("div.rdaa").text.strip
     text = ZhConv.convert("zh-tw", text)
+
+    if text.size < 100
+      imgs = @page_html.css(".rda .rdaa img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

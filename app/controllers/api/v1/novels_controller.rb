@@ -131,6 +131,8 @@ private
       [22,12]
     when "23"
       [8,23]
+    when "24"
+      [4,24]
     else
       [category_id.to_i]
     end
