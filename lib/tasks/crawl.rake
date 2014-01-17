@@ -90,6 +90,10 @@ namespace :crawl do
     crawler.crawl_rank
   end
 
+  task :crawl_time_travel_novel => :environment do
+    # need find time to implement it
+  end
+
   # task :change_wenku8_link => :environment do
   #   Novel.where(["link like ?", "%wenku8%"]).each do |novel|
   #     unless novel.link.index("htm")

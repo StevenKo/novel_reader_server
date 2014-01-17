@@ -128,7 +128,7 @@
 # c.save
 
 
-c = Category.new
-c.name = "穿越重生"
-c.cat_link = "http://520xs.com/sort/13/1/"
-c.save
+# c = Category.new
+# c.name = "穿越重生"
+# c.cat_link = "http://520xs.com/sort/13/1/"
+# c.save

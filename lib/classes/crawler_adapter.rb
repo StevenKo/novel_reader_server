@@ -131,6 +131,7 @@ class CrawlerAdapter
       '都市中文網' => {'pattern'=>'/dushi800.com/si','name'=>'Dushi800','crawl_site_articles' => true,'recommend' => false},
       '啪啪小說網' => {'pattern'=>'/papaxs.com/si','name'=>'Papaxs','crawl_site_articles' => true,'recommend' => false},
       'daomutxt' => {'pattern'=>'/daomutxt.com/si','name'=>'Daomutxt','crawl_site_articles' => true,'recommend' => false},
+      'fyxs' => {'pattern'=>'/fyxs.net/si','name'=>'Fyxs','crawl_site_articles' => true,'recommend' => false},
 
       '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
       '寶馬小說網' => {'pattern'=>'/baomaxs.com/si','name'=>'Baomaxs','crawl_site_articles' => false,'recommend' => false},
