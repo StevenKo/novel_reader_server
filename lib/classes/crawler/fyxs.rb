@@ -7,6 +7,12 @@ class Crawler::Fyxs
     nodes = @page_html.css("td.ccss a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
+      if article
+        s = node[:href]
+        /(\d*)\.html/ =~ s
+        article.num = $1.to_i
+        article.save
+      end
       next if article
 
       unless article 
@@ -17,7 +23,7 @@ class Crawler::Fyxs
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         s = node[:href]
-        /(\d*)\.shtml/ =~ s
+        /(\d*)\.html/ =~ s
         /cid=(\d*)/ =~ s if($1.nil?)
         article.num = $1.to_i
         # puts node.text
