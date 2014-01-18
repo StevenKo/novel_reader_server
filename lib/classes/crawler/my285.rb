@@ -27,7 +27,8 @@ class Crawler::My285
         article.save
       end
       ArticleWorker.perform_async(article.id)
-    end  
+    end
+    set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article

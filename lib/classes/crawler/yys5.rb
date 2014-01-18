@@ -31,6 +31,7 @@ class Crawler::Yys5
       crawler.fetch url
       crawler.crawl_articles novel_id
     end
+    set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article

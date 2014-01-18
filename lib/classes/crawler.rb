@@ -122,5 +122,13 @@ module Crawler
     article != nil && text != nil && (text.size > 80 || text.index('.gif') || text.index('.jpg') || text.index('.png'))
   end
 
+  def set_novel_last_update_and_num(novel_id)
+    novel = Novel.find(novel_id)
+    time = novel.articles.show.last.created_at.strftime("%y-%m-%d")
+    novel.last_update = time
+    novel.article_num = novel.articles.show.size.to_s + "篇"
+    novel.save
+  end
+
   
 end

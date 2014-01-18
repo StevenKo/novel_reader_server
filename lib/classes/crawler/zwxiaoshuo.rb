@@ -58,6 +58,7 @@ class Crawler::Zwxiaoshuo
       end
       ArticleWorker.perform_async(article.id)
     end
+    set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article

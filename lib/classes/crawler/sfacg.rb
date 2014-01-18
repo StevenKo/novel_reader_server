@@ -45,6 +45,7 @@ class Crawler::Sfacg
         end
       index = index +1        
     end
+    set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article

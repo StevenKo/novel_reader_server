@@ -34,6 +34,7 @@ class Crawler::Quanben
         end
       end
     end
+    set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article
