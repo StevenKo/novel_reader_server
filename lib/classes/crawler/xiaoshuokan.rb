@@ -13,6 +13,10 @@ class Crawler::Xiaoshuokan
         a_node = node.css("a")[0]
         url = "http://tw.xiaoshuokan.com" + a_node[:href]
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
+        if article
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+          article.save
+        end
         next if article
         unless article 
           article = Article.new

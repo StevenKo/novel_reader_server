@@ -49,6 +49,7 @@ NovelServer::Application.routes.draw do
           get 'search'
           get 'classic'
           get 'classic_action'
+          get 'collect_novels_info'
           # get 'db_transfer_index'
         end
         member do 
