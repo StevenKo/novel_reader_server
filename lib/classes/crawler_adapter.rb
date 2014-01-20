@@ -133,7 +133,8 @@ class CrawlerAdapter
       'daomutxt' => {'pattern'=>'/daomutxt.com/si','name'=>'Daomutxt','crawl_site_articles' => true,'recommend' => false},
       'fyxs' => {'pattern'=>'/fyxs.net/si','name'=>'Fyxs','crawl_site_articles' => true,'recommend' => false},
       '爬書網' => {'pattern'=>'/pashuw.com/si','name'=>'Pashuw','crawl_site_articles' => true,'recommend' => false},
-
+      
+      '看書堂' => {'pattern'=>'/kanshutang.com/si','name'=>'Kanshutang','crawl_site_articles' => false,'recommend' => false},
       '衍墨轩小说网' => {'pattern'=>'/ymoxuan.com/si','name'=>'Ymoxuan','crawl_site_articles' => false,'recommend' => false},
       '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
       '寶馬小說網' => {'pattern'=>'/baomaxs.com/si','name'=>'Baomaxs','crawl_site_articles' => false,'recommend' => false},
