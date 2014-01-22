@@ -30,7 +30,8 @@ class Crawler::Hjwzw
     @page_html.css("#AllySite")[0].next.next
     @page_html.css("#AllySite")[0].next.next.css("a").remove
     @page_html.css("#AllySite")[0].next.next.css("b").remove
-    text = @page_html.css("#AllySite")[0].next.next.text.strip
+    text = change_node_br_to_newline(@page_html.css("#AllySite")[0].next.next).strip
+
     text = text.gsub("返回書頁","")
     text = text.gsub("回車鍵","")
     text = text.gsub("快捷鍵: 上一章(\"←\"或者\"P\")","")
