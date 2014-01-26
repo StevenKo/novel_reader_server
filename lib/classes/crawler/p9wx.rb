@@ -80,6 +80,7 @@ class Crawler::P9wx
 
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)   
     ArticleText.update_or_create(article_id: article.id, text: text)
+    sleep(2)
   end
 
 end
