@@ -30,12 +30,12 @@ class Crawler::Ttshu8
   
   def crawl_article article
 
-    node = @page_html.css("#content")
+    node = @page_html.css("#TXT")
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text)
 
     if text.length < 170
-      imgs = @page_html.css("#content img")
+      imgs = @page_html.css("#TXT img")
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
