@@ -4,7 +4,7 @@ class Crawler::Wenku8
 
   def crawl_articles novel_id
     subject = ""
-    nodes = @page_html.css(".acss tr td")
+    nodes = @page_html.css(".css tr td")
     url = @page_url.gsub("index.htm","")
     nodes.each do |node|
       if node[:class] == "vcss"
