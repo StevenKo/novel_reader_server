@@ -15,6 +15,9 @@ class Crawler::Ck101
         url = "http://ck101.com/" + "thread-#{$1}-#{page}-2.html"
       end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
+      if novel_id == 1680 && article
+        ArticleWorker.perform_async(article.id)
+      end
       next if article
 
       unless article 
