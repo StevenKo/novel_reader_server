@@ -3,8 +3,7 @@ class Api::V1::NovelsController < Api::ApiController
 
   def collect_novels_info 
     novels_id = params[:novels_id]
-    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 50).order("updated_at DESC")
-    render :json => novels
+    novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 50)
   end
 
   def index
