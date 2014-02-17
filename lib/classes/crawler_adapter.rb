@@ -133,6 +133,10 @@ class CrawlerAdapter
       'daomutxt' => {'pattern'=>'/daomutxt.com/si','name'=>'Daomutxt','crawl_site_articles' => true,'recommend' => false},
       'fyxs' => {'pattern'=>'/fyxs.net/si','name'=>'Fyxs','crawl_site_articles' => true,'recommend' => false},
       '爬書網' => {'pattern'=>'/pashuw.com/si','name'=>'Pashuw','crawl_site_articles' => true,'recommend' => false},
+      '魅族小說網' => {'pattern'=>'/meizoo.com/si','name'=>'Meizoo','crawl_site_articles' => true,'recommend' => false},
+      '纯文学网站首页' => {'pattern'=>'/purepen.com/si','name'=>'Purepen','crawl_site_articles' => true,'recommend' => false},
+      '零点书院' => {'pattern'=>'/00sy.com/si','name'=>'Sy00','crawl_site_articles' => true,'recommend' => false},
+      '由美論壇' => {'pattern'=>'/urmay.com/si','name'=>'Urmay','crawl_site_articles' => true,'recommend' => false},
       
       '看書堂' => {'pattern'=>'/kanshutang.com/si','name'=>'Kanshutang','crawl_site_articles' => false,'recommend' => false},
       '衍墨轩小说网' => {'pattern'=>'/ymoxuan.com/si','name'=>'Ymoxuan','crawl_site_articles' => false,'recommend' => false},
