@@ -1,17 +1,18 @@
 # encoding: utf-8
-class Crawler::Book136
+class Crawler::Ymyxsw
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css("#book_detail.box1")[1].css("a")
+    url = @page_url
+    nodes = @page_html.css(".novel_list a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url+ node[:href]
+        article.link = url + node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
@@ -22,14 +23,22 @@ class Crawler::Book136
         article.save
       end
       ArticleWorker.perform_async(article.id)
-    end
+    end  
     set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article
-    @page_html.css("#content a").remove
-    text = change_node_br_to_newline(@page_html.css("#content")).strip
-    text = ZhConv.convert("zh-tw", text)
+    @page_html.css(".novel_content div").remove
+    text = @page_html.css(".novel_content").text.strip
+    if text.length < 100
+      begin
+        text = @page_html.css(".divimage img")[0][:src]
+        text = text + "*&&$$*" + "如果看不到圖片, 請更新至新版"
+      rescue Exception => e      
+      end
+    else
+      text = ZhConv.convert("zh-tw", text)
+    end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

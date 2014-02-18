@@ -137,7 +137,9 @@ class CrawlerAdapter
       '纯文学网站首页' => {'pattern'=>'/purepen.com/si','name'=>'Purepen','crawl_site_articles' => true,'recommend' => false},
       '零点书院' => {'pattern'=>'/00sy.com/si','name'=>'Sy00','crawl_site_articles' => true,'recommend' => false},
       '由美論壇' => {'pattern'=>'/urmay.com/si','name'=>'Urmay','crawl_site_articles' => true,'recommend' => false},
+      '有木有小说网' => {'pattern'=>'/ymyxsw.com/si','name'=>'Ymyxsw','crawl_site_articles' => true,'recommend' => false},
       
+      '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
       '看書堂' => {'pattern'=>'/kanshutang.com/si','name'=>'Kanshutang','crawl_site_articles' => false,'recommend' => false},
       '衍墨轩小说网' => {'pattern'=>'/ymoxuan.com/si','name'=>'Ymoxuan','crawl_site_articles' => false,'recommend' => false},
       '万书吧' => {'pattern'=>'/wanshuba.com/si','name'=>'Wanshuba','crawl_site_articles' => false,'recommend' => false},
