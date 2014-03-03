@@ -28,11 +28,15 @@ class Crawler::Zhsxs
   end
 
   def crawl_article article
-    text = @page_html.css("tr td div")[6].text.strip
+    html = @page_html.css("#form1 table[width='960px; line-height: 1.5em;']")
+    html.css("script").remove
+    html.css("h1").remove
+    html.css("div[align='center']").remove
+    text = html.text.strip
     text = ZhConv.convert("zh-tw", text)
 
     if text.length < 150
-      imgs = @page_html.css("tr td div")[6].css("img")
+      imgs = @page_html.css("#form1 table[width='960px; line-height: 1.5em;']").css("img")
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
