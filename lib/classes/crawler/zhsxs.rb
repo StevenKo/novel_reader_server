@@ -32,6 +32,7 @@ class Crawler::Zhsxs
     html.css("script").remove
     html.css("h1").remove
     html.css("div[align='center']").remove
+    html.css("td[align='center']").remove
     text = html.text.strip
     text = ZhConv.convert("zh-tw", text)
 
