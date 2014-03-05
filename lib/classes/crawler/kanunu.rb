@@ -47,6 +47,7 @@ class Crawler::Kanunu
     # puts @page_url
     nodes = @page_html.css("tr[bgcolor='#ffffff']")
     nodes.each do |novel_row|
+      next unless novel_row.css("a")[0]
       link = "http://book.kanunu.org" + novel_row.css("a")[0][:href]
       author = @page_html.css("h2").text.strip.sub("作品集","")
       name = novel_row.css("strong").text.sub("在线阅读","").strip
