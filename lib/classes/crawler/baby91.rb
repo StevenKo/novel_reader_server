@@ -5,7 +5,7 @@ class Crawler::Baby91
   def crawl_article article
     node = @page_html.css(".t_f")
     text = node.text.strip
-    text = text
+    text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -139,6 +139,8 @@ class CrawlerAdapter
       '由美論壇' => {'pattern'=>'/urmay.com/si','name'=>'Urmay','crawl_site_articles' => true,'recommend' => false},
       '有木有小说网' => {'pattern'=>'/ymyxsw.com/si','name'=>'Ymyxsw','crawl_site_articles' => true,'recommend' => false},
       '嗡嗡嗡論壇' => {'pattern'=>'/2dollars.com.tw/si','name'=>'Dollars2','crawl_site_articles' => true,'recommend' => false},
+      '夢書吧' => {'pattern'=>'/mengshuba.com/si','name'=>'Mengshuba','crawl_site_articles' => true,'recommend' => false},
+      '雲台書屋' => {'pattern'=>'/b111.net/si','name'=>'B111','crawl_site_articles' => true,'recommend' => false},
       
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
       '看書堂' => {'pattern'=>'/kanshutang.com/si','name'=>'Kanshutang','crawl_site_articles' => false,'recommend' => false},

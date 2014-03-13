@@ -45,12 +45,17 @@ class Crawler::P9wx
       text = page.find('.bookcontent').native.text
       text = ZhConv.convert("zh-tw", text)
       
-      if text.size < 100
+      if text.size < 200
         url = "http://tw.9pwx.com"
         imgs = page.all('.divimage img')
+
         text_img = ""
         imgs.each do |img|
+          if img[:src].index('9pwx')
+            text_img = text_img + img[:src] + "*&&$$*"
+          else
             text_img = text_img + url + img[:src] + "*&&$$*"
+          end
         end
         text_img = text_img + "如果看不到圖片, 請更新至新版APP"
         text = text_img
