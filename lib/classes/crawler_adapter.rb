@@ -142,6 +142,7 @@ class CrawlerAdapter
       '夢書吧' => {'pattern'=>'/mengshuba.com/si','name'=>'Mengshuba','crawl_site_articles' => true,'recommend' => false},
       '雲台書屋' => {'pattern'=>'/b111.net/si','name'=>'B111','crawl_site_articles' => true,'recommend' => false},
       
+      '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
       '看書堂' => {'pattern'=>'/kanshutang.com/si','name'=>'Kanshutang','crawl_site_articles' => false,'recommend' => false},
       '衍墨轩小说网' => {'pattern'=>'/ymoxuan.com/si','name'=>'Ymoxuan','crawl_site_articles' => false,'recommend' => false},
