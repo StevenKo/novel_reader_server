@@ -3,7 +3,7 @@ class Crawler::Binhuo
   include Crawler
 
   def crawl_article article
-    imgs = @page_html.css(".divimage img")
+    imgs = @page_html.css(".imagecontent")
     text_img = ""
     imgs.each do |img|
       text_img = text_img + img[:src] + "*&&$$*"
