@@ -35,6 +35,16 @@ class Crawler::Fxnzw
     text = text.gsub("請記住:飛翔鳥中文小說網 www.fxnzw.com 沒有彈窗,更新及時 !","")
     text = text.gsub("()","")
     text = ZhConv.convert("zh-tw", text)
+
+    if text.length < 100
+      imgs = @page_html.css("div[style=\"font-size: 20px; text-indent: 30px; line-height: 40px; width: 770px; margin: 0 auto;\"] img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

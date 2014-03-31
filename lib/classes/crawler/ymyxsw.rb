@@ -16,9 +16,8 @@ class Crawler::Ymyxsw
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
-        article.num = novel.num + 1
-        novel.num = novel.num + 1
-        novel.save
+        /(\d*)\.html/ =~ node[:href]
+        article.num = $1.to_i
         # puts node.text
         article.save
       end

@@ -141,6 +141,7 @@ class CrawlerAdapter
       '嗡嗡嗡論壇' => {'pattern'=>'/2dollars.com.tw/si','name'=>'Dollars2','crawl_site_articles' => true,'recommend' => false},
       '夢書吧' => {'pattern'=>'/mengshuba.com/si','name'=>'Mengshuba','crawl_site_articles' => true,'recommend' => false},
       '雲台書屋' => {'pattern'=>'/b111.net/si','name'=>'B111','crawl_site_articles' => true,'recommend' => false},
+      '異界小說網' => {'pattern'=>'/yjxs.net/si','name'=>'Yjxs','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
