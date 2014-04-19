@@ -28,10 +28,23 @@ class Crawler::Txt92
 
   def crawl_article article
     node = @page_html.css("#chapter_content")
+    node.css("div#page_bar, div[align='center']").remove
+
     text = change_node_br_to_newline(node)
     text = text.gsub("www.92txt.net 就爱网","")
     text = text.gsub("亲们记得多给戚惜【投推荐票】、【投月票】，【加入书架】，【留言评论】哦，鞠躬敬谢","")
     text = ZhConv.convert("zh-tw", text)
+
+    if text.size < 100
+      imgs = node.css('.divimage img')
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
