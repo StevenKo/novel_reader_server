@@ -143,6 +143,9 @@ class CrawlerAdapter
       '雲台書屋' => {'pattern'=>'/b111.net/si','name'=>'B111','crawl_site_articles' => true,'recommend' => false},
       '異界小說網' => {'pattern'=>'/yjxs.net/si','name'=>'Yjxs','crawl_site_articles' => true,'recommend' => false},
       '無線電子書' => {'pattern'=>'/wxdzs.com/si','name'=>'Wxdzs','crawl_site_articles' => true,'recommend' => false},
+      'piaotian' => {'pattern'=>'/piaotian.net/si','name'=>'Piaotian','crawl_site_articles' => true,'recommend' => false},
+      '穿越迷首页' => {'pattern'=>'/chuanyuemi.com/si','name'=>'Chuanyuemi','crawl_site_articles' => true,'recommend' => false},
+      '紅櫻桃' => {'pattern'=>'/cherry123.com/si','name'=>'Cherry123','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
