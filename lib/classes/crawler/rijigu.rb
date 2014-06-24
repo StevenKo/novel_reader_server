@@ -1,6 +1,7 @@
 # encoding: utf-8
 class Crawler::Rijigu
   include Crawler
+  include Capybara::DSL
 
   def crawl_articles novel_id
     url = "http://www.rijigu.com"
@@ -28,7 +29,12 @@ class Crawler::Rijigu
   end
 
   def crawl_article article
-    text = @page_html.css("div#content").text.strip
+    link = article.link
+    Capybara.current_driver = :selenium
+    Capybara.app_host = "http://book.rijigu.com"
+    page.visit(link.gsub("http://book.rijigu.com",""))
+
+    text = page.find("#content").native.text
     text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

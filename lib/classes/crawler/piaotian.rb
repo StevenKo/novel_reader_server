@@ -8,7 +8,7 @@ class Crawler::Piaotian
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
       next if article
-      next if @page_url.index('javascript:window')
+      next if node[:href].index('javascript:window')
 
       unless article 
         article = Article.new
