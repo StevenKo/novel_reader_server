@@ -1,7 +1,6 @@
 # encoding: utf-8
 class Crawler::Piaotian
   include Crawler
-  include Capybara::DSL
 
   def crawl_articles novel_id
     nodes = @page_html.css(".centent a")
@@ -23,21 +22,15 @@ class Crawler::Piaotian
         # puts node.text
         article.save
       end
-      CapybaraArticleWorker.perform_async(article.id)
+      ArticleWorker.perform_async(article.id)
     end
     set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article
-    link = article.link
-    Capybara.current_driver = :selenium
-    Capybara.app_host = "http://www.piaotian.net/"
-    page.visit(link.gsub("http://www.piaotian.net",""))
-
-    content = page.find("#content").native.text
-    node = Nokogiri::HTML(content)
-    node.css("table,a,#thumb,#Commenddiv,#tips,#tags,#feit2").remove
-    text = change_node_br_to_newline(node).strip
+    @page_html.css("script,a,span,div[align='center']").remove
+    text = change_node_br_to_newline(@page_html).strip
+    text = text.gsub("\r\n","")
     article_text = ZhConv.convert("zh-tw",text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

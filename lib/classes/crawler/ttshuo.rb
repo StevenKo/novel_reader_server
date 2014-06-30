@@ -28,6 +28,7 @@ class Crawler::Ttshuo
 
   def crawl_article article
     node = @page_html.css(".detailcontent")
+    node = @page_html.css("#NovelTxt") if node.empty?
     node.css("a").remove
     node.css("script").remove
     text = change_node_br_to_newline(node)
