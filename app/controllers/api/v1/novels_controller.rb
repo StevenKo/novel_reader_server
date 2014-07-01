@@ -67,6 +67,14 @@ class Api::V1::NovelsController < Api::ApiController
     render :json => novels
   end
 
+  def category_finish
+    category_id = params[:category_id]
+    categoryies_id = find_same_set_ids(category_id)
+    novels = Novel.where('is_serializing = false and category_id in (?)', categoryies_id).show.select("id,name,author,pic,article_num,last_update,is_serializing").order("updated_at DESC").paginate(:page => params[:page], :per_page => 50)
+  
+    render :json => novels
+  end
+
   def hot
     novels_id = HotShip.all.map{|ship| ship.novel_id}.join(',')
     novels = Novel.where("id in (#{novels_id})").show.select("id,name,author,pic,article_num,last_update,is_serializing").paginate(:page => params[:page], :per_page => 50).order("updated_at DESC")
