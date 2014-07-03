@@ -39,8 +39,9 @@ group :test, :development do
 end
 
 
-gem 'capistrano'
-gem 'capistrano-ext'
+gem 'capistrano', '~> 2.15'
+gem "net-ssh", "~> 2.7.0"
+# gem 'capistrano-ext'
 
 # cron table
 gem 'whenever', :require => false

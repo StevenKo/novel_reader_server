@@ -54,7 +54,7 @@ NovelServer::Application.routes.draw do
           get 'classic'
           get 'classic_action'
           get 'collect_novels_info'
-          # get 'db_transfer_index'
+          get 'recommend_category_novels'
         end
         member do 
           get 'detail_for_save'

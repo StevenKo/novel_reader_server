@@ -1,5 +1,11 @@
 class Api::V1::NovelsController < Api::ApiController
 
+  def recommend_category_novels
+    category_id = params[:recommend_category_id]
+    category = RecommendCategory.find(category_id)
+    novels = category.novels.select("novels.id,name,author,pic,article_num,last_update,is_serializing")
+    render :json => novels
+  end
 
   def collect_novels_info 
     novels_id = params[:novels_id]
