@@ -24,7 +24,7 @@ end
 
 gem 'jquery-rails'
 
-gem 'jbuilder'
+gem 'jbuilder', '1.5.3'
 
 # 爬蟲
 gem 'nokogiri'

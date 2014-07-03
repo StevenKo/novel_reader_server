@@ -150,7 +150,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
-    rubyzip (1.1.4)
+    rubyzip (1.1.5)
     sass (3.3.9)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -215,7 +215,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 3.2.1)
   gcm
-  jbuilder
+  jbuilder (= 1.5.3)
   jquery-rails
   mysql2
   nokogiri
