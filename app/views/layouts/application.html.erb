@@ -11,6 +11,7 @@
 <% if logged_in? %>
     <%= link_to 'Logout', logout_path %>
     <%= link_to 'Novels', novels_path %>
+    <%= link_to '推薦類別總覽', recommend_categories_path %> <br>
 <% end %>
 
 <%= yield %>

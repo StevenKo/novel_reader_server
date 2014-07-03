@@ -29,12 +29,15 @@ NovelServer::Application.routes.draw do
     end
   end
 
+  resources :recommend_categories
+  resources :recommend_category_novel_ships
+
 
   namespace :api do
     get 'status_check' => 'api#status_check'
     namespace :v1 do
 
-      
+      resources :recommend_categories, only: [:index]
       resources :categories, :only => [:index]
       resources :novels,:only => [:index, :show] do
         collection do

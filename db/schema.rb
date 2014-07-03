@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131127154922) do
+ActiveRecord::Schema.define(:version => 20140701070303) do
 
   create_table "admins", :force => true do |t|
     t.string   "password_digest"
@@ -86,6 +86,22 @@ ActiveRecord::Schema.define(:version => 20131127154922) do
   add_index "novels", ["is_show"], :name => "index_novels_on_is_show"
   add_index "novels", ["name"], :name => "index_novels_on_name"
   add_index "novels", ["num"], :name => "index_novels_on_num"
+
+  create_table "recommend_categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "recommend_category_novel_ships", :force => true do |t|
+    t.integer  "novel_id"
+    t.integer  "recommend_category_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "recommend_category_novel_ships", ["novel_id"], :name => "index_recommend_category_novel_ships_on_novel_id"
+  add_index "recommend_category_novel_ships", ["recommend_category_id"], :name => "index_recommend_category_novel_ships_on_recommend_category_id"
 
   create_table "this_month_hot_ships", :force => true do |t|
     t.integer  "novel_id"
