@@ -31,7 +31,7 @@ class Crawler::Guli
   end
   
   def crawl_article article
-    text = @page_html.css("div#content").text.strip
+    text = change_node_br_to_newline(@page_html.css("div#content")).strip
     text = text.gsub("txtrightshow();","").strip
     text = ZhConv.convert("zh-tw", text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)

@@ -18,7 +18,7 @@ class NovelsController < ApplicationController
 
   def show
     @novel = Novel.find(params[:id])
-    @articles = Article.select("articles.id,title,subject,num,is_show, novel_id").where("novel_id = #{params[:id]}").order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 50).order("num ASC")
+    @articles = Article.select("articles.id,title,subject,num,is_show, novel_id").where("novel_id = #{params[:id]} and is_show = true").order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 50).order("num ASC")
     @websites = CrawlerAdapter.adapter_map
   end
 
