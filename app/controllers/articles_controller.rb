@@ -11,9 +11,7 @@ class ArticlesController < ApplicationController
     params[:article].delete(:article_all_text)
     if @article.update_attributes(params[:article])
       article_text = ArticleText.find_or_initialize_by_article_id(params[:id])
-      page_html = Nokogiri::HTML(text)
-      page_html.css("font,span").remove
-      article_text.text = page_html.text
+      article_text.text = text
       article_text.save
       render :action => 'show'
     else
