@@ -33,7 +33,7 @@ class Crawler::Zongheng
   end
 
   def crawl_article article
-    node = @page_html.css("#chapterContent")
+    node = @page_html.css(".book_con")
     node.css("span").remove
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip)
