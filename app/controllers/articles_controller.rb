@@ -55,6 +55,7 @@ class ArticlesController < ApplicationController
       text = page_html.text
 
       ArticleText.create(article_id: article.id, text: text)
+      params[:page][:page] = 1 if params[:page][:page].blank?
       redirect_to novel_path(novel.id, page: params[:page][:page])
     else
       render :action => "new", :novel_id => article.novel_id
