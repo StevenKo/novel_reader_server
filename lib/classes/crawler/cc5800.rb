@@ -3,6 +3,8 @@ class Crawler::Cc5800
   include Crawler
 
   def crawl_articles novel_id
+
+    @page_url = @page_url.gsub("index.html","")
     nodes = @page_html.css(".TabCss a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url+ node[:href])

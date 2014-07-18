@@ -6,9 +6,8 @@ class Crawler::Hjwzw
     nodes = @page_html.css("#tbchapterlist tr a")
     nodes.each_with_index do |node,i|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://tw.hjwzw.com" + node[:href])
-      next if article
-      next if (novel_id == 19393 and i <= 1919)
 
+      next if article
       unless article 
         article = Article.new
         article.novel_id = novel_id

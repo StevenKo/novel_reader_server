@@ -4,7 +4,7 @@ class Crawler::Cherry123
 
   def crawl_articles novel_id
     
-    url = @page_url.gsub(/book((?!\/).)+/,"")
+    url = @page_url.gsub(/book((?!\/).)+.html/,"")
     nodes = @page_html.css("table[bgcolor='#FDEDF1'] tr td a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
