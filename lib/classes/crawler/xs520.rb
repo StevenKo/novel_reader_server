@@ -12,13 +12,13 @@ class Crawler::Xs520
         puts subject
       elsif node.css("a")[0]
         node = node.css("a")[0]
-        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.520xs.com" + node[:href])
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://520xs.com" + node[:href])
         next if article
 
         unless article
           article = Article.new
           article.novel_id = novel_id
-          article.link = "http://www.520xs.com" + node[:href]
+          article.link = "http://520xs.com" + node[:href]
           article.title = ZhConv.convert("zh-tw",node.text.strip)
           novel = Novel.select("id,num,name").find(novel_id)
           if(subject == "")
