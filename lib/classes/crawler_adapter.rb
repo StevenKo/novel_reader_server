@@ -155,6 +155,7 @@ class CrawlerAdapter
       'Biquge' => {'pattern'=>'/www.biquge.com/si','name'=>'Biquge','crawl_site_articles' => true,'recommend' => false},
       'Mucanwenxue' => {'pattern'=>'/mucanwenxue.com/si','name'=>'Mucanwenxue','crawl_site_articles' => true,'recommend' => false},
       'Xbiquge' => {'pattern'=>'/www.xbiquge.com/si','name'=>'Xbiquge','crawl_site_articles' => true,'recommend' => false},
+      'snwx' => {'pattern'=>'/www.snwx.com/si','name'=>'Snwx','crawl_site_articles' => true,'recommend' => false},
 
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},

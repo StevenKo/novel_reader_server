@@ -3,24 +3,24 @@ class Crawler::D586
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".xiaoshou_list ul a")
+    nodes = @page_html.css(".ml_main dd a")
+
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.d586.com" + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
       next if article
 
       unless article 
-      article = Article.new
-      article.novel_id = novel_id
-      article.link = "http://www.d586.com" + node[:href]
-      article.title = ZhConv.convert("zh-tw",node.text.strip)
-      article.subject = subject
-      /\/(\d+)\// =~ node[:href]
-      next if $1.nil?
-      article.num = $1.to_i
-      # puts node.text
-      article.save
+        article = Article.new
+        article.novel_id = novel_id
+        article.link = @page_url + node[:href]
+        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.subject = subject
+        article.num = novel.num + 1
+        novel.num = novel.num + 1
+        novel.save
+        article.save
       end
       # novel.num = article.num + 1
       # novel.save

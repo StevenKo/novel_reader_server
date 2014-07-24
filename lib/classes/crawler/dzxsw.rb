@@ -36,7 +36,6 @@ class Crawler::Dzxsw
     else
       uls = @page_html.css(".List2013 ul")
       uls.each_with_index do |ul, i|
-        next if i == 0
         nodes = ul.css("a")
         nodes.each do |node|
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.dzxsw.net"+ node[:href])
