@@ -8,7 +8,7 @@ class Crawler::Biquge
     nodes = @page_html.css("#list dl").children
     nodes.each do |node|
       if node.name == "dt"
-        subject = ZhConv.convert("zh-tw",node.css("b").text.strip)
+        next
       elsif (node.name == "dd" && node.css("a").present?)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(host + node.children[0][:href])
         next if article
@@ -19,7 +19,7 @@ class Crawler::Biquge
         article.link = host + node.children[0][:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
-        article.subject = subject
+        article.subject = novel.name
         /(\d*)\.html/ =~ node.children[0][:href]
         article.num = $1.to_i
         # puts node.text
