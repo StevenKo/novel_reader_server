@@ -6,11 +6,13 @@
 <table>
   <tr>
     <th>推薦類別名</th>
+    <th>類別小說數</th>
   </tr>
 
 <% @categories.each do |category| %>
   <tr>
     <td><%= category.name %></td>
+    <td><%= category.novels.size %></td>
     <td><%= link_to 'Show', category %></td>
     <td><%= link_to 'Edit', edit_recommend_category_path(category) %></td>
     <td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
