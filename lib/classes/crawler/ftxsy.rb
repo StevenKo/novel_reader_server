@@ -4,14 +4,15 @@ class Crawler::Ftxsy
 
   def crawl_articles novel_id
     nodes = @page_html.css("td.ccss a")
+    url = @page_url.gsub("index.html","")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = node[:href]
+        article.link = url + node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name

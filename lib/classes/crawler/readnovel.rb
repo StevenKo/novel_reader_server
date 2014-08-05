@@ -1,9 +1,15 @@
 # encoding: utf-8
 class Crawler::Readnovel
   include Crawler
+  include Capybara::DSL
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".listPanel li a")
+    Capybara.current_driver = :selenium
+    Capybara.app_host = "http://www.readnovel.com/"
+    page.visit(@page_url.gsub("http://www.readnovel.com/",""))
+    page.visit(@page_url.gsub("http://www.readnovel.com/",""))
+
+    nodes = page.all(".ML_ul li a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
@@ -27,8 +33,8 @@ class Crawler::Readnovel
   end
 
   def crawl_article article
-    text = @page_html.css(".mainContentNew").text.strip
-    text = text.gsub("温馨提示：手机小说阅读网请访问m.xs.cn，随时随地看小说！公车、地铁、睡觉前、下班后想看就看。查看详情","")
+    @page_html.css(".miaoshu,.zhichi,.bottomAdbanner").remove
+    text = change_node_br_to_newline(@page_html.css(".zhangjie")).strip
     text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
