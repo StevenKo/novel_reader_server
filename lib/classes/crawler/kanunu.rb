@@ -6,8 +6,9 @@ class Crawler::Kanunu
     nodes = @page_html.xpath("//tr[@bgcolor='#ffffff']//a")
     # url = @page_url.gsub("index.html","")
     # url = url.gsub(/\d*\.html/,"")
-    url = "http://book.kanunu.org"
+    
     nodes.each do |node|
+      url = "http://book.kanunu.org"
       unless node[:href].index('book') || node[:href].index('files')
         url = @page_url.gsub("index.html","")
         url = url.gsub(/\d*\.html/,"")
