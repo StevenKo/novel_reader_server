@@ -36,10 +36,21 @@ class Crawler::Yys5
 
   def crawl_article article
     node = @page_html.css(".t_msgfont")
-    node.css("span[style='font-size:0px;color:#E7F4FE;']").remove
-    node.css("span[style='display:none;']").remove
+    node.css("span").remove
+    node.css("font[style='font-size:0px;color:#FAFAFA']").remove
     text = change_node_br_to_newline(node)
     text = ZhConv.convert("zh-tw", text.strip)
+
+    if text.size < 100
+      imgs = page.all('.t_attachlist img')
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+    
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

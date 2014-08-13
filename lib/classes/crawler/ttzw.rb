@@ -46,6 +46,8 @@ class Crawler::Ttzw
       c.fetch url
       text = c.change_node_br_to_newline(c.page_html).strip
       text = text.gsub("document.write(","")
+      text = text.gsub("document.writeln('","")
+      text = text.gsub("');","")
       text = ZhConv.convert("zh-tw", text.strip)
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
