@@ -3,7 +3,7 @@ class Crawler::Orion34g
   include Crawler
 
   def crawl_articles novel_id
-    url = @page_url
+    url = @page_url.gsub("index.html","")
     nodes = @page_html.css(".novel_list a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
