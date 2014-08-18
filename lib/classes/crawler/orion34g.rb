@@ -29,7 +29,7 @@ class Crawler::Orion34g
 
   def crawl_article article
     @page_html.css(".novel_content div").remove
-    text = @page_html.css(".novel_content").text.strip
+    text = change_node_br_to_newline(@page_html.css(".novel_content")).strip
     if text.length < 100
       begin
         text = @page_html.css(".divimage img")[0][:src]
