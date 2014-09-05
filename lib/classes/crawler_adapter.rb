@@ -157,6 +157,7 @@ class CrawlerAdapter
       'Xbiquge' => {'pattern'=>'/www.xbiquge.com/si','name'=>'Xbiquge','crawl_site_articles' => true,'recommend' => false},
       'snwx' => {'pattern'=>'/www.snwx.com/si','name'=>'Snwx','crawl_site_articles' => true,'recommend' => false},
       '扒書網' => {'pattern'=>'/tw.8shuw.net/si','name'=>'Shuw8','crawl_site_articles' => true,'recommend' => false},
+      '小说路上' => {'pattern'=>'/xs63.com/si','name'=>'Xs63','crawl_site_articles' => true,'recommend' => false},
 
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
