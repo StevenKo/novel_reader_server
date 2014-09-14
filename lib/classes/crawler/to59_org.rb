@@ -33,7 +33,7 @@ class Crawler::To59Org
 
   def crawl_article article
     @page_html.css(".bookcontent div").remove
-    text = @page_html.css(".bookcontent").text.strip
+    text = change_node_br_to_newline(@page_html.css(".bookcontent")).strip
     article_text  = ZhConv.convert("zh-tw",text)
     text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
