@@ -158,6 +158,7 @@ class CrawlerAdapter
       'snwx' => {'pattern'=>'/www.snwx.com/si','name'=>'Snwx','crawl_site_articles' => true,'recommend' => false},
       '扒書網' => {'pattern'=>'/tw.8shuw.net/si','name'=>'Shuw8','crawl_site_articles' => true,'recommend' => false},
       '小说路上' => {'pattern'=>'/xs63.com/si','name'=>'Xs63','crawl_site_articles' => true,'recommend' => false},
+      '六九中文' => {'pattern'=>'/www.69zw.com/si','name'=>'Zw69','crawl_site_articles' => true,'recommend' => false},
 
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
