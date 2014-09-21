@@ -70,6 +70,7 @@ class CrawlerAdapter
       '波斯小说网' => {'pattern'=>'/bsxsw.com/si','name'=>'Bsxsw','crawl_site_articles' => true,'recommend' => false},
       '读趣网' => {'pattern'=>'/du7.com/si','name'=>'Du7','crawl_site_articles' => true,'recommend' => false},
       '乐文,乐文小说网' => {'pattern'=>'/lwxs.net/si','name'=>'Lwxs','crawl_site_articles' => true,'recommend' => false},
+      '乐文,乐文小说网 .Com' => {'pattern'=>'/lwxs.com/si','name'=>'Lwxs','crawl_site_articles' => true,'recommend' => false},
       '雅文言情小说吧' => {'pattern'=>'/yawen8.com/si','name'=>'Yawen8','crawl_site_articles' => true,'recommend' => false},
       '玫瑰言情網' => {'pattern'=>'/mgyqw.com/si','name'=>'Mgyqw','crawl_site_articles' => true,'recommend' => false},
       '微小说 日记谷日记网' => {'pattern'=>'/rijigu.com/si','name'=>'Rijigu','crawl_site_articles' => true,'recommend' => false},
