@@ -17,7 +17,7 @@
 <% @novels.each do |novel| %>
   <tr>
     <td><%= novel.id %></td>
-    <td><%= novel.category.name %></td>
+    <td><%= novel.category.name if novel.category %></td>
     <td><%= novel.name %></td>
     <td><%= novel.author %></td>
     <td><%= novel.is_show %></td>

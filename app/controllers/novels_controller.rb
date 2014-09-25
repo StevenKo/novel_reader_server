@@ -3,12 +3,12 @@ class NovelsController < ApplicationController
   before_filter :require_admin, only: [:new, :create, :edit, :update, :index, :show, :destroy]
 
   def index
-    @novels = Novel.select("id,name,author,is_show").paginate(:page => params[:page], :per_page => 20)
+    @novels = Novel.select("id,name,author,is_show,category_id").includes(:category).paginate(:page => params[:page], :per_page => 20)
   end
 
   def search
     keyword = params[:search].strip
-    @novels = Novel.select("id,name,author,is_show").where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author,pic,article_num,last_update,is_serializing")
+    @novels = Novel.select("id,name,author,is_show,category_id").includes(:category).where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author,pic,article_num,last_update,is_serializing")
   end
 
   def update_novel

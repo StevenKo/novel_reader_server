@@ -18,7 +18,7 @@
 <% @novels.each do |novel| %>
   <tr>
     <td><%= novel.id %></td>
-    <td><%= novel.category.name %></td>
+    <td><%= (novel.category)? novel.category.name : "沒有類別" %></td>
     <td><%= novel.name %></td>
     <td><%= novel.author %></td>
     <td><%= novel.is_show %></td>
