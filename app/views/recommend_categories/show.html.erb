@@ -13,7 +13,7 @@
 <% @category.recommend_category_novel_ships.each do |ship| %>
   <tr>
     <td><%= ship.novel.name %></td>
-    <td><%= ship.novel.category.name %></td>
+    <td><%= (ship.novel.category)? ship.novel.category.name : "沒有類別" %></td>
     <td><%= ship.novel.id %></td>
     <td><%= link_to 'Destroy', ship, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
