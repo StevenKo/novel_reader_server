@@ -8,6 +8,7 @@
 <%= will_paginate @novels %>
 <table>
   <tr>
+    <th>小說id</th>
     <th>小說名</th>
     <th>作者名</th>
     <th>show</th>
@@ -15,6 +16,7 @@
 
 <% @novels.each do |novel| %>
   <tr>
+    <td><%= novel.id %></td>
     <td><%= novel.name %></td>
     <td><%= novel.author %></td>
     <td><%= novel.is_show %></td>
