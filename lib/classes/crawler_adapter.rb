@@ -161,7 +161,7 @@ class CrawlerAdapter
       '小说路上' => {'pattern'=>'/xs63.com/si','name'=>'Xs63','crawl_site_articles' => true,'recommend' => false},
       '六九中文' => {'pattern'=>'/www.69zw.com/si','name'=>'Zw69','crawl_site_articles' => true,'recommend' => false},
       '123言情' => {'pattern'=>'/www.123yq.com/si','name'=>'Yq123','crawl_site_articles' => true,'recommend' => false},
-
+      '39小说网风云榜' => {'pattern'=>'/www.39txt.com/si','name'=>'Txt39','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
