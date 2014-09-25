@@ -9,7 +9,7 @@ class Novel < ActiveRecord::Base
     Article.where("novel_id = #{id} and is_show = true").select("id").find_in_batches(:batch_size => 100) do |articles|
       articles.each do |article|
         texts = ArticleText.select("id").where("article_id = #{article.id}")
-        ArticleWorker.perform_async(article.id) unless texts.present?
+        CapybaraArticleWorker.perform_async(article.id) unless texts.present?
       end 
     end
   end
