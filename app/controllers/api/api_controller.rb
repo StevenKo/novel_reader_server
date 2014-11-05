@@ -37,7 +37,7 @@ class Api::ApiController  < ActionController::Base
   end
 
   def version_check
-    render :status=>200, :json=>{ version: 63, update_link: "https://s3-ap-northeast-1.amazonaws.com/novel-read/app-release.apk"}
+    render :status=>200, :json=>{ version: 62, update_link: "https://play.google.com/store/apps/details?id=com.novel.reader"}
   end
 
 end
