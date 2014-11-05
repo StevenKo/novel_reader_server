@@ -37,7 +37,7 @@ class Api::ApiController  < ActionController::Base
   end
 
   def version_check
-    render :status=>200, :json=>{ version: 62, update_link: "https://itunes.apple.com/us/app/xiao-shuo-wang-shou-ji-wang/id909020263"}
+    render :status=>200, :json=>{ version: 63, update_link: "https://s3-ap-northeast-1.amazonaws.com/novel-read/app-release.apk"}
   end
 
 end
