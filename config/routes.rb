@@ -35,6 +35,7 @@ NovelServer::Application.routes.draw do
 
   namespace :api do
     get 'status_check' => 'api#status_check'
+    get 'version_check' => 'api#version_check'
     namespace :v1 do
 
       resources :recommend_categories, only: [:index]

@@ -36,4 +36,8 @@ class Api::ApiController  < ActionController::Base
     render :status=>200, :json=>{:message=>"The request ok "}
   end
 
+  def version_check
+    render :status=>200, :json=>{ version: 62, update_link: "https://play.google.com/store/apps/details?id=com.novel.reader"}
+  end
+
 end

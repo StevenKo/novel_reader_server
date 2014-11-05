@@ -7,14 +7,18 @@ class Crawler::D586
 
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
+
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      url = node[:href]
+      url = @page_url + url unless node[:href].include?("d586")
+
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = node[:href]
+        article.link = url
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         article.subject = subject
         article.num = novel.num + 1
