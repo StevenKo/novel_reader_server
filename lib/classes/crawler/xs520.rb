@@ -37,7 +37,7 @@ class Crawler::Xs520
   end
 
   def crawl_article article
-    @page_html.css("#TXT a").remove
+    @page_html.css("#TXT a,font,script,.zhangjieming").remove
     node = @page_html.css("#TXT")
     text = change_node_br_to_newline(node).strip
     text = text.gsub("最新章节","")

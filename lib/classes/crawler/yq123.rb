@@ -25,7 +25,7 @@ class Crawler::Yq123
             subject = novel.name
           end
           article.subject = ZhConv.convert("zh-tw",subject)
-          /(\d*)\/\z/ =~ node[:href]
+          /(\d*)\.shtml/ =~ node[:href]
           article.num = $1.to_i
           # puts node.text
           article.save
