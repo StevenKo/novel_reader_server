@@ -45,33 +45,8 @@ class Crawler::Kanunu
   end
 
   def crawl_novels category_id
-    # puts @page_url
-    nodes = @page_html.css("tr[bgcolor='#ffffff']")
-    nodes.each do |novel_row|
-      next unless novel_row.css("a")[0]
-      link = "http://book.kanunu.org" + novel_row.css("a")[0][:href]
-      author = @page_html.css("h2").text.strip.sub("作品集","")
-      name = novel_row.css("strong").text.sub("在线阅读","").strip
-      description = novel_row.css("td[valign='top']").text.strip
-      description = novel_row.css("td.p10-24").text.strip if description.size < 20
-      pic = "http://book.kanunu.org" + novel_row.css("img")[0][:src] if novel_row.css("img")[0]
-      novel =  Novel.find_by_link link
-      unless novel
-        novel = Novel.new
-        novel.link = link
-        novel.name = ZhConv.convert("zh-tw",name)
-        novel.author = ZhConv.convert("zh-tw",author)
-        novel.description = ZhConv.convert("zh-tw",description)
-        novel.category_id = category_id
-        novel.is_show = true
-        novel.is_serializing = 0
-        novel.pic = pic
-        novel.save
-        CrawlWorker.perform_async(novel.id)
-      end
-    end
-
-    nodes = @page_html.css("tr[bgcolor='#fff7e7'] strong a")
+    
+    nodes = @page_html.css("tr[bgcolor='#fff7e7'] a")
     nodes.each_with_index do |node,i|
       # next if i > 5
       # node = node.parent
@@ -79,6 +54,14 @@ class Crawler::Kanunu
       author = @page_html.css("h2").text.strip.sub("作品集","")
       name = node.text.strip
       novel = Novel.find_by_link link
+      if novel && novel.pic.blank?
+        novel.pic = "http://book.kanunu.org" + node.css("img")[0][:src] if node.css("img")[0]
+        novel.save
+      end
+      if novel && novel.name.blank?
+        novel.name = name if name.present?
+        novel.save
+      end
       unless novel
         novel = Novel.new
         novel.link = link

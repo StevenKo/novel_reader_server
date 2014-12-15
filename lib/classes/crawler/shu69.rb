@@ -1,24 +1,25 @@
 # encoding: utf-8
-class Crawler::Zhaishu
+class Crawler::Shu69
   include Crawler
 
   def crawl_articles novel_id
-    url = @page_url.gsub("Index.shtm","")
-    nodes = @page_html.css("#BookText a")
+    nodes = @page_html.css(".mu_contain")
+    nodes = nodes[1].css(".mulu_list")[0].css("a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.69shu.com" + node[:href])
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = url + node[:href]
+        article.link = "http://www.69shu.com" + node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
         novel.num = novel.num + 1
         novel.save
+        # puts node.text
         article.save
       end
       ArticleWorker.perform_async(article.id)
@@ -27,23 +28,10 @@ class Crawler::Zhaishu
   end
 
   def crawl_article article
-    node = @page_html.css("#texts")
-    node.css("script,a,h2").remove
+    node = @page_html.css(".yd_text2")
+    node.css("a, #txtright").remove
     text = change_node_br_to_newline(node).strip
-    text = text.gsub("完结穿越小说推荐：","")
-    text = text.gsub("\r\n","")
-    text = ZhConv.convert("zh-tw", text.strip)
-
-    if text.length < 100
-      imgs = @page_html.css("#imgbook")
-      text_img = ""
-      imgs.each do |img|
-        text_img = text_img + "http://www.zhaishu.com" + img[:src] + "*&&$$*"
-      end
-      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      text = text_img
-    end
-
+    article_text = ZhConv.convert("zh-tw",text)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
