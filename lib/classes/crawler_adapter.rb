@@ -165,6 +165,8 @@ class CrawlerAdapter
       '00小說' => {'pattern'=>'/00xs.com/si','name'=>'Xs00','crawl_site_articles' => true,'recommend' => false},
       '69shu' => {'pattern'=>'/69shu.com/si','name'=>'Shu69','crawl_site_articles' => true,'recommend' => false},
       'blwen' => {'pattern'=>'/blwen.com/si','name'=>'Blwen','crawl_site_articles' => true,'recommend' => false},
+      'Niubb' => {'pattern'=>'/niubb.net/si','name'=>'Niubb','crawl_site_articles' => true,'recommend' => false},
+      'Blnovel' => {'pattern'=>'/blnovel.com/si','name'=>'Blnovel','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

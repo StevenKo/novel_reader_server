@@ -24,22 +24,22 @@ class Crawler::Dushi800
         # puts node.text
         article.save
       end
-      CapybaraArticleWorker.perform_async(article.id)
+      ArticleWorker.perform_async(article.id)
     end
     set_novel_last_update_and_num(novel_id)
   end
 
   def crawl_article article
-    Capybara.current_driver = :selenium
-    Capybara.app_host = "http://www.dushi800.com/"
     
-    link = article.link.split("**")[0]
     onclick = article.link.split("**")[1]
-    page.visit(link.gsub("http://www.dushi800.com",""))
-    node = page.find("a[onclick='#{onclick}']")
-    node.click
+    /gotochap\((\d*),(\d*)\)/ =~ onclick
+    chapid=($2.to_i-9)/2;
+    url="http://www.dushi800.com" + '/view/'+$1+'/'+chapid.to_s+'.html';
 
-    text = page.find('.bookcontent').native.text
+    crawler = CrawlerAdapter.get_instance url
+    crawler.fetch url
+
+    text = crawler.change_node_br_to_newline (crawler.page_html.css('.bookcontent'))
     text = ZhConv.convert("zh-tw", text)
     
     if text.size < 100

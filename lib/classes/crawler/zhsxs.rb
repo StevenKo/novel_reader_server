@@ -7,10 +7,6 @@ class Crawler::Zhsxs
     nodes = @page_html.css("td.chapterlist a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
-      if article
-        article.is_show = true
-        article.save
-      end
       next if article
 
       unless article 

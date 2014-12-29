@@ -1,7 +1,7 @@
 # encoding: utf-8
 class ArticleWorker
   include Sidekiq::Worker
-  sidekiq_options queue: "novel_article", :retry => 2, timeout: 300
+  sidekiq_options queue: "novel_article", :retry => 2
   
   def perform(article_id)
     article = Article.select("title, id, link, is_show").find(article_id)
