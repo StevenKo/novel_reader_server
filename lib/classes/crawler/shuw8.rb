@@ -30,6 +30,15 @@ class Crawler::Shuw8
     node = @page_html.css("#content")
     node.css(".ad,.prevue,#adtxt0").remove
     text = change_node_br_to_newline(node).strip
+    if text.length < 100
+      imgs = @page_html.css(".divimage img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + img[:src] + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版"
+      text = text_img
+    end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

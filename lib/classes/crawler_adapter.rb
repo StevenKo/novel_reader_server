@@ -153,7 +153,7 @@ class CrawlerAdapter
       'ftxsy' => {'pattern'=>'/ftxsy.com/si','name'=>'Ftxsy','crawl_site_articles' => true,'recommend' => false},
       'LwxsOrg' => {'pattern'=>'/lwxs.org/si','name'=>'LwxsOrg','crawl_site_articles' => true,'recommend' => false},
       'Lewenxiaoshuo' => {'pattern'=>'/lewenxiaoshuo.com/si','name'=>'Lewenxiaoshuo','crawl_site_articles' => true,'recommend' => false},
-      'Biquge' => {'pattern'=>'/www.biquge.com/si','name'=>'Biquge','crawl_site_articles' => true,'recommend' => false},
+      'Biquge' => {'pattern'=>'/www.biquge.tw/si','name'=>'Biquge','crawl_site_articles' => true,'recommend' => false},
       'Mucanwenxue' => {'pattern'=>'/mucanwenxue.com/si','name'=>'Mucanwenxue','crawl_site_articles' => true,'recommend' => false},
       'Xbiquge' => {'pattern'=>'/www.xbiquge.com/si','name'=>'Xbiquge','crawl_site_articles' => true,'recommend' => false},
       'snwx' => {'pattern'=>'/www.snwx.com/si','name'=>'Snwx','crawl_site_articles' => true,'recommend' => false},
@@ -167,6 +167,7 @@ class CrawlerAdapter
       'blwen' => {'pattern'=>'/blwen.com/si','name'=>'Blwen','crawl_site_articles' => true,'recommend' => false},
       'Niubb' => {'pattern'=>'/niubb.net/si','name'=>'Niubb','crawl_site_articles' => true,'recommend' => false},
       'Blnovel' => {'pattern'=>'/blnovel.com/si','name'=>'Blnovel','crawl_site_articles' => true,'recommend' => false},
+      'sogo論壇' => {'pattern'=>'/oursogo.com/si','name'=>'Oursogo','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

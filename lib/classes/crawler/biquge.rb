@@ -3,7 +3,7 @@ class Crawler::Biquge
   include Crawler
 
   def crawl_articles novel_id
-    host = "http://www.biquge.com"
+    host = "http://www.biquge.tw"
     subject = ""
     nodes = @page_html.css("#list dl").children
     nodes.each do |node|
