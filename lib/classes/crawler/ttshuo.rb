@@ -28,9 +28,10 @@ class Crawler::Ttshuo
 
   def crawl_article article
     node = @page_html.css(".detailcontent")
+    node_name = node[0][:classname]
     node = @page_html.css("#NovelTxt .tb") if node.empty?
     node.css("a").remove
-    node.css("script,.tb3358602").remove
+    node.css("script,.tb#{node_name}").remove
     text = change_node_br_to_newline(node)
     text = text.gsub("本作品来自天天小说网(www.ttshuo.com)","")
     text = text.gsub("大量精品小说","")

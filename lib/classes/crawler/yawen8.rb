@@ -6,29 +6,27 @@ class Crawler::Yawen8
     url = @page_url
     nodes = @page_html.css(".bookUpdate a")
     nodes.each do |node|
-      if (node.text.index("yawen8") ==nil)
-        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
-        next if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
+      next if article
 
-        unless article 
-          article = Article.new
-          article.novel_id = novel_id
-          article.link = url + node[:href]
-          title = node.text.strip
-          title = title.gsub("www.yawen8.com","")
-          title = title.gsub("雅文言情小说","")
-          title = title.gsub("()","")
-          article.title = ZhConv.convert("zh-tw",title)
-          novel = Novel.select("id,num,name").find(novel_id)
-          article.subject = novel.name
-          article.num = novel.num + 1
-          novel.num = novel.num + 1
-          novel.save
-          # puts node.text
-          article.save
-        end
-        ArticleWorker.perform_async(article.id)
+      unless article 
+        article = Article.new
+        article.novel_id = novel_id
+        article.link = url + node[:href]
+        title = node.text.strip
+        title = title.gsub("www.yawen8.com","")
+        title = title.gsub("雅文言情小说","")
+        title = title.gsub("()","")
+        article.title = ZhConv.convert("zh-tw",title)
+        novel = Novel.select("id,num,name").find(novel_id)
+        article.subject = novel.name
+        article.num = novel.num + 1
+        novel.num = novel.num + 1
+        novel.save
+        # puts node.text
+        article.save
       end
+      ArticleWorker.perform_async(article.id)
     end
     set_novel_last_update_and_num(novel_id)
   end
