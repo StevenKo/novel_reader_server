@@ -28,7 +28,11 @@ class Crawler::Ttshuo
 
   def crawl_article article
     node = @page_html.css(".detailcontent")
-    node_name = node[0][:classname]
+    node_name = node[0][:classname] if node.present?
+    if node.blank?
+      node = @page_html.css(".NovelTxt")
+      node_name = node[0][:pageid]
+    end
     node = @page_html.css("#NovelTxt .tb") if node.empty?
     node.css("a").remove
     node.css("script,.tb#{node_name}").remove
@@ -37,6 +41,7 @@ class Crawler::Ttshuo
     text = text.gsub("大量精品小说","")
     text = text.gsub("永久免费阅读","")
     text = text.gsub("敬请收藏关注","")
+    text = text.gsub("∥wwW。tTsHUO。coM #天#天！小#说#网?","")
     text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
