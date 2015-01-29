@@ -52,6 +52,7 @@ class Crawler::Ttzw
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
+    sleep(10)
   end
 
 end
