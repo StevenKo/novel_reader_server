@@ -13,6 +13,11 @@ class Crawler::Kanunu8
         url = @page_url.gsub("index.html","")
         url = url.gsub(/\d*\.html/,"")
       end
+
+      unless (/^\// =~ node[:href]).nil?
+        url = "http://www.kanunu8.com"
+      end
+
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url+ node[:href])
       next if article
 
