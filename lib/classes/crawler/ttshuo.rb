@@ -35,7 +35,7 @@ class Crawler::Ttshuo
     end
     node = @page_html.css("#NovelTxt .tb") if node.empty?
     node.css("a").remove
-    node.css("script,.tb#{node_name}").remove
+    node.css("script,.tb#{node_name},span").remove
     text = change_node_br_to_newline(node)
     text = text.gsub("本作品来自天天小说网(www.ttshuo.com)","")
     text = text.gsub("大量精品小说","")
