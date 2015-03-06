@@ -3,7 +3,12 @@ class Crawler::Dshk
   include Crawler
 
   def crawl_articles novel_id
-    last_node = @page_html.css(".pages  a.last")[0]
+    size = @page_html.css(".pages  a").size
+    if size < 20
+      last_node = @page_html.css(".pages  a")[size - 2]
+    else
+      last_node = @page_html.css(".pages  a.last")[0]
+    end
     /thread-(\d*)-(\d*)-(\d*)/ =~ last_node[:href]
     (1..$2.to_i).each do |i|
       url = "http://ds-hk.net/thread-" + $1 + "-" + i.to_s + "-" +$3 + ".html"

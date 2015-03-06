@@ -8,11 +8,11 @@ class Crawler::Kanshuwu
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip)
 
-    if text.length < 80
+    if text.length < 150
       imgs = @page_html.css("#content img")
       text_img = ""
       imgs.each do |img|
-          text_img = text_img + "http://www.kanshuwu.net" + img[:src] + "*&&$$*"
+          text_img = text_img + img[:src] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版"
       text = text_img
