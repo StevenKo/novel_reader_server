@@ -47,7 +47,6 @@ NovelServer::Application.routes.draw do
           get 'category_recommend'
           get 'category_latest_update'
           get 'category_finish'
-          get 'category_uploaded_novels'
           get 'all_novel_update'
           get 'hot'
           get 'this_week_hot'
