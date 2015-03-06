@@ -1,5 +1,10 @@
 class Api::V1::NovelsController < Api::ApiController
 
+  def new_uploaded_novels
+    novels = Novel.show.select("id,name,author,pic,article_num,last_update,is_serializing").order("created_at DESC").paginate(:page => params[:page], :per_page => 50)
+    render :json => novels
+  end
+
   def recommend_category_novels
     category_id = params[:recommend_category_id]
     category = RecommendCategory.find(category_id)
