@@ -34,6 +34,7 @@ class Crawler::Xiaoshuokan
 
   def crawl_article article
     node = @page_html.css(".bookcontent")
+    node.css("script").remove
     text = change_node_br_to_newline(node).strip
     text = text.gsub(/&(.*)WWW.3Zcn.net/,"")
     text = text.gsub(/&(.*)WWW.3Zcn.net/,"")

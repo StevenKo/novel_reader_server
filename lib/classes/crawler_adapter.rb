@@ -177,6 +177,8 @@ class CrawlerAdapter
       '无图小说网' => {'pattern'=>'/wutuxs.com/si','name'=>'Wutuxs','crawl_site_articles' => true,'recommend' => false},
       '看书屋' => {'pattern'=>'/kanshuwu.net/si','name'=>'Kanshuwu','crawl_site_articles' => true,'recommend' => false},
       '极度书库' => {'pattern'=>'/jidubook.com/si','name'=>'Jidubook','crawl_site_articles' => true,'recommend' => false},
+      '喜看看' => {'pattern'=>'/xikankan.com/si','name'=>'Xikankan','crawl_site_articles' => true,'recommend' => false},
+      '巴巴乐中文' => {'pattern'=>'/26953.com/si','name'=>'R26953','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
