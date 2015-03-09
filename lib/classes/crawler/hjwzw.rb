@@ -40,6 +40,7 @@ class Crawler::Hjwzw
     text = text.gsub("就可以找到本書","")
     text = text.gsub("最快,最新TXT更新盡在書友天下:本文由“網”書友更新上傳我們的網址是“”如章節錯誤/舉報謝","")
     text = text.gsub("請記住本站域名:","")
+    text = text.gsub("&nbsp","")
     text = text.strip
 
     if text.length < 100
