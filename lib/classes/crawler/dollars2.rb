@@ -4,7 +4,6 @@ class Crawler::Dollars2
 
   def crawl_article article
     node = @page_html.css(".t_f")
-    binding.pry
     node.css("font.jammer,span[style=\"display:none\"]").remove
     text = node.text.strip
     text = text
