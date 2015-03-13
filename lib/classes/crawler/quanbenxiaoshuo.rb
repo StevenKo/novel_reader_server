@@ -1,27 +1,9 @@
 # encoding: utf-8
-class Crawler::Baomaxs
+class Crawler::Quanbenxiaoshuo
   include Crawler
 
-  def crawl_article article
-
-    text = change_node_br_to_newline(@page_html.css("#content")).strip
-    text = ZhConv.convert("zh-tw", text)
-
-    if text.size < 100
-      imgs = @page_html.css(".divimage img")
-      text_img = ""
-      imgs.each do |img|
-          text_img = text_img + img[:src] + "*&&$$*"
-      end
-      text_img = text_img + "如果看不到圖片, 請更新至新版"
-      text = text_img
-    end
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    ArticleText.update_or_create(article_id: article.id, text: text)
-  end
-
   def crawl_articles novel_id
-    nodes = @page_html.css(".ccss a")
+    nodes = @page_html.css("ul li[itemprop='itemListElement'] a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
@@ -42,6 +24,16 @@ class Crawler::Baomaxs
       ArticleWorker.perform_async(article.id)
     end
     set_novel_last_update_and_num(novel_id)
+  end
+
+  def crawl_article article
+    node = @page_html.css("#articlebody")
+    node.css("a").remove
+    node.css("script").remove
+    text = change_node_br_to_newline(node)
+    text = ZhConv.convert("zh-tw", text.strip)
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
+    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end
