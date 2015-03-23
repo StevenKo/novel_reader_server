@@ -181,6 +181,8 @@ class CrawlerAdapter
       '巴巴乐中文' => {'pattern'=>'/26953.com/si','name'=>'R26953','crawl_site_articles' => true,'recommend' => false},
       '伊莉小說網' => {'pattern'=>'/ylxs.cc/si','name'=>'Ylxs','crawl_site_articles' => true,'recommend' => false},
       '全本小说网quanbenxiaoshuo' => {'pattern'=>'/quanben-xiaoshuo.com/si','name'=>'Quanbenxiaoshuo','crawl_site_articles' => true,'recommend' => false},
+      'Remenxs' => {'pattern'=>'/remenxs.com/si','name'=>'Remenxs','crawl_site_articles' => true,'recommend' => false},
+      'Shubao22' => {'pattern'=>'/shubao22.com/si','name'=>'Shubao22','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
