@@ -183,6 +183,9 @@ class CrawlerAdapter
       '全本小说网quanbenxiaoshuo' => {'pattern'=>'/quanben-xiaoshuo.com/si','name'=>'Quanbenxiaoshuo','crawl_site_articles' => true,'recommend' => false},
       'Remenxs' => {'pattern'=>'/remenxs.com/si','name'=>'Remenxs','crawl_site_articles' => true,'recommend' => false},
       'Shubao22' => {'pattern'=>'/shubao22.com/si','name'=>'Shubao22','crawl_site_articles' => true,'recommend' => false},
+      'ybdu' => {'pattern'=>'/ybdu.com/si','name'=>'Ybdu','crawl_site_articles' => true,'recommend' => false},
+      'xsyqw' => {'pattern'=>'/xsyqw.com/si','name'=>'Xsyqw','crawl_site_articles' => true,'recommend' => false},
+      'mpzw' => {'pattern'=>'/mpzw.com/si','name'=>'Mpzw','crawl_site_articles' => true,'recommend' => false},
       
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
