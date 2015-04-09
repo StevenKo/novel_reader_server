@@ -13,6 +13,10 @@ class Crawler::Wenku8
         a_node = node.css("a")[0]
         next if a_node.nil?
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + a_node[:href])
+        if article
+          article.is_show = true
+          article.save
+        end
         next if article
         unless article 
         article = Article.new
