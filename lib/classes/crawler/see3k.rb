@@ -1,9 +1,9 @@
 # encoding: utf-8
-class Crawler::Snwx
+class Crawler::See3k
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css("#list a")
+    nodes = @page_html.css(".booktext li a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
       next if article
@@ -26,8 +26,8 @@ class Crawler::Snwx
   end
 
   def crawl_article article
-    node = @page_html.css("#BookText")
-    node.css("script").remove
+    node = @page_html.css("#readtext")
+    node.css("script,a").remove
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)

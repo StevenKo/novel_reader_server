@@ -1,26 +1,24 @@
 # encoding: utf-8
-class Crawler::Piaotian
+class Crawler::Biquwo
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".centent a")
+    url = "http://www.biquwo.com"
+    nodes = @page_html.css("#list a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
-      next if node[:href].index('javascript:window')
-      next if node[:href] == "#"
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url + node[:href]
+        article.link = url + node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
         novel.num = novel.num + 1
         novel.save
-        # puts node.text
         article.save
       end
       ArticleWorker.perform_async(article.id)
@@ -29,10 +27,10 @@ class Crawler::Piaotian
   end
 
   def crawl_article article
-    @page_html.css("script,a,span,div[align='center']").remove
-    text = change_node_br_to_newline(@page_html).strip
-    text = text.gsub("\r\n","")
-    article_text = ZhConv.convert("zh-tw",text)
+    node = @page_html.css("#content")
+    node.css("font,a,script").remove
+    text = change_node_br_to_newline(node).strip
+    text = ZhConv.convert("zh-tw", text.strip)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
