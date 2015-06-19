@@ -12,7 +12,7 @@ class Crawler::Ranhen
         article = Article.new
         article.novel_id = novel_id
         article.link = @page_url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -29,7 +29,7 @@ class Crawler::Ranhen
   def crawl_article article
     text = @page_html.css("#content p").text
     text2 = text.gsub('小技巧：按 Ctrl+D 快速保存当前章节页面至浏览器收藏夹；按 回车[Enter]键 返回章节目录，按 ←键 回到上一章，按 →键 进入下一章。','')
-    article_text = ZhConv.convert("zh-tw",text2)
+    article_text = ZhConv.convert("zh-tw",text2,false)
     text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

@@ -9,7 +9,7 @@ class Crawler::Xie17
     nodes = @page_html.css(".content").children
     nodes.each do |node|
       if(node[:class]=="juan")
-        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
+        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       elsif(node.name == "table")
         a_nodes = node.css("a")
         a_nodes.each do |a_node|
@@ -20,7 +20,7 @@ class Crawler::Xie17
             article = Article.new
             article.novel_id = novel_id
             article.link = url
-            article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip,false) 
             article.subject = subject
             article.num = novel.num + 1
             novel.num = novel.num + 1
@@ -43,7 +43,7 @@ class Crawler::Xie17
     Capybara.app_host = "http://xiaoshuo.17xie.com"
     page.visit(article.link.gsub("http://xiaoshuo.17xie.com",""))
     text = page.find('.content').native.text
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

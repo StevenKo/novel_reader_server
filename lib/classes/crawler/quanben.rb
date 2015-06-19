@@ -20,7 +20,7 @@ class Crawler::Quanben
             article = Article.new
             article.novel_id = novel_id
             article.link = @page_url + n[:href]
-            article.title = ZhConv.convert("zh-tw",n.text.strip)
+            article.title = ZhConv.convert("zh-tw",n.text.strip,false)
             article.subject = subject
             /(\d*)/ =~ n[:href]
             article.num = $1.to_i
@@ -44,7 +44,7 @@ class Crawler::Quanben
     text = text.gsub("全本小说网","")
     text = text.gsub("wWw!QuanBEn!CoM","")
     text = text.gsub("(www.quanben.com)","")
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     
     text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)

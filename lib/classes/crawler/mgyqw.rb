@@ -13,7 +13,7 @@ class Crawler::Mgyqw
           article = Article.new
           article.novel_id = novel_id
           article.link = url
-          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          article.title = ZhConv.convert("zh-tw",node.text.strip,false)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = novel.name
           /(\d*)\.html/ =~ node[:href]
@@ -32,7 +32,7 @@ class Crawler::Mgyqw
     node = @page_html.css("#div_readContent")
     node.css("script").remove
     text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -6,7 +6,7 @@ class Crawler::Kanshutang
 
     node = @page_html.css("#table_container")
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
 
     if text.size < 100
       imgs = @page_html.css("#table_container .divimage img")
@@ -36,7 +36,7 @@ class Crawler::Kanshutang
       article = Article.new
       article.novel_id = novel_id
       article.link = url + node[:href]
-      article.title = ZhConv.convert("zh-tw",node.text.strip)
+      article.title = ZhConv.convert("zh-tw",node.text.strip,false)
       article.subject = subject
       /(\d+)\.html/ =~ node[:href]
       next if $1.nil?

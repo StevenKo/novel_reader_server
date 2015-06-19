@@ -6,7 +6,7 @@ class Crawler::Wanshuba
 
     node = @page_html.css("#content")
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.length < 80
       imgs = @page_html.css("#content img")
@@ -33,7 +33,7 @@ class Crawler::Wanshuba
       article = Article.new
       article.novel_id = novel_id
       article.link = url + node[:href]
-      article.title = ZhConv.convert("zh-tw",node.text.strip)
+      article.title = ZhConv.convert("zh-tw",node.text.strip,false)
       novel = Novel.select("id,num,name").find(novel_id)
       article.subject = novel.name
       article.num = novel.num + 1

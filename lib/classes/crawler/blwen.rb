@@ -49,7 +49,7 @@ class Crawler::Blwen
     node = @page_html.css(".artz")
     node.css("span,script,#showpagefontsize").remove
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

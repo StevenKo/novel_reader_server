@@ -13,7 +13,7 @@ class Crawler::Reyuedu
         article = Article.new
         article.novel_id = novel_id
         article.link = node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -31,7 +31,7 @@ class Crawler::Reyuedu
     @page_html.css(".chapter_Turnpage,.tuijian_new,script").remove
     text = change_node_br_to_newline(@page_html.css("#htmlContent"))
 
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
     
     if text.length < 100

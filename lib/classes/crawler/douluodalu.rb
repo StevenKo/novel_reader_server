@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Crawler::Daomubiji
+class Crawler::Douluodalu
   include Crawler
 
   def crawl_articles novel_id

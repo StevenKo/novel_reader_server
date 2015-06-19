@@ -12,7 +12,7 @@ class Crawler::Xuanhutang
         article = Article.new
         article.novel_id = novel_id
         article.link = @page_url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -32,7 +32,7 @@ class Crawler::Xuanhutang
     @page_html.css("#content a").remove
     text = @page_html.css("#content").text.strip
     text = text.gsub("看校园小说到-玄葫堂","")
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
 
     if (article_text.length < 250)
       imgs = @page_html.css(".divimage img")

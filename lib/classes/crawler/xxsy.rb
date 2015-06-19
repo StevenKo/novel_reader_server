@@ -13,7 +13,7 @@ class Crawler::Xxsy
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -30,7 +30,7 @@ class Crawler::Xxsy
   def crawl_article article
     @page_html.css("#zjcontentdiv a").remove
     text = @page_html.css("#zjcontentdiv").text.strip
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

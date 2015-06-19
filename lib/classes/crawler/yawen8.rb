@@ -17,7 +17,7 @@ class Crawler::Yawen8
         title = title.gsub("www.yawen8.com","")
         title = title.gsub("雅文言情小说","")
         title = title.gsub("()","")
-        article.title = ZhConv.convert("zh-tw",title)
+        article.title = ZhConv.convert("zh-tw",title,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -34,7 +34,7 @@ class Crawler::Yawen8
   def crawl_article article
     node = @page_html.css("div.txtc")
     node.css("script").remove
-    article_text = ZhConv.convert("zh-tw",node.text.strip)
+    article_text = ZhConv.convert("zh-tw",node.text.strip,false)
 
     if article_text.index('本章未完')
       nodes = @page_html.css("#pagelink a")

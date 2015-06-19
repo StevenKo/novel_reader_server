@@ -8,7 +8,7 @@ class Crawler::To59
     nodes = @page_html.css(".acss").children
     nodes.each do |node|
       if node.children.children[0].name == "h2"
-        subject = ZhConv.convert("zh-tw",node.children.text.strip)
+        subject = ZhConv.convert("zh-tw",node.children.text.strip,false)
       elsif (node.children.children[0].name == "a")
         inside_nodes = node.children.children
         inside_nodes.each do |n|
@@ -20,7 +20,7 @@ class Crawler::To59
             article = Article.new
             article.novel_id = novel_id
             article.link = url + n[:href]
-            article.title = ZhConv.convert("zh-tw",n.text.strip)
+            article.title = ZhConv.convert("zh-tw",n.text.strip,false)
             novel = Novel.select("id,num,name").find(novel_id)
             article.subject = subject
             article.num = novel.num + 1
@@ -41,7 +41,7 @@ class Crawler::To59
     @page_html.css("#content a").remove
     text = @page_html.css("#content").text
     article_text = text.gsub("*** 现在加入59文学，和万千书友交流阅读乐趣！59文学永久地址：www.59to.com ***", "")
-    final_text = ZhConv.convert("zh-tw",article_text.strip)
+    final_text = ZhConv.convert("zh-tw",article_text.strip,false)
     text = final_text
     if (article_text.length < 250)
       imgs = @page_html.css(".divimage img")

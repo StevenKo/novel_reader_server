@@ -40,7 +40,7 @@ class Crawler::Uuxs
       node = @page_html.css("#content")
       node.css("#adtop,#notify,script,.divimage,#endtips,.pageTools").remove
       text = node.text.strip
-      text = ZhConv.convert("zh-tw", text.strip)
+      text = ZhConv.convert("zh-tw", text.strip, false)
     end
 
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)

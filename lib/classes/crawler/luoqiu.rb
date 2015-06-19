@@ -8,7 +8,7 @@ class Crawler::Luoqiu
     nodes = @page_html.css(".booklist span")
     nodes.each do |node|
       if(node[:class]=="v")
-        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
+        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       else
         a_node = node.css("a")[0]
         url = @page_url.gsub("index.html","") + a_node[:href]
@@ -18,7 +18,7 @@ class Crawler::Luoqiu
           article = Article.new
           article.novel_id = novel_id
           article.link = url
-          article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip,false) 
           article.subject = subject
           article.num = novel.num + 1
           novel.num = novel.num + 1
@@ -37,7 +37,7 @@ class Crawler::Luoqiu
     node = @page_html.css("#content") unless node.present?
 
     text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.length < 100
       imgs = @page_html.css(".bookcontent img")

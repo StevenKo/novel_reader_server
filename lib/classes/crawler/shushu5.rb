@@ -12,7 +12,7 @@ class Crawler::Shushu5
         article = Article.new
         article.novel_id = novel_id
         article.link = "http://www.shushu5.com" + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -27,7 +27,7 @@ class Crawler::Shushu5
 
   def crawl_article article
     text = @page_html.css("#partbody").text
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     if text.length < 100
       imgs = @page_html.css("#partbody img")
       text_img = ""

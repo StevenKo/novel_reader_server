@@ -14,7 +14,7 @@ class Crawler::P9wx
         article = Article.new
         article.novel_id = novel_id
         article.link = url + "**" +node[:onclick]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -42,7 +42,7 @@ class Crawler::P9wx
 
     crawler.page_html.css(".bookcontent #msg-bottom, #adboxhide").remove
     text = change_node_br_to_newline(crawler.page_html.css('.bookcontent')).strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
 
     
     if text.size < 200

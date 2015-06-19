@@ -13,7 +13,7 @@ class Crawler::Shanwen
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -30,7 +30,7 @@ class Crawler::Shanwen
   def crawl_article article
     @page_html.css("#content")
     @page_html.css("#content center").remove
-    text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+    text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip,false)
     if text.length < 100
       imgs = @page_html.css(".divimage img")
       text_img = ""
@@ -40,7 +40,7 @@ class Crawler::Shanwen
       text_img = text_img + "如果看不到圖片, 請更新至新版"
       text = text_img
     else
-      text = ZhConv.convert("zh-tw", text)
+      text = ZhConv.convert("zh-tw", text,false)
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

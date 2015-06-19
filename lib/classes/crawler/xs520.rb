@@ -19,12 +19,12 @@ class Crawler::Xs520
           article = Article.new
           article.novel_id = novel_id
           article.link = "http://520xs.com" + node[:href]
-          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          article.title = ZhConv.convert("zh-tw",node.text.strip,false)
           novel = Novel.select("id,num,name").find(novel_id)
           if(subject == "")
             subject = novel.name
           end
-          article.subject = ZhConv.convert("zh-tw",subject)
+          article.subject = ZhConv.convert("zh-tw",subject,false)
           /(\d*)\/\z/ =~ node[:href]
           article.num = $1.to_i
           # puts node.text
@@ -46,7 +46,7 @@ class Crawler::Xs520
     text = text.gsub("520小说高速首发","")
     text = text.gsub(/本章节是.*地址为/,"")
     text = text.gsub("如果你觉的本章节还不错的话请不要忘记向您QQ群和微博里的朋友推荐哦！","")
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

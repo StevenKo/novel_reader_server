@@ -12,7 +12,7 @@ class Crawler::Txt92
         article = Article.new
         article.novel_id = novel_id
         article.link = @page_url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -33,7 +33,7 @@ class Crawler::Txt92
     text = change_node_br_to_newline(node)
     text = text.gsub("www.92txt.net 就爱网","")
     text = text.gsub("亲们记得多给戚惜【投推荐票】、【投月票】，【加入书架】，【留言评论】哦，鞠躬敬谢","")
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
 
     if text.size < 100
       imgs = node.css('.divimage img')

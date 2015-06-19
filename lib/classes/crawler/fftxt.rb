@@ -13,7 +13,7 @@ class Crawler::Fftxt
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -35,7 +35,7 @@ class Crawler::Fftxt
     text = text.gsub("17k火热连载阅读分享世界","")
     text = text.gsub("创作改变人生","")
     text = text.gsub("一秒记住【非凡TXT下载】www.fftxt.net，为您提供精彩小说阅读。","")
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -13,7 +13,7 @@ class Crawler::Xiaoshuo7788
         article = Article.new
         article.novel_id = novel_id
         article.link = node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -31,7 +31,7 @@ class Crawler::Xiaoshuo7788
     node = @page_html.css("#bookContent")
     node.css("script").remove
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.size < 100
       imgs = @page_html.css("td[align='center'] img")
@@ -48,7 +48,7 @@ class Crawler::Xiaoshuo7788
       Capybara.app_host = "http://www.7788xiaoshuo.com"
       page.visit(article.link.gsub("http://www.7788xiaoshuo.com",""))
       text = page.find('#bookContent').native.text
-      text = ZhConv.convert("zh-tw", text.strip)
+      text = ZhConv.convert("zh-tw", text.strip, false)
     end
 
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)

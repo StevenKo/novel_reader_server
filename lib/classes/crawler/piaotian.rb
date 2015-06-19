@@ -14,7 +14,7 @@ class Crawler::Piaotian
         article = Article.new
         article.novel_id = novel_id
         article.link = @page_url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -32,7 +32,7 @@ class Crawler::Piaotian
     @page_html.css("script,a,span,div[align='center']").remove
     text = change_node_br_to_newline(@page_html).strip
     text = text.gsub("\r\n","")
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -1,18 +1,17 @@
 # encoding: utf-8
-class Crawler::Txt39
+class Crawler::Soudu
   include Crawler
 
   def crawl_articles novel_id
-    url = @page_url.gsub("index.html","")
-    nodes = @page_html.css("#at .L a")
+    nodes = @page_html.css(".listml a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url+ node[:href])
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = url + node[:href]
+        article.link = @page_url+ node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
@@ -28,8 +27,11 @@ class Crawler::Txt39
   end
 
   def crawl_article article
-    text = change_node_br_to_newline(@page_html.css("#contents"))
-    text = ZhConv.convert("zh-tw", text,false)
+    node = @page_html.css("#contents")
+    node.css("a,script").remove
+    text = change_node_br_to_newline(node).strip
+    text = ZhConv.convert("zh-tw", text.strip, false)
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

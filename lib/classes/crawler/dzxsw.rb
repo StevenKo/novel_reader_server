@@ -9,7 +9,7 @@ class Crawler::Dzxsw
     if nodes.present?
       nodes.each do |node|
         if node[:class] == "book"
-          subject = ZhConv.convert("zh-tw",node.text.strip)
+          subject = ZhConv.convert("zh-tw",node.text.strip,false)
         elsif node[:class] == nil
           inside_nodes = node.css("a")
           inside_nodes.each do |in_node|
@@ -20,7 +20,7 @@ class Crawler::Dzxsw
               article = Article.new
               article.novel_id = novel_id
               article.link = url + in_node[:href]
-              article.title = ZhConv.convert("zh-tw",in_node.text.strip)
+              article.title = ZhConv.convert("zh-tw",in_node.text.strip,false)
               novel = Novel.select("id,num,name").find(novel_id)
               article.subject = subject
               article.num = novel.num + 1
@@ -45,7 +45,7 @@ class Crawler::Dzxsw
             article = Article.new
             article.novel_id = novel_id
             article.link = "http://www.dzxsw.net" + node[:href]
-            article.title = ZhConv.convert("zh-tw",node.text.strip)
+            article.title = ZhConv.convert("zh-tw",node.text.strip,false)
             novel = Novel.select("id,num,name").find(novel_id)
             article.subject = novel.name
             article.num = novel.num + 1
@@ -70,7 +70,7 @@ class Crawler::Dzxsw
     text = text.gsub(/\/\d*/,"")
     text = text.gsub("'>","")
     text = text.gsub(".+?","")
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
     
     if text .length < 100

@@ -21,9 +21,9 @@ class Crawler::Zwxiaoshuo
       unless novel
         novel = Novel.new
         novel.link = novel_link
-        novel.name = ZhConv.convert("zh-tw",name)
-        novel.author = ZhConv.convert("zh-tw",author)
-        novel.description = ZhConv.convert("zh-tw",description)
+        novel.name = ZhConv.convert("zh-tw",name,false)
+        novel.author = ZhConv.convert("zh-tw",author,false)
+        novel.description = ZhConv.convert("zh-tw",description,false)
         novel.category_id = category_id
         novel.is_show = true
         novel.is_serializing = is_serializing
@@ -48,7 +48,7 @@ class Crawler::Zwxiaoshuo
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         /(\d*)/ =~ node[:href]
@@ -64,7 +64,7 @@ class Crawler::Zwxiaoshuo
   def crawl_article article
     @page_html.css(".contentbox div").remove
     text = @page_html.css(".contentbox").text.strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

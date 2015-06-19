@@ -13,7 +13,7 @@ class Crawler::Ymyxsw
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         /(\d*)\.html/ =~ node[:href]
@@ -28,7 +28,7 @@ class Crawler::Ymyxsw
 
   def crawl_article article
     text = @page_html.css(".novel_content").text.strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
 
     if text.length < 200
       imgs = @page_html.css(".divimage img")

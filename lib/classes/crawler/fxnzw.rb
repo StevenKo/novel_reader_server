@@ -16,7 +16,7 @@ class Crawler::Fxnzw
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -34,7 +34,7 @@ class Crawler::Fxnzw
     text = @page_html.css("div[style=\"font-size: 20px; text-indent: 30px; line-height: 40px; width: 770px; margin: 0 auto;\"]").text.strip
     text = text.gsub("請記住:飛翔鳥中文小說網 www.fxnzw.com 沒有彈窗,更新及時 !","")
     text = text.gsub("()","")
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
 
     if text.length < 100
       imgs = @page_html.css("div[style=\"font-size: 20px; text-indent: 30px; line-height: 40px; width: 770px; margin: 0 auto;\"] img")

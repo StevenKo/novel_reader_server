@@ -5,7 +5,7 @@ class Crawler::Lightnovel
   def crawl_articles novel_id
     nodes = @page_html.css("dd.mg-15")
     nodes.each do |node|
-      subject = ZhConv.convert("zh-tw",node.css(".ft-24").text.gsub("\n","").gsub("\r","").gsub("\t",""))
+      subject = ZhConv.convert("zh-tw",node.css(".ft-24").text.gsub("\n","").gsub("\r","").gsub("\t",""),false)
       a_nodes = node.css(".inline a")
       a_nodes.each do |a_node|
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href])
@@ -15,7 +15,7 @@ class Crawler::Lightnovel
         article = Article.new
         article.novel_id = novel_id
         article.link = a_node[:href]
-        article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+        article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
         article.num = novel.num + 1
@@ -33,7 +33,7 @@ class Crawler::Lightnovel
   def crawl_article article
     node = @page_html.css("#J_view")
     text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.length < 100
       imgs = @page_html.css(".lk-view-img img")

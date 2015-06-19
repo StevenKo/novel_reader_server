@@ -14,7 +14,7 @@ class Crawler::Kxwxw
         article.novel_id = novel_id
         article.link = url + node[:href]
         article.link = URI.escape(article.link)
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -30,7 +30,7 @@ class Crawler::Kxwxw
 
   def crawl_article article
     text = @page_html.css("div.rdaa").text.strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
 
     if text.size < 100
       imgs = @page_html.css(".rda .rdaa img")

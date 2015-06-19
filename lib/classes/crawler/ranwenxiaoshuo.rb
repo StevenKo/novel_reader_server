@@ -13,7 +13,7 @@ class Crawler::Ranwenxiaoshuo
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -33,7 +33,7 @@ class Crawler::Ranwenxiaoshuo
     text = @page_html.css("p").text.strip
     text = text.gsub("求金牌、求收藏、求推荐、求点击、求评论、求红包、求礼物，各种求，有什么要什么，都砸过来吧！","").strip
     text = text.gsub("小窍门：按左右键快速翻到上下章节","").strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     
     if text.length < 100
       imgs = @page_html.css("p img")

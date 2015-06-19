@@ -13,7 +13,7 @@ class Crawler::Htzw
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         s = node[:href]
@@ -32,7 +32,7 @@ class Crawler::Htzw
     node = @page_html.css("#contenthtzw")
     node.css("script,a,h2").remove
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.size < 100
       imgs = @page_html.css(".divimage img")

@@ -8,7 +8,7 @@ class Crawler::Tianshi7
     nodes = @page_html.css(".zhangjie").children
     nodes.each do |node|
       if node.name == "h3"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif (node[:href] != nil)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
         if article
@@ -21,7 +21,7 @@ class Crawler::Tianshi7
         article = Article.new
         article.novel_id = novel_id
         article.link = node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
         article.num = novel.num + 1
@@ -39,7 +39,7 @@ class Crawler::Tianshi7
   def crawl_article article
     text = change_node_br_to_newline(@page_html.css(".article_content")).strip
     text.gsub!("\n \n ","\n")
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
     if text.length < 100
       imgs = @page_html.css(".article_content img")

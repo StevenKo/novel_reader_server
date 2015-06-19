@@ -8,7 +8,7 @@ class Crawler::Zongheng
     subject_nodes = @page_html.css(".chapter h2")
     nodes = @page_html.css(".chapter .booklist")
     nodes.each_with_index do |node,i|
-      subject = ZhConv.convert("zh-tw",subject_nodes[i].text.strip)
+      subject = ZhConv.convert("zh-tw",subject_nodes[i].text.strip,false)
       a_nodes = node.css("a")
       a_nodes.each do |a_node|
         url = a_node[:href]
@@ -18,7 +18,7 @@ class Crawler::Zongheng
           article = Article.new
           article.novel_id = novel_id
           article.link = url
-          article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip,false) 
           article.subject = subject
           article.num = novel.num + 1
           novel.num = novel.num + 1
@@ -36,7 +36,7 @@ class Crawler::Zongheng
     node = @page_html.css(".book_con")
     node.css("span").remove
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

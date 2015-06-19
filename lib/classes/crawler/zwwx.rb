@@ -7,7 +7,7 @@ class Crawler::Zwwx
     nodes = @page_html.css(".book_article_texttable div")
     nodes.each do |node|
       if node[:class] == "book_article_texttitle"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       else
         inside_nodes = node.css("a")
         inside_nodes.each do |in_node|
@@ -19,7 +19,7 @@ class Crawler::Zwwx
             article = Article.new
             article.novel_id = novel_id
             article.link = in_node[:href]
-            article.title = ZhConv.convert("zh-tw",in_node.text.strip)
+            article.title = ZhConv.convert("zh-tw",in_node.text.strip,false)
             novel = Novel.select("id,num,name").find(novel_id)
             article.subject = subject
             article.num = novel.num + 1
@@ -38,7 +38,7 @@ class Crawler::Zwwx
   def crawl_article article
     node = @page_html.css("#content")
     text = node.text.strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

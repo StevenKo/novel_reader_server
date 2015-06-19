@@ -6,7 +6,7 @@ class Crawler::Daomubiji2
     subject = ""
     nodes = @page_html.css(".bg .mulu")
     nodes.each do |node|
-      subject = ZhConv.convert("zh-tw",node.css(".mulu-title").text.strip) 
+      subject = ZhConv.convert("zh-tw",node.css(".mulu-title").text.strip,false) 
       child_nodes = node.css(".box li a")
       child_nodes.each_with_index do |a_node,i|
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + a_node[:href])
@@ -15,7 +15,7 @@ class Crawler::Daomubiji2
           article = Article.new
           article.novel_id = novel_id
           article.link = @page_url + a_node[:href]
-          article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = subject
           article.num = novel.num + 1
@@ -38,7 +38,7 @@ class Crawler::Daomubiji2
     node.css("script").remove
     node.css("span").remove
     text = node.text
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

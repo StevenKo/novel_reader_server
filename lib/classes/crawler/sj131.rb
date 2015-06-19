@@ -9,7 +9,7 @@ class Crawler::Sj131
     nodes = @page_html.css(".dirbox dl").children unless nodes.present?
     nodes.each do |node|
       if node.name == "dt"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif (node.name == "dd" && node.css("a").present?)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
         next if article
@@ -18,7 +18,7 @@ class Crawler::Sj131
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node.children[0][:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
         article.num = novel.num + 1
@@ -38,7 +38,7 @@ class Crawler::Sj131
         sub_nodes = node.children
         sub_nodes.each do |sub_node|
           if sub_node[:class] == "tt gtt"
-            subject = ZhConv.convert("zh-tw",sub_node.text.strip)
+            subject = ZhConv.convert("zh-tw",sub_node.text.strip,false)
           elsif (sub_node[:class] == "zjlist4" && sub_node.css("a").present?)
             a_nodes = sub_node.css("a")
             a_nodes.each do|a_node|
@@ -49,7 +49,7 @@ class Crawler::Sj131
               article = Article.new
               article.novel_id = novel_id
               article.link = url + a_node[:href]
-              article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+              article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
               novel = Novel.select("id,num,name").find(novel_id)
               article.subject = subject
               article.num = novel.num + 1
@@ -74,7 +74,7 @@ class Crawler::Sj131
           article = Article.new
           article.novel_id = novel_id
           article.link = url+ node[:href]
-          article.title = ZhConv.convert("zh-tw",node.text.strip)
+          article.title = ZhConv.convert("zh-tw",node.text.strip,false)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = novel.name
           article.num = novel.num + 1
@@ -92,20 +92,20 @@ class Crawler::Sj131
   def crawl_article article
     if @page_html.css("#content").text != ""
       @page_html.css("#content a").remove
-      article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip)
+      article_text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip,false)
       article_text = article_text.gsub("如果您喜歡這個章節","")
       article_text = article_text.gsub("精品小說推薦","")
       text = article_text
     elsif @page_html.css(".contentbox").text != ""
       @page_html.css(".contentbox a").remove
-      article_text = ZhConv.convert("zh-tw",@page_html.css(".contentbox").text.strip)
+      article_text = ZhConv.convert("zh-tw",@page_html.css(".contentbox").text.strip,false)
       article_text = article_text.gsub("如果您喜歡這個章節","")
       article_text = article_text.gsub("精品小說推薦","")
       text = article_text
     else
       @page_html.css("#table_container a").remove
       @page_html.css("#table_container span").remove
-      article_text = ZhConv.convert("zh-tw",@page_html.css("#table_container").text.strip)
+      article_text = ZhConv.convert("zh-tw",@page_html.css("#table_container").text.strip,false)
       article_text = article_text.gsub("如果您喜歡這個章節","")
       article_text = article_text.gsub("精品小說推薦","")
       text = article_text

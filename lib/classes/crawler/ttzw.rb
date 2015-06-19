@@ -8,7 +8,7 @@ class Crawler::Ttzw
     novel = Novel.find(novel_id)
     nodes.each do |node|
       if(node[:class]=="chapter_list_chapter_title")
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif(node[:class]=="chapter_list_chapter")
         a_node = node.css("a")[0]
         url = @page_url.gsub("index.html","") + a_node[:href]
@@ -18,7 +18,7 @@ class Crawler::Ttzw
           article = Article.new
           article.novel_id = novel_id
           article.link = url
-          article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip,false) 
           article.subject = subject
           article.num = novel.num + 1
           novel.num = novel.num + 1
@@ -48,7 +48,7 @@ class Crawler::Ttzw
       text = text.gsub("document.write(","")
       text = text.gsub("document.writeln('","")
       text = text.gsub("');","")
-      text = ZhConv.convert("zh-tw", text.strip)
+      text = ZhConv.convert("zh-tw", text.strip, false)
     end
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

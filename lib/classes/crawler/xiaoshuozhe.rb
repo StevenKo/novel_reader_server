@@ -20,8 +20,8 @@ class Crawler::Xiaoshuozhe
           article = Article.new
           article.novel_id = novel_id
           article.link = url
-          article.title = ZhConv.convert("zh-tw",node.text.strip)
-          article.subject = ZhConv.convert("zh-tw",subject)
+          article.title = ZhConv.convert("zh-tw",node.text.strip,false)
+          article.subject = ZhConv.convert("zh-tw",subject,false)
           article.num = novel.num + 1
           novel.num = novel.num + 1
           novel.save
@@ -39,7 +39,7 @@ class Crawler::Xiaoshuozhe
     node.css("#ad_right").remove
     node.css("font").remove
     text = node.text.strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

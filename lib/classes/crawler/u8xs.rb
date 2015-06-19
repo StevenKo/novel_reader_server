@@ -8,7 +8,7 @@ class Crawler::U8xs
     nodes = @page_html.css(".booklist span")
     nodes.each do |node|
       if(node[:class]=="v")
-        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
+        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       else
         a_node = node.css("a")[0]
         url = @page_url.gsub("index.html","") + a_node[:href]
@@ -18,7 +18,7 @@ class Crawler::U8xs
           article = Article.new
           article.novel_id = novel_id
           article.link = url
-          article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip,false) 
           article.subject = subject
           /(\d*)\.html/ =~ a_node[:href]
           next unless $1
@@ -33,7 +33,7 @@ class Crawler::U8xs
   
   def crawl_article article
     text = change_node_br_to_newline(@page_html.css("#content"))
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
     
     if text.length < 100

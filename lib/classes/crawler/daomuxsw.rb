@@ -8,7 +8,7 @@ class Crawler::Daomuxsw
     url = @page_url.gsub("index.html","")
     nodes.each do |node|
       if node[:class] == "vcss"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       else
         a_nodes = node.css("a")
         a_nodes.each do |a_node|
@@ -19,7 +19,7 @@ class Crawler::Daomuxsw
             article = Article.new
             article.novel_id = novel_id
             article.link = url + a_node[:href]
-            article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
             novel = Novel.select("id,num,name").find(novel_id)
             article.subject = subject
             /(\d*)\.html/ =~ a_node[:href]
@@ -41,7 +41,7 @@ class Crawler::Daomuxsw
     node = @page_html.css("#content")
     text = node.text.strip
     text.encode!("utf-8", :undef => :replace, :replace => "?", :invalid => :replace)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

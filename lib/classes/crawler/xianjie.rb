@@ -8,7 +8,7 @@ class Crawler::Xianjie
     nodes = @page_html.css(".zhangjie dl").children
     nodes.each do |node|
       if node.name == "dt"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
         if article
@@ -21,7 +21,7 @@ class Crawler::Xianjie
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node.children[0][:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
         article.num = novel.num + 1
@@ -40,7 +40,7 @@ class Crawler::Xianjie
     @page_html.css(".para script").remove
     text = @page_html.css(".para").text
     text = text.gsub("阅读最好的小说，就上仙界小说网www.xianjie.me","")
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

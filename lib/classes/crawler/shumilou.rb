@@ -35,7 +35,7 @@ class Crawler::Shumilou
     @page_html.css("div[style='color:#FF0000']").remove
     @page_html.css("center[style='font-size:15px']").remove
     text = @page_html.css("#content").text.strip
-    article_text = ZhConv.convert("zh-tw",text)
+    article_text = ZhConv.convert("zh-tw",text,false)
     text = article_text
 
     if text.size < 100

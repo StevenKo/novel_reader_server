@@ -12,7 +12,7 @@ class Crawler::Daomutxt
       child_nodes = node.css("td")
       child_nodes.each_with_index do |c_node,i|
         if i==0
-          subject = ZhConv.convert("zh-tw",c_node.text.strip)
+          subject = ZhConv.convert("zh-tw",c_node.text.strip,false)
         else
           a_node = c_node.css("a")[0]
           next if a_node.nil?
@@ -22,7 +22,7 @@ class Crawler::Daomutxt
           article = Article.new
           article.novel_id = novel_id
           article.link = a_node[:href]
-          article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+          article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = subject
           article.num = novel.num + 1
@@ -46,7 +46,7 @@ class Crawler::Daomutxt
     node.css("script").remove
     node.css("span").remove
     text = node.text
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -14,7 +14,7 @@ class Crawler::Book57
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -35,7 +35,7 @@ class Crawler::Book57
     text = text.gsub("無極小說~~","")
     text = text.gsub("三藏小說免費小說手打網","")
     text = text.gsub("()","")
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     
     if text.size < 100
       imgs = @page_html.css(".divimage img")

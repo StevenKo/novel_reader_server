@@ -12,7 +12,7 @@ class Crawler::Jianxia
         article = Article.new
         article.novel_id = novel_id
         article.link = node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -29,7 +29,7 @@ class Crawler::Jianxia
   def crawl_article article
     node = @page_html.css("#article p")[0]
     node.css("span").remove
-    text = ZhConv.convert("zh-tw", node.text)
+    text = ZhConv.convert("zh-tw", node.text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -20,7 +20,7 @@ class Crawler::Kanunu
         article = Article.new
         article.novel_id = novel_id
         article.link = url+ node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -39,7 +39,7 @@ class Crawler::Kanunu
     unless text.size > 100
       text = @page_html.css("td[width='820']").text
     end
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
@@ -65,8 +65,8 @@ class Crawler::Kanunu
       unless novel
         novel = Novel.new
         novel.link = link
-        novel.name = ZhConv.convert("zh-tw",name)
-        novel.author = ZhConv.convert("zh-tw",author)
+        novel.name = ZhConv.convert("zh-tw",name,false)
+        novel.author = ZhConv.convert("zh-tw",author,false)
         novel.category_id = category_id
         novel.is_show = true
         novel.is_serializing = 0
@@ -82,7 +82,7 @@ class Crawler::Kanunu
   def crawl_novel_description link, novel
     c = Crawler::Kanunu.new
     c.fetch link
-    novel.description = ZhConv.convert("zh-tw",c.page_html.css(".p10-24").text.strip)
+    novel.description = ZhConv.convert("zh-tw",c.page_html.css(".p10-24").text.strip,false)
   end
 
 end

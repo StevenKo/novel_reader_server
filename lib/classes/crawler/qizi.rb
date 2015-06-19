@@ -15,7 +15,7 @@ class Crawler::Qizi
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         /(\d*)/ =~ node[:href]
@@ -39,7 +39,7 @@ class Crawler::Qizi
     text = text.gsub("据说时常阅读本站,可增加艳遇哦","")
     text = text.gsub("欢迎你","")
     text = text.gsub("最快更新","")
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

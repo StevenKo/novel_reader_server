@@ -8,7 +8,7 @@ class Crawler::Ccc5
     url = @page_url.gsub("index.html","")
     nodes.each do |node|
       if node[:class] == "vcss"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       else
         a_node = node.css("a")[0]
         next if a_node.nil?
@@ -18,7 +18,7 @@ class Crawler::Ccc5
         article = Article.new
         article.novel_id = novel_id
         article.link = url + a_node[:href]
-        article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+        article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
         article.num = novel.num + 1
@@ -38,7 +38,7 @@ class Crawler::Ccc5
     @page_html.css("#content script").remove
     node = @page_html.css("#content")
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

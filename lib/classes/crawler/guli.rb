@@ -15,7 +15,7 @@ class Crawler::Guli
       article = Article.new
       article.novel_id = novel_id
       article.link = "http://www.guli.cc" + node[:href]
-      article.title = ZhConv.convert("zh-tw",node.text.strip)
+      article.title = ZhConv.convert("zh-tw",node.text.strip,false)
       article.subject = subject
       /\d+\/(\d+)\// =~ node[:href]
       next if $1.nil?
@@ -33,7 +33,7 @@ class Crawler::Guli
   def crawl_article article
     text = change_node_br_to_newline(@page_html.css("div#content")).strip
     text = text.gsub("txtrightshow();","").strip
-    text = ZhConv.convert("zh-tw", text)
+    text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
     sleep(5)

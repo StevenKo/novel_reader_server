@@ -5,7 +5,7 @@ class Crawler::Sy250
   def crawl_article article
     node = @page_html.css("#contents")
     text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     if text.length < 100
       imgs = @page_html.css(".divimage img")
       text_img = ""

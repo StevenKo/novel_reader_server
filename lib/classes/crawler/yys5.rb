@@ -13,7 +13,7 @@ class Crawler::Yys5
         article = Article.new
         article.novel_id = novel_id
         article.link = url + node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip)
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -39,7 +39,7 @@ class Crawler::Yys5
     node.css("span").remove
     node.css("font[style='font-size:0px;color:#FAFAFA']").remove
     text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.size < 100
       imgs = page.all('.t_attachlist img')

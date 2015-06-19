@@ -8,7 +8,7 @@ class Crawler::Ppxsw
     nodes = @page_html.css(".centent").children
     nodes.each do |node|
       if(node[:class]=="list")
-        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""))
+        subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       else
         a_nodes = node.css("a")
         a_nodes.each do |a_node|
@@ -20,7 +20,7 @@ class Crawler::Ppxsw
             article = Article.new
             article.novel_id = novel_id
             article.link = url
-            article.title = ZhConv.convert("zh-tw",a_node.text.strip) 
+            article.title = ZhConv.convert("zh-tw",a_node.text.strip,false) 
             article.subject = subject
             article.num = novel.num + 1
             novel.num = novel.num + 1
@@ -38,7 +38,7 @@ class Crawler::Ppxsw
   def crawl_article article
     @page_html.css("head,a,table,span,script,div").remove
     text = change_node_br_to_newline(@page_html).strip
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip, false)
     if text.length < 80
       imgs = @page_html.css("#content img")
       text_img = ""

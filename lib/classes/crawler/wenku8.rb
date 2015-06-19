@@ -8,7 +8,7 @@ class Crawler::Wenku8
     url = @page_url.gsub("index.htm","")
     nodes.each do |node|
       if node[:class] == "vcss"
-        subject = ZhConv.convert("zh-tw",node.text.strip)
+        subject = ZhConv.convert("zh-tw",node.text.strip,false)
       else
         a_node = node.css("a")[0]
         next if a_node.nil?
@@ -22,7 +22,7 @@ class Crawler::Wenku8
         article = Article.new
         article.novel_id = novel_id
         article.link = url + a_node[:href]
-        article.title = ZhConv.convert("zh-tw",a_node.text.strip)
+        article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
         article.num = novel.num + 1
@@ -41,7 +41,7 @@ class Crawler::Wenku8
     node = @page_html.css("#content")
     node.css("#contentdp").remove
     text = node.text
-    text = ZhConv.convert("zh-tw", text.strip)
+    text = ZhConv.convert("zh-tw", text.strip,false)
     if text.length < 100
       imgs = @page_html.css("#content .divimage img")
       text_img = ""
@@ -71,9 +71,9 @@ class Crawler::Wenku8
     unless novel
       novel = Novel.new
       novel.link = link
-      novel.name = ZhConv.convert("zh-tw",name)
-      novel.author = ZhConv.convert("zh-tw",author)
-      novel.description = ZhConv.convert("zh-tw",description)
+      novel.name = ZhConv.convert("zh-tw",name,false)
+      novel.author = ZhConv.convert("zh-tw",author,false)
+      novel.description = ZhConv.convert("zh-tw",description,false)
       novel.category_id = category_id
       novel.is_show = true
       novel.is_serializing = is_serializing
@@ -94,7 +94,7 @@ class Crawler::Wenku8
       a_nodes.each do |a_node|
 
         novel_intro_link = a_node[:href]
-        novel_name = ZhConv.convert("zh-tw",a_node.text.strip)
+        novel_name = ZhConv.convert("zh-tw",a_node.text.strip,false)
         /id=(\d*)/ =~ a_node[:href]
         novel_link = "http://www.wenku8.cn/novel/#{$1.to_i / 1000}/#{$1}/index.htm"
 
