@@ -1,18 +1,17 @@
 # encoding: utf-8
-class Crawler::Chuanyuemi
+class Crawler::Biduge
   include Crawler
 
   def crawl_articles novel_id
-    @page_url = @page_url.gsub('Index.shtml','')
-    nodes = @page_html.css(".list ul li a")
+    nodes = @page_html.css(".mulu_list a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url+ node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.biduge.com" + node[:href])
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url+ node[:href]
+        article.link = "http://www.biduge.com" + node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
@@ -28,21 +27,9 @@ class Crawler::Chuanyuemi
   end
 
   def crawl_article article
-    node = @page_html.css(".text")
-    node.css("a,script,span,h2,.page_tips").remove
+    node = @page_html.css("#htmlContent")
     text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip, false)
-
-    if text.length < 100
-      imgs = @page_html.css("img#imgbook")
-      text_img = ""
-      imgs.each do |img|
-          text_img = text_img + "http://www.chuanyuemi.com" + img[:src] + "*&&$$*"
-      end
-      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      text = text_img
-    end
-
+    article_text = ZhConv.convert("zh-tw",text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

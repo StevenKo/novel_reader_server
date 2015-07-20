@@ -33,6 +33,8 @@ class Crawler::Miaobige
     text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
+
+    sleep(5)
   end
 
 end
