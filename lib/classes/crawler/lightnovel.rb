@@ -8,13 +8,14 @@ class Crawler::Lightnovel
       subject = ZhConv.convert("zh-tw",node.css(".ft-24").text.gsub("\n","").gsub("\r","").gsub("\t",""),false)
       a_nodes = node.css(".inline a")
       a_nodes.each do |a_node|
-        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href])
+        next unless a_node[:href]
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href] + "?charset=big5")
         next if article
 
         unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = a_node[:href]
+        article.link = a_node[:href] + "?charset=big5"
         article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject

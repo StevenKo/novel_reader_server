@@ -3,7 +3,7 @@ class Crawler::Remenxs
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css("#zuixin")[0].next.css("a")
+    nodes = @page_html.css(".novel_list a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
@@ -28,7 +28,7 @@ class Crawler::Remenxs
   end
 
   def crawl_article article
-    node = @page_html.css(".yd_text2")
+    node = @page_html.css(".content")
     node.css("a,script").remove
     text = change_node_br_to_newline(node).strip
     text = text.gsub("本章由热门小说网(www.remenxs.com)","")
