@@ -15,7 +15,7 @@ class CrawlerAdapter
       '59文学' => {'pattern'=>'/59to.org/si','name'=>'To59Org','crawl_site_articles' => true,'recommend' => true},
       'SF轻小说' => {'pattern'=>'/book.sfacg.com/si','name'=>'Sfacg','crawl_site_articles' => true,'recommend' => true},
       '《小说阅读网》' => {'pattern'=>'/readnovel.com/si','name'=>'Readnovel','crawl_site_articles' => true,'recommend' => true},
-      '轻小说文库' => {'pattern'=>'/wenku8.cn/si','name'=>'Wenku8','crawl_site_articles' => true,'recommend' => true},
+      '轻小说文库' => {'pattern'=>'/wenku8.com/si','name'=>'Wenku8','crawl_site_articles' => true,'recommend' => true},
       '努努' => {'pattern'=>'/book.kanunu.org/si','name'=>'Kanunu','crawl_site_articles' => true,'recommend' => true},
       '努努2' => {'pattern'=>'/kanunu8.com/si','name'=>'Kanunu8','crawl_site_articles' => true,'recommend' => true},
 
@@ -221,6 +221,11 @@ class CrawlerAdapter
       'dzdxs' => {'pattern'=>'/dzdxs.net/si','name'=>'Dzdxs','crawl_site_articles' => true,'recommend' => false},
       'wenxiu' => {'pattern'=>'/wenxiu.com/si','name'=>'Wenxiu','crawl_site_articles' => true,'recommend' => false},
       'biduge' => {'pattern'=>'/biduge.com/si','name'=>'Biduge','crawl_site_articles' => true,'recommend' => false},
+      'linovel' => {'pattern'=>'/linovel.com/si','name'=>'Linovel','crawl_site_articles' => true,'recommend' => false},
+      'motie' => {'pattern'=>'/motie.com/si','name'=>'Motie','crawl_site_articles' => true,'recommend' => false},
+      'booksrc' => {'pattern'=>'/booksrc.net/si','name'=>'Booksrc','crawl_site_articles' => true,'recommend' => false},
+      'sqsxs' => {'pattern'=>'/sqsxs.com/si','name'=>'Sqsxs','crawl_site_articles' => true,'recommend' => false},
+      'kudu8' => {'pattern'=>'/kudu8.com/si','name'=>'Kudu8','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

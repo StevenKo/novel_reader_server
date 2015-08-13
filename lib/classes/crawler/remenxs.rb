@@ -4,7 +4,13 @@ class Crawler::Remenxs
 
   def crawl_articles novel_id
     nodes = @page_html.css(".novel_list a")
+    next_article = true
     nodes.each do |node|
+      if novel_id == 18000
+        next_article = false if node.text.strip.index("5037")
+        next if next_article
+      end
+
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
       next unless /du_\d*/ =~ node[:href]
