@@ -6,13 +6,14 @@ class Crawler::B111
     url = @page_url.gsub("index.html","")
     nodes = @page_html.css("table.a a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
+      article_url = get_article_url(node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(article_url)
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = url + node[:href]
+        article.link = article_url
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name

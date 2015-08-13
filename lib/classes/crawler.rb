@@ -5,8 +5,32 @@ module Crawler
   require 'open-uri'
   require 'net/http'
   
-  attr_accessor :page_url, :page_html, :fake_browser_urls, :do_not_encode_urls, :match_url_pattern
+  attr_accessor :page_url, :page_html, :fake_browser_urls, :do_not_encode_urls, :match_url_pattern, :url_host, :url_path, :url_query, :url_proto
   
+  def parse_url url
+    /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/ =~ url
+    @url_proto = $2
+    @url_host = $3
+    if $6.include?('html')
+      @url_path = $4
+    else
+      @url_path = $4 + $6
+    end
+    @url_query = $7
+  end
+
+  def get_article_url href
+    if href.start_with?("http")
+      @page_url
+    elsif href.start_with?("/")
+      @url_proto + "://" + @url_host + href + @url_query
+    elsif href.include? "html"
+      @url_proto + "://" + @url_host + @url_path + href + @url_query
+    else
+      @page_url
+    end
+  end
+
   def fetch url
     @fake_browser_urls = ['00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
     @do_not_encode_urls = ['quledu.com','tw.xiaoshuokan.com','7788xiaoshuo.com','wcxiaoshuo.com','2dollars.com.tw','dushi800','59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','tw.57book','b.faloo.com/p/','9pwx.com']
@@ -56,6 +80,8 @@ module Crawler
     else
       get_nokogiri_html(body)
     end
+
+    parse_url url
   end
 
   def get_nokogiri_html body
