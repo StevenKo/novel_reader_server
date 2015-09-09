@@ -14,12 +14,12 @@ class Crawler::Zanghaihuatxt
         else
           a_node = c_node.css("a")[0]
           next if a_node.nil?
-          article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href])
+          article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(a_node[:href]))
           next if article
           unless article 
           article = Article.new
           article.novel_id = novel_id
-          article.link = a_node[:href]
+          article.link = get_article_url(a_node[:href])
           article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
           novel = Novel.select("id,num,name").find(novel_id)
           article.subject = subject

@@ -1,26 +1,18 @@
 # encoding: utf-8
-class Crawler::Piaotian
+class Crawler::Cfwx
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".centent a")
-    do_not_crawl = true
-    nodes.each do |node|
-      
-      if novel_id == 22331
-        do_not_crawl = false if node[:href] == '4293998.html'
-        next if do_not_crawl
-      end
 
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
+    nodes = @page_html.css("td.L a")
+    nodes.each do |node|
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
-      next if node[:href].index('javascript:window')
-      next if node[:href] == "#"
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url + node[:href]
+        article.link = get_article_url(node[:href])
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
@@ -35,11 +27,12 @@ class Crawler::Piaotian
     set_novel_last_update_and_num(novel_id)
   end
 
+
   def crawl_article article
-    @page_html.css("script,a,span,div[align='center']").remove
-    text = change_node_br_to_newline(@page_html).strip
-    text = text.gsub("\r\n","")
-    article_text = ZhConv.convert("zh-tw",text,false)
+    node = @page_html.css("#contents")
+    node.css("center").remove
+    text = change_node_br_to_newline(node).strip
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

@@ -11,7 +11,7 @@ module Crawler
     /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/ =~ url
     @url_proto = $2
     @url_host = $3
-    if $6.include?('html')
+    if $6.nil? || $6.include?('html')
       @url_path = $4
     else
       @url_path = $4 + $6
@@ -20,14 +20,15 @@ module Crawler
   end
 
   def get_article_url href
+    return href unless href.present?
     if href.start_with?("http")
-      @page_url
+      href
     elsif href.start_with?("/")
       @url_proto + "://" + @url_host + href + @url_query
     elsif href.include? "html"
       @url_proto + "://" + @url_host + @url_path + href + @url_query
     else
-      @page_url
+      href
     end
   end
 
@@ -82,6 +83,7 @@ module Crawler
     end
 
     parse_url url
+    @page_html
   end
 
   def get_nokogiri_html body

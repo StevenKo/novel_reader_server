@@ -6,7 +6,7 @@ class Crawler::P9wx
     url = @page_url
     nodes = @page_html.css(".booklist span a")
     nodes.each do |node|
-      next unless node[:onclick]
+      next unless node[:onclick].present?
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + "**" +node[:onclick])
       next if article
 

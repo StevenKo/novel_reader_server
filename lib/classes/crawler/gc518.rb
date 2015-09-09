@@ -1,10 +1,20 @@
 # encoding: utf-8
-class Crawler::Wutuxs
+class Crawler::Gc518
   include Crawler
 
-  def crawl_articles novel_id
+  def crawl_article article
 
-    nodes = @page_html.css("td.L a")
+    @page_html.css("a,script").remove
+    text = change_node_br_to_newline(@page_html.css("#main")).strip
+    text = ZhConv.convert("zh-tw", text,false)
+
+    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
+    ArticleText.update_or_create(article_id: article.id, text: text)
+  end
+
+  def crawl_articles novel_id
+    
+    nodes = @page_html.css(".book dl dd a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
@@ -25,26 +35,6 @@ class Crawler::Wutuxs
       ArticleWorker.perform_async(article.id)
     end
     set_novel_last_update_and_num(novel_id)
-  end
-
-
-  def crawl_article article
-    node = @page_html.css("#contents")
-    node.css("center").remove
-    text = change_node_br_to_newline(node).strip
-    text = ZhConv.convert("zh-tw", text.strip, false)
-    if text.length < 100
-      imgs = @page_html.css("#contents .divimage img")
-      text_img = ""
-      imgs.each do |img|
-          text_img = text_img + img[:src] + "*&&$$*"
-      end
-      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
-      text = text_img
-    end
-
-    raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
-    ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
 end

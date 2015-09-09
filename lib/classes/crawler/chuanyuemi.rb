@@ -28,16 +28,17 @@ class Crawler::Chuanyuemi
   end
 
   def crawl_article article
+    parse_url(@page_url)
     node = @page_html.css(".text")
     node.css("a,script,span,h2,.page_tips").remove
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip, false)
 
-    if text.length < 100
+    if text.length < 500
       imgs = @page_html.css("img#imgbook")
       text_img = ""
       imgs.each do |img|
-          text_img = text_img + "http://www.chuanyuemi.com" + img[:src] + "*&&$$*"
+          text_img = text_img + get_article_url(img[:src]) + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       text = text_img

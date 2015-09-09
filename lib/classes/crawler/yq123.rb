@@ -5,13 +5,18 @@ class Crawler::Yq123
   def crawl_articles novel_id
     nodes = @page_html.css("#list dl").children
     subject = ""
+    do_not_crawl = true
     nodes.each do |node|
-      
       if node[:id] == "qw"
         subject = node.text
         puts subject
       elsif node.css("a")[0]
         node = node.css("a")[0]
+        if novel_id == 21442
+          do_not_crawl = false if node[:href] == "http://www.123yq.com/read/35/35427/7123831.shtml"
+          next if do_not_crawl
+        end
+      
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
         next if article
 
