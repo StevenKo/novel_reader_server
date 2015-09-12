@@ -5,13 +5,13 @@ class Crawler::Hjwzw
   def crawl_articles novel_id
     nodes = @page_html.css("#tbchapterlist tr a")
     nodes.each_with_index do |node,i|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://tw.hjwzw.com" + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
 
       next if article
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = "http://tw.hjwzw.com" + node[:href]
+        article.link = get_article_url(node[:href])
         article.title = node.text.strip
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name

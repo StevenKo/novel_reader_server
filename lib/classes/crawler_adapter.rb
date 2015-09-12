@@ -231,6 +231,7 @@ class CrawlerAdapter
       'cfwx' => {'pattern'=>'/cfwx.net/si','name'=>'Cfwx','crawl_site_articles' => true,'recommend' => false},
       'biqige' => {'pattern'=>'/biqige.com/si','name'=>'Biqige','crawl_site_articles' => true,'recommend' => false},
       'daomuxiaoshuo' => {'pattern'=>'/daomuxiaoshuo.com/si','name'=>'Daomuxiaoshuo','crawl_site_articles' => true,'recommend' => false},
+      '87book' => {'pattern'=>'/87book.net/si','name'=>'Book87','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
