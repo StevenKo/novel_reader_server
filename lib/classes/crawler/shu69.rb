@@ -5,7 +5,12 @@ class Crawler::Shu69
   def crawl_articles novel_id
     nodes = @page_html.css(".mu_contain")
     nodes = nodes[1].css(".mulu_list a")
+    do_not_crawl = true
     nodes.each do |node|
+      if novel_id == 20703
+        do_not_crawl = false if node[:href] == "/txt/15418/12091444"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.69shu.com" + node[:href])
       next if article
 
