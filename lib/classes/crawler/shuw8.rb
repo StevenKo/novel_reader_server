@@ -28,7 +28,7 @@ class Crawler::Shuw8
 
   def crawl_article article
     node = @page_html.css("#content")
-    node.css(".ad,.prevue,#adtxt0,script").remove
+    node.css(".ad,.prevue,#adtxt0,script,iframe").remove
     text = change_node_br_to_newline(node).strip
     if text.length < 100
       imgs = @page_html.css(".divimage img")
