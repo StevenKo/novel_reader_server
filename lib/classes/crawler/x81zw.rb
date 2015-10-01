@@ -1,26 +1,18 @@
 # encoding: utf-8
-class Crawler::Piaotian
+class Crawler::X81zw
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".centent a")
+    nodes = @page_html.css("#chapterlist a")
     do_not_crawl = true
     nodes.each do |node|
-      
-      if novel_id == 22331
-        do_not_crawl = false if node[:href] == '4293998.html'
-        next if do_not_crawl
-      end
-
-      if novel_id == 20706
-        do_not_crawl = false if node[:href] == '4365062.html'
+      if novel_id == 21685
+        do_not_crawl = false if node[:href] == "209463.html"
         next if do_not_crawl
       end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
-      next if node[:href].index('javascript:window')
-      next if node[:href] == "#"
 
       unless article 
         article = Article.new
@@ -41,10 +33,8 @@ class Crawler::Piaotian
   end
 
   def crawl_article article
-    @page_html.css("script,a,span,div[align='center']").remove
-    text = change_node_br_to_newline(@page_html).strip
-    text = text.gsub("\r\n","")
-    article_text = ZhConv.convert("zh-tw",text,false)
+    text = change_node_br_to_newline(@page_html.css(".novel_content")).strip
+    text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

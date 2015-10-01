@@ -10,6 +10,15 @@ class Crawler::Remenxs
         next_article = false if node.text.strip.index("5037")
         next if next_article
       end
+      if novel_id == 20344
+        next_article = false if node.text.strip.index("3637")
+        next if next_article
+      end
+
+      if novel_id == 20703
+        next_article = false if node.text.strip.index("798")
+        next if next_article
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article

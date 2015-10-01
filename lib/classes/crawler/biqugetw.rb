@@ -6,10 +6,16 @@ class Crawler::Biqugetw
     host = "http://www.biquge.com.tw"
     subject = ""
     nodes = @page_html.css("#list dl").children
+    do_not_crawl = true
     nodes.each do |node|
       if node.name == "dt"
         next
       elsif (node.name == "dd" && node.css("a").present?)
+        if novel_id == 21365
+          do_not_crawl = false if node.children[0][:href] == "/7_7116/4573652.html"
+          next if do_not_crawl
+        end
+
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(host + node.children[0][:href])
         next if article
 

@@ -4,7 +4,8 @@ class Crawler::Klxsw
 
   def crawl_articles novel_id
     nodes = @page_html.css("td[width='25%'] a")
-    
+    next_article = true
+
     nodes.each do |node|
       url = @page_url.gsub("index.html","")
       article_url = ""
@@ -13,6 +14,13 @@ class Crawler::Klxsw
       else
         article_url = url+ node[:href]
       end
+      
+      if novel_id == 20722
+        next_article = false if node[:href] == "http://www.klxsw.com/modules/article/reader.php?aid=89598&cid=16649835 "
+        next_article = true if node[:href] == "http://www.klxsw.com/modules/article/reader.php?aid=89598&cid=16650429"
+        next if next_article
+      end
+
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(article_url)
       next if article
 

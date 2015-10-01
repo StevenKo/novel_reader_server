@@ -4,9 +4,15 @@ class Crawler::Hjwzw
 
   def crawl_articles novel_id
     nodes = @page_html.css("#tbchapterlist tr a")
-    nodes.each_with_index do |node,i|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
 
+    do_not_crawl = true
+    nodes.each_with_index do |node,i|
+      if novel_id == 21675
+        do_not_crawl = false if node[:href] == "/Book/Read/35088,10768160"
+        next if do_not_crawl
+      end
+
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
       unless article 
         article = Article.new

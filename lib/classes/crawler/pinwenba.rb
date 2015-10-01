@@ -1,6 +1,7 @@
 # encoding: utf-8
 class Crawler::Pinwenba
   include Crawler
+  include Capybara::DSL
 
   def crawl_articles novel_id
     subject = ""
@@ -28,9 +29,15 @@ class Crawler::Pinwenba
   end
 
   def crawl_article article
-    node = @page_html.css("#booktext")
-    node.css("a,script").remove
-    text = change_node_br_to_newline(node).strip
+    link = article.link
+    Capybara.current_driver = :selenium
+    Capybara.app_host = "http://www.pinwenba.com"
+    page.visit(link.gsub("http://www.pinwenba.com",""))
+
+    text = page.find("#pagecontent").native.text
+    # node = @page_html.css("#booktext")
+    # node.css("a,script").remove
+    # text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
