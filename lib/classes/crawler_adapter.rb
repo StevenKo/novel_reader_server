@@ -235,6 +235,9 @@ class CrawlerAdapter
       'BookbaoCom' => {'pattern'=>'/bookbao.com/si','name'=>'BookbaoCom','crawl_site_articles' => true,'recommend' => false},
       'ixs' => {'pattern'=>'/ixs.cc/si','name'=>'Ixs','crawl_site_articles' => true,'recommend' => false},
       'x81zw' => {'pattern'=>'/x81zw.com/si','name'=>'X81zw','crawl_site_articles' => true,'recommend' => false},
+      'biqugedd' => {'pattern'=>'/biqugedd.com/si','name'=>'Biqugedd','crawl_site_articles' => true,'recommend' => false},
+      'yikanxiaoshuo' => {'pattern'=>'/yikanxiaoshuo.com/si','name'=>'Yikanxiaoshuo','crawl_site_articles' => true,'recommend' => false},
+      'tiannawang' => {'pattern'=>'/tiannawang.net/si','name'=>'Tiannawang','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

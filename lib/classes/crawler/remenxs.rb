@@ -11,7 +11,7 @@ class Crawler::Remenxs
         next if next_article
       end
       if novel_id == 20344
-        next_article = false if node.text.strip.index("3637")
+        next_article = false if node.text.strip.index("4085")
         next if next_article
       end
 
