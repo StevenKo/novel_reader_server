@@ -1,20 +1,19 @@
 # encoding: utf-8
-class Crawler::Pinwenba
+class Crawler::Popo
   include Crawler
-  include Capybara::DSL
 
   def crawl_articles novel_id
     subject = ""
-    nodes = @page_html.css("#list a")
+    nodes = @page_html.css(".aarti a")
     nodes.each do |node|
-      url = "http://www.pinwenba.com" + node[:href]
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
+      
       next if article
 
       unless article 
       article = Article.new
       article.novel_id = novel_id
-      article.link = url
+      article.link = get_article_url(node[:href])
       article.title = ZhConv.convert("zh-tw",node.text.strip,false)
       novel = Novel.select("id,num,name").find(novel_id)
       article.subject = novel.name
@@ -29,15 +28,9 @@ class Crawler::Pinwenba
   end
 
   def crawl_article article
-    link = article.link
-    Capybara.current_driver = :selenium
-    Capybara.app_host = "http://www.pinwenba.com"
-    page.visit(link.gsub("http://www.pinwenba.com",""))
-
-    text = page.find("#booktext").native.text
-    # node = @page_html.css("#booktext")
-    # node.css("a,script").remove
-    # text = change_node_br_to_newline(node).strip
+    node = @page_html.css(".read-content")
+    node.css("script").remove
+    text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

@@ -1,23 +1,19 @@
 # encoding: utf-8
-class Crawler::Quanbenxiaoshuo
+class Crawler::Xiaoshuotxt
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css("ul li[itemprop='itemListElement'] a")
-    next_article = true
+    nodes = @page_html.css("#yuedu table a[target='_blank']")
+    binding.pry
     nodes.each do |node|
-      if novel_id == 6428
-        next_article = false if node[:href] == "http://quanben-xiaoshuo.com/read/5/langyabang/1/139.html"
-        next if next_article
-      end
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = node[:href]
-        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
+        article.link = get_article_url(node[:href])
+        article.title = node.text.strip
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         article.num = novel.num + 1
@@ -32,11 +28,9 @@ class Crawler::Quanbenxiaoshuo
   end
 
   def crawl_article article
-    node = @page_html.css("#articlebody")
-    node.css("a").remove
-    node.css("script").remove
-    text = change_node_br_to_newline(node)
-    text = ZhConv.convert("zh-tw", text.strip, false)
+    text = change_node_br_to_newline(@page_html.css(".zw")).strip
+    article_text = ZhConv.convert("zh-tw",text,false)
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end

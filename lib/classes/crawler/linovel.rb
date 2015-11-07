@@ -1,21 +1,29 @@
 # encoding: utf-8
 class Crawler::Linovel
   include Crawler
+  include Capybara::DSL
 
   def crawl_articles novel_id
-    nodes = @page_html.css("dd.mg-15")
+    nodes = @page_html.css(".linovel-book-item")
+    do_not_crawl = true
     nodes.each do |node|
-      subject = ZhConv.convert("zh-tw",node.css(".ft-24").text.gsub("\n","").gsub("\r","").gsub("\t",""),false)
-      a_nodes = node.css(".inline a")
+      subject = ZhConv.convert("zh-tw",node.css("h3").text.gsub("\n","").gsub("\r","").gsub("\t",""),false)
+      a_nodes = node.css(".linovel-chapter-list a")
       a_nodes.each do |a_node|
         next unless a_node[:href]
-        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href] + "?charset=big5")
+
+        if novel_id == 6874
+          do_not_crawl = false if a_node[:href] == "/n/view/47537.html"
+          next if do_not_crawl
+        end
+
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(a_node[:href]) + "?charset=big5")
         next if article
 
         unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = a_node[:href] + "?charset=big5"
+        article.link = get_article_url(a_node[:href]) + "?charset=big5"
         article.title = ZhConv.convert("zh-tw",a_node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = subject
@@ -32,12 +40,16 @@ class Crawler::Linovel
   end
 
   def crawl_article article
-    node = @page_html.css("#J_view")
-    text = change_node_br_to_newline(node)
+    link = article.link
+    Capybara.current_driver = :selenium
+    Capybara.app_host = "http://www.linovel.com"
+    page.visit(link.gsub("http://www.linovel.com",""))
+
+    text = page.find(".linovel-chapter-mainContent").native.text
     text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.length < 100
-      imgs = @page_html.css(".lk-view-img img")
+      imgs = page.find(".linovel-chapter-mainContent img")
       text_img = ""
       imgs.each do |img|
         text_img = text_img + "http://www.linovel.com" + img["data-cover"] + "*&&$$*"

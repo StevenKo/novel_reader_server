@@ -2,11 +2,21 @@
 class Crawler::Ranwen
   include Crawler
 
+  def fetch url
+    @fake_browser_urls = ['00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
+    @do_not_encode_urls = ['ixs.cc','quledu.com','tw.xiaoshuokan.com','7788xiaoshuo.com','wcxiaoshuo.com','2dollars.com.tw','dushi800','59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','tw.57book','b.faloo.com/p/','9pwx.com']
+    @page_url = url.gsub(".net",".org")
+    get_page(@page_url)  
+  end
+
   def crawl_articles novel_id
     url = @page_url.gsub("index.html","")
     nodes = @page_html.css("div#defaulthtml4 a")
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
+      next if article
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]).gsub(".org",
+        ".net"))
       next if article
 
       unless article 
@@ -35,7 +45,7 @@ class Crawler::Ranwen
       imgs = @page_html.css(".divimage img")
       text_img = ""
       imgs.each do |img|
-          text_img = text_img + img[:src] + "*&&$$*"
+          text_img = text_img + img[:src].gsub(".net",".org") + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版"
       text = text_img

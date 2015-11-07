@@ -238,6 +238,12 @@ class CrawlerAdapter
       'biqugedd' => {'pattern'=>'/biqugedd.com/si','name'=>'Biqugedd','crawl_site_articles' => true,'recommend' => false},
       'yikanxiaoshuo' => {'pattern'=>'/yikanxiaoshuo.com/si','name'=>'Yikanxiaoshuo','crawl_site_articles' => true,'recommend' => false},
       'tiannawang' => {'pattern'=>'/tiannawang.net/si','name'=>'Tiannawang','crawl_site_articles' => true,'recommend' => false},
+      'xiaoshuotxt' => {'pattern'=>'/xiaoshuotxt.com/si','name'=>'Xiaoshuotxt','crawl_site_articles' => true,'recommend' => false},
+      '19wx' => {'pattern'=>'/19wx.net/si','name'=>'Wx19','crawl_site_articles' => true,'recommend' => false},
+      '44pq' => {'pattern'=>'/44pq.com/si','name'=>'Pq44','crawl_site_articles' => true,'recommend' => false},
+      'popo' => {'pattern'=>'/popo.tw/si','name'=>'Popo','crawl_site_articles' => true,'recommend' => false},
+      'xcxs' => {'pattern'=>'/xcxs.net/si','name'=>'Xcxs','crawl_site_articles' => true,'recommend' => false},
+      'biqugew' => {'pattern'=>'/biqugew.net/si','name'=>'Biqugew','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

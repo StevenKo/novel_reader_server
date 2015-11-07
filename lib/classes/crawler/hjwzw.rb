@@ -11,6 +11,14 @@ class Crawler::Hjwzw
         do_not_crawl = false if node[:href] == "/Book/Read/35088,10768160"
         next if do_not_crawl
       end
+      if novel_id == 19255
+        do_not_crawl = false if node[:href] == "/Book/Read/2453,10938314"
+        next if do_not_crawl
+      end
+      if novel_id == 22531
+        do_not_crawl = false if node[:href] == "/Book/Read/35217,10952959"
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article

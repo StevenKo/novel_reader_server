@@ -11,6 +11,10 @@ class Crawler::Snwx
         do_not_crawl = false if node[:href] == '24745660.html'
         next if do_not_crawl
       end
+      if(novel_id == 18911)
+        do_not_crawl = false if node[:href] == '21572227.html'
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
       next if article

@@ -5,7 +5,12 @@ class Crawler::Biquge
   def crawl_articles novel_id
     subject = ""
     nodes = @page_html.css("#list a")
+    do_not_crawl = true
     nodes.each do |node|
+      if novel_id == 21894
+        do_not_crawl = false if node[:href] == "4596747.html"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
       
       next if article
