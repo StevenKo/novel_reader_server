@@ -7,14 +7,13 @@ class Crawler::Net5200
     nodes = @page_html.css("#chapterlist a")
     nodes.each do |node|
 
-      (node[:href].index("5200.net"))? link = node[:href] : link = "http://5200.net/" + node[:href]
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(link)
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = link
+        article.link = get_article_url(node[:href])
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name

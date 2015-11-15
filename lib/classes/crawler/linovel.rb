@@ -49,10 +49,10 @@ class Crawler::Linovel
     text = ZhConv.convert("zh-tw", text.strip, false)
 
     if text.length < 100
-      imgs = page.find(".linovel-chapter-mainContent img")
+      imgs = page.all(".linovel-chapter-mainContent img")
       text_img = ""
       imgs.each do |img|
-        text_img = text_img + "http://www.linovel.com" + img["data-cover"] + "*&&$$*"
+        text_img = text_img + img["src"] + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       text = text_img

@@ -7,7 +7,8 @@ class Crawler::Pinwenba
     subject = ""
     nodes = @page_html.css("#list a")
     nodes.each do |node|
-      url = "http://www.pinwenba.com" + node[:href]
+      url = get_article_url(node[:href])
+      next unless node.text.strip.include? "2224"
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
       next if article
 
@@ -29,15 +30,9 @@ class Crawler::Pinwenba
   end
 
   def crawl_article article
-    link = article.link
-    Capybara.current_driver = :selenium
-    Capybara.app_host = "http://www.pinwenba.com"
-    page.visit(link.gsub("http://www.pinwenba.com",""))
-
-    text = page.find("#booktext").native.text
-    # node = @page_html.css("#booktext")
-    # node.css("a,script").remove
-    # text = change_node_br_to_newline(node).strip
+    node = @page_html.css("#booktext")
+    node.css("a,script").remove
+    text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

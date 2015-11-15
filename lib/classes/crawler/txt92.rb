@@ -5,13 +5,13 @@ class Crawler::Txt92
   def crawl_articles novel_id
     nodes = @page_html.css(".ccss a")
     nodes.each do |node|
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = @page_url + node[:href]
+        article.link = get_article_url(node[:href])
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name

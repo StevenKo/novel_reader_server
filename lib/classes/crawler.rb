@@ -33,7 +33,7 @@ module Crawler
   end
 
   def fetch url
-    @fake_browser_urls = ['00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
+    @fake_browser_urls = ['www.yqhhy.me','www.uukanshu.com','www.123yq.com','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
     @do_not_encode_urls = ['ixs.cc','quledu.com','tw.xiaoshuokan.com','7788xiaoshuo.com','wcxiaoshuo.com','2dollars.com.tw','dushi800','59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','tw.57book','b.faloo.com/p/','9pwx.com']
     @page_url = url
     get_page(@page_url)   
@@ -73,7 +73,11 @@ module Crawler
       /#{@match_url_pattern}(.*)/ =~ url
       url = $1
       http = Net::HTTP.new(@match_url_pattern, 80)
-      res = http.get url, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19', 'Cookie' => '_ts_id=360435043104370F39'
+      option = {
+        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36',
+        'Cookie' => 'bdshare_firstime=1444721696904; __jsluid=a53f2a36234851090e9b20f3a5afd944; _c_FT_user=7259231412; Hm_lvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1447239017,1447239184,1447240723,1447242895; Hm_lpvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1447242901; __jsl_clearance=1447375980.588|0|4tbVAaHvf7V97Xiec3LH6L1vv2U%3D; netbei=1; CNZZDATA1000175989=1241735477-1444717348-null%7C1447374469'
+      }
+      res = http.get url, option
       content = res.body
       get_nokogiri_html(content)
     elsif isDoNotNeedReEncodeUrl(url)
