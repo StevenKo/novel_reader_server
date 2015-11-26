@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Crawler::Biquge
+class Crawler::Shuhuangge
   include Crawler
 
   def crawl_articles novel_id
@@ -7,10 +7,6 @@ class Crawler::Biquge
     nodes = @page_html.css("#list a")
     do_not_crawl = true
     nodes.each do |node|
-      if novel_id == 21894
-        do_not_crawl = false if node[:href] == "/9_9375/4998433.html"
-        next if do_not_crawl
-      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 

@@ -5,8 +5,13 @@ class Crawler::P9wx
   def crawl_articles novel_id
     url = @page_url
     nodes = @page_html.css(".booklist span a")
+    do_not_crawl = true
     nodes.each do |node|
       next unless node[:onclick].present?
+      if novel_id == 21685
+        do_not_crawl = false if node[:onclick] == "gotochap(41197,27474181);"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + "**" +node[:onclick])
       next if article
 

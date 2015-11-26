@@ -32,7 +32,7 @@ class Crawler::Lewen8
   end
 
   def crawl_article article
-    text = @page_html.css("div#content").text.strip
+    text = change_node_br_to_newline(@page_html.css("div#content")).strip
     text = ZhConv.convert("zh-tw", text,false)
     if text.length < 100
       imgs = @page_html.css("#content img")

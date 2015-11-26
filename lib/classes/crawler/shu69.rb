@@ -27,6 +27,10 @@ class Crawler::Shu69
         do_not_crawl = false if node[:href] == "/txt/3305/12421754"
         next if do_not_crawl
       end
+      if novel_id == 20394
+        do_not_crawl = false if node[:href] == "/txt/12418/7669461"
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.69shu.com" + node[:href])
       next if article

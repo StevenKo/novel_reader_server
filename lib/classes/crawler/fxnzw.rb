@@ -18,6 +18,10 @@ class Crawler::Fxnzw
         do_not_crawl = false if node[:href] == "/fxnread/42702_8494564.html"
         next if do_not_crawl
       end
+      if novel_id == 478
+        do_not_crawl = false if node[:href] == "/fxnread/14361_3967105.html"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
 

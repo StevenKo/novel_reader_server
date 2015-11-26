@@ -16,6 +16,10 @@ class Crawler::Yq123
           do_not_crawl = false if node[:href] == "http://www.123yq.com/read/35/35427/7123831.shtml"
           next if do_not_crawl
         end
+        if novel_id == 22137
+          do_not_crawl = false if node[:href] == "http://www.123yq.com/read/33/33483/7633101.shtml"
+          next if do_not_crawl
+        end
       
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
         next if article

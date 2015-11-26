@@ -23,6 +23,10 @@ class Crawler::Biqugetw
           do_not_crawl = false if node.children[0][:href] == "/6_6470/5915016.html"
           next if do_not_crawl
         end
+        if novel_id == 22249
+          do_not_crawl = false if node.children[0][:href] == "/12_12757/6055841.html"
+          next if do_not_crawl
+        end
 
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(host + node.children[0][:href])
         next if article
