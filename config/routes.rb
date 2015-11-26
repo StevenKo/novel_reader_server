@@ -76,8 +76,7 @@ NovelServer::Application.routes.draw do
       resources :users, :only => [:create] do
         collection do
           put 'update_novel'
-          put 'update_collected_novels'
-          put 'update_downloaded_novels'
+          get 'get_novels'
         end
       end
     end
