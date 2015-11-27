@@ -30,6 +30,26 @@ class Crawler::Shumilou
         do_not_crawl = false if node[:href] == "/jiuyanzhizun/5948291.html"
         next if do_not_crawl
       end
+      if novel_id == 20688
+        do_not_crawl = false if node[:href] == "/chaopinxiangshi/6035661.html"
+        next if do_not_crawl
+      end
+      if novel_id == 21681
+        do_not_crawl = false if node[:href] == "/hanyudaqianbei/6036850.html"
+        next if do_not_crawl
+      end
+      if novel_id == 21237
+        do_not_crawl = false if node[:href] == "/fuheidunvshenyixianggong/6028833.html"
+        next if do_not_crawl
+      end
+      if novel_id == 4106
+        do_not_crawl = false if node[:href] == "/yvxiangyi/6031241.html"
+        next if do_not_crawl
+      end
+      if novel_id == 21772
+        do_not_crawl = false if node[:href] == "/zhenguandaxianren/6028102.html"
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
@@ -41,7 +61,11 @@ class Crawler::Shumilou
         article.title = node.text.strip
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
-        article.num = novel.num + 1
+        if novel_id == 20688
+          article.num = novel.num + 1 + 7688188
+        else
+          article.num = novel.num + 1
+        end
         novel.num = novel.num + 1
         novel.save
         # puts node.text

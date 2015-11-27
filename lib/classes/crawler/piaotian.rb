@@ -47,6 +47,33 @@ class Crawler::Piaotian
         next if do_not_crawl
       end
 
+      if novel_id == 22979
+        do_not_crawl = false if node[:href] == '4502894.html'
+        next if do_not_crawl
+      end
+
+      if novel_id == 23111
+        do_not_crawl = false if node[:href] == '4501948.html'
+        next if do_not_crawl
+      end
+
+      if novel_id == 22107
+        do_not_crawl = false if node[:href] == '4503374.html'
+        next if do_not_crawl
+      end
+      if novel_id == 22137
+        do_not_crawl = false if node[:href] == '4503509.html'
+        next if do_not_crawl
+      end
+      if novel_id == 23573
+        do_not_crawl = false if node[:href] == '4501955.html'
+        next if do_not_crawl
+      end
+      if novel_id == 22799
+        do_not_crawl = false if node[:href] == '4497086.html'
+        next if do_not_crawl
+      end
+
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
       next if node[:href].index('javascript:window')
@@ -59,7 +86,15 @@ class Crawler::Piaotian
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
-        article.num = novel.num + 1
+        if novel_id == 22979
+          article.num = novel.num + 1 + 7686443
+        elsif novel_id == 23111
+          article.num = novel.num + 1 + 7692278
+        elsif novel_id == 22107
+          article.num = novel.num + 1 + 7694510
+        else
+          article.num = novel.num + 1
+        end
         novel.num = novel.num + 1
         novel.save
         # puts node.text

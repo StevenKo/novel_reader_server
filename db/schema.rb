@@ -37,38 +37,19 @@ ActiveRecord::Schema.define(:version => 20151126033430) do
     t.datetime "updated_at",                   :null => false
     t.integer  "num",        :default => 0
     t.boolean  "is_show",    :default => true
-    t.string   "slug"
   end
 
   add_index "articles", ["link"], :name => "index_articles_on_link"
   add_index "articles", ["novel_id"], :name => "index_articles_on_novel_id"
   add_index "articles", ["num"], :name => "index_articles_on_num"
-  add_index "articles", ["slug"], :name => "index_articles_on_slug"
 
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.string   "link"
     t.string   "cat_link"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "is_popular", :default => false
-    t.string   "slug"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
-
-  add_index "categories", ["slug"], :name => "index_categories_on_slug"
-
-  create_table "friendly_id_slugs", :force => true do |t|
-    t.string   "slug",                         :null => false
-    t.integer  "sluggable_id",                 :null => false
-    t.string   "sluggable_type", :limit => 50
-    t.string   "scope"
-    t.datetime "created_at"
-  end
-
-  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", :unique => true
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type"
-  add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
-  add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "hot_ships", :force => true do |t|
     t.integer  "novel_id"
@@ -98,8 +79,6 @@ ActiveRecord::Schema.define(:version => 20151126033430) do
     t.integer  "crawl_times",               :default => 0
     t.integer  "num",                       :default => 0
     t.boolean  "is_show",                   :default => true
-    t.string   "slug"
-    t.integer  "writer_id"
   end
 
   add_index "novels", ["author"], :name => "index_novels_on_author"
@@ -107,17 +86,12 @@ ActiveRecord::Schema.define(:version => 20151126033430) do
   add_index "novels", ["is_show"], :name => "index_novels_on_is_show"
   add_index "novels", ["name"], :name => "index_novels_on_name"
   add_index "novels", ["num"], :name => "index_novels_on_num"
-  add_index "novels", ["slug"], :name => "index_novels_on_slug"
-  add_index "novels", ["writer_id"], :name => "index_novels_on_writer_id"
 
   create_table "recommend_categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.string   "slug"
   end
-
-  add_index "recommend_categories", ["slug"], :name => "index_recommend_categories_on_slug"
 
   create_table "recommend_category_novel_ships", :force => true do |t|
     t.integer  "novel_id"
@@ -154,17 +128,5 @@ ActiveRecord::Schema.define(:version => 20151126033430) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
-
-  create_table "writers", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "url"
-    t.string   "phone"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "remark"
-    t.text     "decription"
-    t.string   "password_digest"
-  end
 
 end

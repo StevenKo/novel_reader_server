@@ -33,7 +33,7 @@ module Crawler
   end
 
   def fetch url
-    @fake_browser_urls = ['www.yqhhy.me','www.uukanshu.com','www.123yq.com','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
+    @fake_browser_urls = ['www.365xs.org','www.yqhhy.me','www.uukanshu.com','www.123yq.com','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
     @do_not_encode_urls = ['aiweicn.com','ixs.cc','quledu.com','tw.xiaoshuokan.com','7788xiaoshuo.com','wcxiaoshuo.com','2dollars.com.tw','dushi800','59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','tw.57book','b.faloo.com/p/','9pwx.com']
     @page_url = url
     get_page(@page_url)   
@@ -71,13 +71,13 @@ module Crawler
 
     if isNeedFakeBrowserUrl(url)
       /#{@match_url_pattern}(.*)/ =~ url
-      url = $1
+      path = $1
       http = Net::HTTP.new(@match_url_pattern, 80)
       option = {
         'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36',
-        'Cookie' => 'bdshare_firstime=1444721696904; __jsluid=a53f2a36234851090e9b20f3a5afd944; __jsl_clearance=1447667295.721|0|2GxluwOs1DSw3HeonsfYDK5k6NM%3D; netbei=1; Hm_lvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1447240723,1447242895,1447400812,1447487383; Hm_lpvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1447667305; jq_Obj=1; netbeier=1; CNZZDATA1000175989=1241735477-1444717348-null%7C1447666156'
+        'Cookie' => 'bdshare_firstime=1444721696904; __jsluid=a53f2a36234851090e9b20f3a5afd944; jq_Obj=1; CNZZDATA1000175989=1241735477-1444717348-null%7C1448600608; Hm_lvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1448102897,1448106281,1448106356,1448349547; Hm_lpvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1448604060; __jsl_clearance=1448614851.134|0|bvaWuK63LjZYrE7ufD3N86eU%2FBo%3D'
       }
-      res = http.get url, option
+      res = http.get path, option
       content = res.body
       get_nokogiri_html(content)
     elsif isDoNotNeedReEncodeUrl(url)
