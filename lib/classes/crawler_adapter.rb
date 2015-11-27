@@ -251,6 +251,7 @@ class CrawlerAdapter
       'yuesesx' => {'pattern'=>'/yuesesx.com/si','name'=>'Yuesesx','crawl_site_articles' => true,'recommend' => false},
       'tiantianwx' => {'pattern'=>'/tiantianwx.com/si','name'=>'Tiantianwx','crawl_site_articles' => true,'recommend' => false},
       'shuhuangge' => {'pattern'=>'/shuhuangge.com/si','name'=>'Shuhuangge','crawl_site_articles' => true,'recommend' => false},
+      'uukanshu' => {'pattern'=>'/uukanshu.com/si','name'=>'Uukanshu','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

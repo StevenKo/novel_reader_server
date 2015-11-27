@@ -1,3 +1,4 @@
 class User < ActiveRecord::Base
-  serialize :read_novels
+  serialize :collect_novels
+  serialize :download_novels
 end

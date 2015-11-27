@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140701070303) do
+ActiveRecord::Schema.define(:version => 20151126033430) do
 
   create_table "admins", :force => true do |t|
     t.string   "password_digest"
@@ -120,18 +120,13 @@ ActiveRecord::Schema.define(:version => 20140701070303) do
   add_index "this_week_hot_ships", ["novel_id"], :name => "index_this_week_hot_ships_on_novel_id"
 
   create_table "users", :force => true do |t|
-    t.string   "registration_id"
-    t.text     "read_novels"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "device_id"
-    t.text     "downloaded_novels"
-    t.text     "collected_novels"
-    t.string   "country"
-    t.string   "platform"
-    t.integer  "version"
+    t.string   "email"
+    t.text     "collect_novels"
+    t.text     "download_novels"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
-  add_index "users", ["device_id"], :name => "index_users_on_device_id"
+  add_index "users", ["email"], :name => "index_users_on_email"
 
 end
