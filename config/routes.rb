@@ -77,6 +77,7 @@ NovelServer::Application.routes.draw do
         collection do
           put 'update_novel'
           get 'get_novels'
+          get 'back_up_info'
         end
       end
     end

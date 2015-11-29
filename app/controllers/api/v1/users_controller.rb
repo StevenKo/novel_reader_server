@@ -39,6 +39,17 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def back_up_info
+    user = find_user
+    if user
+      collected_novels = Novel.where(id: user.collect_novels).select("name").map{|n| n.name}.join(", ")
+      download_novels = Novel.where(id: user.download_novels).select("name").map{|n| n.name}.join(", ")
+      render :status=>200, :json => {"collected_novels" => collected_novels, "download_novels" => download_novels, "email" => user.email, "update" => user.updated_at.utc.strftime("%Y/%m/%d")}
+    else
+      render :status=>404, :json => {"message" => "fail"}
+    end
+  end
+
 
   private
     def find_user
