@@ -44,6 +44,9 @@ class Api::V1::UsersController < ApplicationController
     if user
       collected_novels = Novel.where(id: user.collect_novels).select("name").map{|n| n.name}.join(", ")
       download_novels = Novel.where(id: user.download_novels).select("name").map{|n| n.name}.join(", ")
+      collected_novels = "尚未備份" if collected_novels == ""
+      download_novels = "尚未備份" if download_novels == ""
+      
       render :status=>200, :json => {"collected_novels" => collected_novels, "download_novels" => download_novels, "email" => user.email, "update" => user.updated_at.utc.strftime("%Y/%m/%d")}
     else
       render :status=>404, :json => {"message" => "fail"}
