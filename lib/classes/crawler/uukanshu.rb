@@ -14,6 +14,10 @@ class Crawler::Uukanshu
         do_not_crawl = false if node[:href] == '/b/30981/119690.html'
         next if do_not_crawl
       end
+      if novel_id == 23515
+        do_not_crawl = false if node[:href] == '/b/11360/129550.html'
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
