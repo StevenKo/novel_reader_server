@@ -75,7 +75,7 @@ module Crawler
       http = Net::HTTP.new(@match_url_pattern, 80)
       option = {
         'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36',
-        'Cookie' => 'bdshare_firstime=1444721696904; __jsluid=a53f2a36234851090e9b20f3a5afd944; jq_Obj=1; __jsl_clearance=1448709607.915|0|%2BL3vYp3dgn91k3cmZy55Uvfh0hk%3D; CNZZDATA1000175989=1241735477-1444717348-null%7C1448708619; Hm_lvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1448106281,1448106356,1448349547,1448711791; Hm_lpvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1448711791'
+        'Cookie' => 'bdshare_firstime=1444721696904; __jsluid=a53f2a36234851090e9b20f3a5afd944; jq_Obj=1; Hm_lvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1448106356,1448349547,1448711791,1448711892; Hm_lpvt_be5d98a1ad729fb0bc6fcd6b6c192e30=1448885377; __jsl_clearance=1449027009.886|0|kS5R%2BTePflcamiJc5gIAED8%2Fa0A%3D; CNZZDATA1000175989=1241735477-1444717348-null%7C1449021985'
       }
       res = http.get path, option
       content = res.body

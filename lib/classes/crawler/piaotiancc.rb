@@ -4,7 +4,12 @@ class Crawler::Piaotiancc
 
   def crawl_articles novel_id
     nodes = @page_html.css(".novel_list a")
+    do_not_crawl = true
     nodes.each do |node|
+      if novel_id == 22869
+        do_not_crawl = false if node[:href] == "/read/3220/10627169.html"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
