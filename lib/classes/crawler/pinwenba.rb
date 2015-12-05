@@ -6,9 +6,15 @@ class Crawler::Pinwenba
   def crawl_articles novel_id
     subject = ""
     nodes = @page_html.css("#list a")
+    do_not_crawl = true
     nodes.each do |node|
       url = get_article_url(node[:href])
-      next unless node.text.strip.include? "2224"
+
+      if novel_id == 21500
+        do_not_crawl = false if node[:href] == "/read/44/12798882.html"
+        next if do_not_crawl
+      end
+
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
       next if article
 

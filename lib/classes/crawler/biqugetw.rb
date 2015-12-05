@@ -27,6 +27,10 @@ class Crawler::Biqugetw
           do_not_crawl = false if node.children[0][:href] == "/12_12757/6055841.html"
           next if do_not_crawl
         end
+        if novel_id == 23441
+          do_not_crawl = false if node.children[0][:href] == "/7_7573/6334410.html"
+          next if do_not_crawl
+        end
 
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(host + node.children[0][:href])
         next if article
@@ -40,6 +44,7 @@ class Crawler::Biqugetw
         article.subject = novel.name
         /(\d*)\.html/ =~ node.children[0][:href]
         article.num = $1.to_i
+        article.num = article.num + novel.num if novel_id == 23441
         article.num = article.num + 1422605 if novel_id == 21788
 
         # puts node.text

@@ -33,7 +33,7 @@ module Crawler
   end
 
   def fetch url
-    @fake_browser_urls = ['www.365xs.org','www.yqhhy.me','www.uukanshu.com','www.123yq.com','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
+    @fake_browser_urls = ['www.akxs6.com','www.365xs.org','www.yqhhy.me','www.uukanshu.com','www.123yq.com','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
     @do_not_encode_urls = ['aiweicn.com','ixs.cc','quledu.com','tw.xiaoshuokan.com','7788xiaoshuo.com','wcxiaoshuo.com','2dollars.com.tw','dushi800','59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','tw.57book','b.faloo.com/p/','9pwx.com']
     @page_url = url
     get_page(@page_url)   

@@ -31,6 +31,10 @@ class Crawler::Xs00
         do_not_crawl = false if node[:href] == '10287279.html'
         next if do_not_crawl
       end
+      if novel_id == 21603
+        do_not_crawl = false if node[:href] == '10358743.html'
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
 
