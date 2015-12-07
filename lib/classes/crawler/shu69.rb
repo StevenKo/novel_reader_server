@@ -35,6 +35,22 @@ class Crawler::Shu69
         do_not_crawl = false if node[:href] == "/txt/19345/12887519"
         next if do_not_crawl
       end
+      if novel_id == 18682
+        do_not_crawl = false if node[:href] == "/txt/1848/12472530"
+        next if do_not_crawl
+      end
+      if novel_id == 18784
+        do_not_crawl = false if node[:href] == "/txt/8591/12429200"
+        next if do_not_crawl
+      end
+      if novel_id == 20831
+        do_not_crawl = false if node[:href] == "/txt/6134/12464123"
+        next if do_not_crawl
+      end
+      if novel_id == 19164
+        do_not_crawl = false if node[:href] == "/txt/7868/12430937"
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.69shu.com" + node[:href])
       next if article

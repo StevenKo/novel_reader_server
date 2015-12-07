@@ -4,7 +4,16 @@ class Crawler::Shuw8
 
   def crawl_articles novel_id
     nodes = @page_html.css(".indexlist a")
+    do_not_crawl = true
     nodes.each do |node|
+      if novel_id == 18838
+        do_not_crawl = false if node[:href] == "http://tw.8shuw.net/book/7634/8364035.html"
+        next if do_not_crawl
+      end
+      if novel_id == 21195
+        do_not_crawl = false if node[:href] == "http://tw.8shuw.net/book/7816/8542085.html"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
 

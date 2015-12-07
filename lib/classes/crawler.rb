@@ -158,7 +158,7 @@ module Crawler
   def set_novel_last_update_and_num(novel_id)
     novel = Novel.find(novel_id)
     if novel.articles.show.last
-      time = novel.articles.show.last.created_at.strftime("%y-%m-%d")
+      time = novel.articles.show.last.created_at.localtime.strftime("%y-%m-%d")
       novel.last_update = time
       novel.article_num = novel.articles.show.size.to_s + "篇"
       novel.save

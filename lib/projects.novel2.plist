@@ -5,7 +5,7 @@
   <key>EnvironmentVariables</key>
     <dict>
       <key>PATH</key>
-      <string>/Users/steven/.rvm/gems/ruby-2.1.1/bin:/Users/steven/.rvm/gems/ruby-2.1.1@global/bin:/Users/steven/.rvm/rubies/ruby-2.1.1/bin:/Users/steven/.rvm/bin:/usr/local/heroku/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin</string>
+      <string>/Users/steven/.rvm/gems/ruby-2.1.1/bin:/Users/steven/.rvm/gems/ruby-2.1.1@global/bin:/Users/steven/.rvm/rubies/ruby-2.1.1/bin:/Users/steven/.rvm/bin:/usr/local/heroku/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin</string>
     </dict>
   <key>Label</key>
   <string>projects.novel2</string>
