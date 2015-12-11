@@ -10,6 +10,10 @@ class Crawler::Quanbenxiaoshuo
         next_article = false if node[:href] == "http://quanben-xiaoshuo.com/read/5/langyabang/1/139.html"
         next if next_article
       end
+      if novel_id == 10803
+        next_article = false if node[:href] == "http://quanben-xiaoshuo.com/read/6/chuanyuezhiyanzhidasong/1/139.html"
+        next if next_article
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
 

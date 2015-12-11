@@ -44,7 +44,7 @@ class CrawlerAdapter
       '5800' => {'pattern'=>'/5800.cc/si','name'=>'Cc5800','crawl_site_articles' => true,'recommend' => false},
       '黃金屋中文(台灣)' => {'pattern'=>'/tw.hjwzw.com/si','name'=>'Hjwzw','crawl_site_articles' => true,'recommend' => false},
       '手打小说网' => {'pattern'=>'/xs555.com/si','name'=>'Xs555','crawl_site_articles' => true,'recommend' => false},
-      '书迷楼' => {'pattern'=>'/shumilou.com/si','name'=>'Shumilou','crawl_site_articles' => true,'recommend' => false},
+      '书迷楼' => {'pattern'=>'/shumilou.com|shumilou.co/si','name'=>'Shumilou','crawl_site_articles' => true,'recommend' => false},
       '玄葫堂' => {'pattern'=>'/xuanhutang.com/si','name'=>'Xuanhutang','crawl_site_articles' => true,'recommend' => false},
       '剑侠' => {'pattern'=>'/jianxia.cc/si','name'=>'Jianxia','crawl_site_articles' => true,'recommend' => false},
       '全本小说网quanben' => {'pattern'=>'/quanben.com/si','name'=>'Quanben','crawl_site_articles' => true,'recommend' => false},
