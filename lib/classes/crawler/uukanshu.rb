@@ -78,6 +78,30 @@ class Crawler::Uukanshu
         do_not_crawl = false if node[:href] == '/b/1792/198986.html'
         next if do_not_crawl
       end
+      if novel_id == 21442
+        do_not_crawl = false if node[:href] == '/b/28241/125136.html'
+        next if do_not_crawl
+      end
+      if novel_id == 22669
+        do_not_crawl = false if node[:href] == '/b/29389/139906.html'
+        next if do_not_crawl
+      end
+      if novel_id == 22635
+        do_not_crawl = false if node[:href] == '/b/27960/135044.html'
+        next if do_not_crawl
+      end
+      if novel_id == 21257
+        do_not_crawl = false if node[:href] == '/b/26238/145869.html'
+        next if do_not_crawl
+      end
+      if novel_id == 20941
+        do_not_crawl = false if node[:href] == '/b/24124/154732.html'
+        next if do_not_crawl
+      end
+      if novel_id == 20568
+        do_not_crawl = false if node[:href] == '/b/10313/89305.html'
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 

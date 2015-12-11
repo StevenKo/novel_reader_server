@@ -78,6 +78,14 @@ class Crawler::Shumilou
         do_not_crawl = false if node[:href] == "/jiulongzhizun/5896937.html"
         next if do_not_crawl
       end
+      if novel_id == 21354
+        do_not_crawl = false if node[:href] == "/haizeiwangyulongzhizi/6066122.html"
+        next if do_not_crawl
+      end
+      if novel_id == 23027
+        do_not_crawl = false if node[:href] == "/kexintiao/6060463.html"
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article

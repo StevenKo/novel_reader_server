@@ -25,6 +25,10 @@ class Crawler::Klxsw
         next_article = false if node[:href] == "http://www.klxsw.com/modules/article/reader.php?aid=171726&cid=29222895"
         next if next_article
       end
+      if novel_id == 22753
+        next_article = false if node[:href] == "http://www.klxsw.com/modules/article/reader.php?aid=192486&cid=29428807"
+        next if next_article
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(article_url)
       next if article

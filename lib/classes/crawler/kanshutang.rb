@@ -27,8 +27,18 @@ class Crawler::Kanshutang
     nodes = @page_html.css(".dirbox a")
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
+
+    do_not_crawl = true
     nodes.each do |node|
       next unless node[:href]
+      if novel_id == 21845
+        do_not_crawl = false if node[:href] == '4326921.html'
+        next if do_not_crawl
+      end
+      if novel_id == 22925
+        do_not_crawl = false if node[:href] == '4329865.html'
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
 
@@ -40,7 +50,7 @@ class Crawler::Kanshutang
       article.subject = subject
       /(\d+)\.html/ =~ node[:href]
       next if $1.nil?
-      article.num = $1.to_i
+      article.num = $1.to_i + novel.num
       # puts node.text
       article.save
       end

@@ -89,6 +89,30 @@ class Crawler::Piaotian
         do_not_crawl = false if node[:href] == "4443209.html"
         next if do_not_crawl
       end
+      if novel_id == 21159
+        do_not_crawl = false if node[:href] == "4446945.html"
+        next if do_not_crawl
+      end
+      if novel_id == 18949
+        do_not_crawl = false if node[:href] == "4492188.html"
+        next if do_not_crawl
+      end
+      if novel_id == 18257
+        do_not_crawl = false if node[:href] == "4491931.html"
+        next if do_not_crawl
+      end
+      if novel_id == 18285
+        do_not_crawl = false if node[:href] == "4503221.html"
+        next if do_not_crawl
+      end
+      if novel_id == 19137
+        do_not_crawl = false if node[:href] == "3294012.html"
+        next if do_not_crawl
+      end
+      if novel_id == 17921
+        do_not_crawl = false if node[:href] == "4524769.html"
+        next if do_not_crawl
+      end
 
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article

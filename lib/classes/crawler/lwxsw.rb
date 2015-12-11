@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Crawler::Lwxs520
+class Crawler::Lwxsw
   include Crawler
 
   def crawl_articles novel_id
@@ -7,28 +7,8 @@ class Crawler::Lwxs520
     nodes = @page_html.css(".dccss a")
     do_not_crawl = true
     nodes.each do |node|
-      if novel_id == 22325
-        do_not_crawl = false if node[:href] == '14210110.html'
-        next if do_not_crawl
-      end
-      if novel_id == 22649
-        do_not_crawl = false if node[:href] == '14199678.html'
-        next if do_not_crawl
-      end
-      if novel_id == 22651
-        do_not_crawl = false if node[:href] == '14222543.html'
-        next if do_not_crawl
-      end
-      if novel_id == 22729
-        do_not_crawl = false if node[:href] == '14213992.html'
-        next if do_not_crawl
-      end
-      if novel_id == 19234
-        do_not_crawl = false if node[:href] == '2103405.html'
-        next if do_not_crawl
-      end
-      if novel_id == 20379
-        do_not_crawl = false if node[:href] == '781178.html'
+      if novel_id == 23311
+        do_not_crawl = false if node[:href] == '7597942.html'
         next if do_not_crawl
       end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
