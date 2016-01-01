@@ -6,6 +6,16 @@ class Crawler::Piaotian
     nodes = @page_html.css(".centent a")
     do_not_crawl = true
     nodes.each do |node|
+
+      if novel_id == 17988
+        do_not_crawl = false if node[:href] == '4549275.html'
+        next if do_not_crawl
+      end
+
+      if novel_id == 22363
+        do_not_crawl = false if node[:href] == '4520330.html'
+        next if do_not_crawl
+      end
       
       if novel_id == 22331
         do_not_crawl = false if node[:href] == '4293998.html'

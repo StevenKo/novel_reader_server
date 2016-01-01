@@ -6,6 +6,10 @@ class Crawler::Uukanshu
     nodes = @page_html.css("#chapterList a")
     do_not_crawl = true
     nodes.reverse_each do |node|
+      if novel_id == 23033
+        do_not_crawl = false if node[:href] == '/b/25080/142369.html'
+        next if do_not_crawl
+      end
       if novel_id == 23463
         do_not_crawl = false if node[:href] == '/b/30530/119958.html'
         next if do_not_crawl
@@ -100,6 +104,14 @@ class Crawler::Uukanshu
       end
       if novel_id == 20568
         do_not_crawl = false if node[:href] == '/b/10313/89305.html'
+        next if do_not_crawl
+      end
+      if novel_id == 20740
+        do_not_crawl = false if node[:href] == '/b/25249/142789.html'
+        next if do_not_crawl
+      end
+      if novel_id == 23113
+        do_not_crawl = false if node[:href] == '/b/18174/142962.html'
         next if do_not_crawl
       end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))

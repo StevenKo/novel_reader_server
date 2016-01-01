@@ -259,6 +259,12 @@ class CrawlerAdapter
       'lwxsw.org' => {'pattern'=>'/lwxsw.org/si','name'=>'Lwxsw','crawl_site_articles' => true,'recommend' => false},
       'zhuoguji' => {'pattern'=>'/zhuoguji/si','name'=>'Zhuoguji','crawl_site_articles' => true,'recommend' => false},
       'hhlwx' => {'pattern'=>'/hhlwx/si','name'=>'Hhlwx','crawl_site_articles' => true,'recommend' => false},
+      'nsxs' => {'pattern'=>'/nsxs/si','name'=>'Nsxs','crawl_site_articles' => true,'recommend' => false},
+      'shikoto' => {'pattern'=>'/shikoto/si','name'=>'Shikoto','crawl_site_articles' => true,'recommend' => false},
+      'feisuzw' => {'pattern'=>'/feisuzw/si','name'=>'Feisuzw','crawl_site_articles' => true,'recommend' => false},
+      'zhuisuu' => {'pattern'=>'/zhuisuu/si','name'=>'Zhuisuu','crawl_site_articles' => true,'recommend' => false},
+      'nch' => {'pattern'=>'/nch.com.tw/si','name'=>'Nch','crawl_site_articles' => true,'recommend' => false},
+      'danmeila' => {'pattern'=>'/danmeila.com/si','name'=>'Danmeila','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

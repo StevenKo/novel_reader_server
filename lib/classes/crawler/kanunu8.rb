@@ -49,5 +49,45 @@ class Crawler::Kanunu8
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novels category_id
+    
+    nodes = @page_html.css("tr[bgcolor='#fff7e7'] a")
+    nodes.each_with_index do |node,i|
+      # next if i > 5
+      # node = node.parent
+      link = "http://www.kanunu8.com" + node[:href]
+      author = @page_html.css("h2").text.strip.sub("作品集","")
+      name = node.text.strip
+      novel = Novel.find_by_link link
+      if novel && novel.pic.blank?
+        novel.pic = "http://www.kanunu8.com" + node.css("img")[0][:src] if node.css("img")[0]
+        novel.save
+      end
+      if novel && novel.name.blank?
+        novel.name = name if name.present?
+        novel.save
+      end
+      unless novel
+        novel = Novel.new
+        novel.link = link
+        novel.name = ZhConv.convert("zh-tw",name,false)
+        novel.author = ZhConv.convert("zh-tw",author,false)
+        novel.category_id = category_id
+        novel.is_show = true
+        novel.is_serializing = 0
+        novel.last_update = Time.now.strftime("%m/%d/%Y")
+        novel.article_num = "?"
+        crawl_novel_description link,novel
+        novel.save
+        CrawlWorker.perform_async(novel.id)
+      end
+    end
+  end
+
+  def crawl_novel_description link, novel
+    c = Crawler::Kanunu8.new
+    c.fetch link
+    novel.description = ZhConv.convert("zh-tw",c.page_html.css(".p10-24").text.strip,false)
+  end
 
 end

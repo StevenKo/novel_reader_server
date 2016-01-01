@@ -1,19 +1,17 @@
 # encoding: utf-8
-class Crawler::Jjwxc
+class Crawler::Danmeila
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css("#oneboolt a")
+    nodes = @page_html.css(".catalog_list a")
     nodes.each do |node|
-      next unless node[:href] && node[:href].index('chapterid')
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
-      
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = node[:href]
+        article.link = get_article_url(node[:href])
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
@@ -25,17 +23,14 @@ class Crawler::Jjwxc
       end
       ArticleWorker.perform_async(article.id)
     end  
-    set_novel_last_update_and_num(novel_id)                    
+    set_novel_last_update_and_num(novel_id)      
   end
 
   def crawl_article article
-    node = @page_html.css(".noveltext")
-    node.css("a").remove
-    node.css("font").remove
-    node.css("span").remove
-    node.css("script").remove
-    text = change_node_br_to_newline(node).strip.gsub("[]","").gsub("  ","").gsub("\n\n","").gsub("\r\n","")
-    text = ZhConv.convert("zh-tw", text.strip, false)
+    @page_html.css("a,script").remove
+    text = @page_html.css(".article_con").text.encode("UTF-16be", :invalid=>:replace, :replace=>"?").encode('UTF-8').strip
+    article_text = ZhConv.convert("zh-tw",text,false)
+    text = article_text
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
