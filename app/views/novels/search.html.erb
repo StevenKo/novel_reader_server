@@ -21,9 +21,8 @@
     <td><%= novel.name %></td>
     <td><%= novel.author %></td>
     <td><%= novel.is_show %></td>
-    <td><%= link_to 'Show', novel %></td>
+    <td><%= link_to 'Show', novel_path(novel, page: 1) %></td>
     <td><%= link_to 'Edit', edit_novel_path(novel) %></td>
-    <td><%= link_to 'Destroy', novel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>

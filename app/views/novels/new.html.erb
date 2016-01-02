@@ -49,3 +49,13 @@
 <% end %>
 
 <%= link_to 'Back', novels_path %>
+
+<% @websites.each do |website_name, info| %>
+  <tr>
+    <% url = info['pattern'][1..info['pattern'].length-4] %>
+    <th><%= website_name %></th>
+    <th><%= link_to url,"https://www.google.com/search?q=#{@novel.name}+site%3A#{url}",:target => "_blank" %></th>
+    <th><%= info['crawl_site_articles'] %></th>
+    <th><%= info['recommend'] %></th> 
+  </tr>
+<% end %>

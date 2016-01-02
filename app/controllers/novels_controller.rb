@@ -13,7 +13,7 @@ class NovelsController < ApplicationController
 
   def update_novel
     novel = Novel.find(params[:novel_id])
-    redirect_to :action => 'show', :id => novel.id
+    redirect_to :action => 'show', :id => novel.id, :page => 1
   end
 
   def show
@@ -41,7 +41,7 @@ class NovelsController < ApplicationController
     @novel = Novel.new(params[:novel])
     @websites = CrawlerAdapter.adapter_map
     if @novel.save
-      render :action => 'show', :id => @novel.id
+      render :action => 'show', :id => @novel.id, :page => 1
     else
       render :action => "new"
     end
@@ -50,7 +50,7 @@ class NovelsController < ApplicationController
   def update
     @novel = Novel.find(params[:id])
     if @novel.update_attributes(params[:novel])
-      redirect_to :action => 'show'
+      redirect_to :action => 'show', :page => 1
     else
       render :action => "edit" 
     end

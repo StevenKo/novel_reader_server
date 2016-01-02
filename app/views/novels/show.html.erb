@@ -44,7 +44,6 @@ show:   <%= @novel.is_show %> </br>
     <td> <%= truncate(article.try(:article_all_text)) %></td>
     <td><%= link_to 'Edit', edit_article_path(article) %></td>
     <td><%= link_to 'Show', article_path(article) %></td>
-    <td><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     <td><%= link_to 'ReCrawl', re_crawl_articles_path({:article_id => article.id}), data: { confirm: 'Are you sure?' } %></td>
     <td>
     <%= form_for "", :url => crawl_text_onther_site_articles_path({:article_id => article.id}), data: { confirm: 'Are you sure?' }, :method => :put do |f|%>
