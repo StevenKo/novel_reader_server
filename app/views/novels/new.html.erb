@@ -50,6 +50,17 @@
 
 <%= link_to 'Back', novels_path %>
 
+<br>#########################################################################<br>
+
+<table>
+  <tr>
+    <th>網站</th>
+    <th>Google search(click to google search)</th>
+    <th>能不能爬網站的文章列表</th>
+    <th>推薦使用的網站</th>
+    <th></th>
+  </tr>
+
 <% @websites.each do |website_name, info| %>
   <tr>
     <% url = info['pattern'][1..info['pattern'].length-4] %>
@@ -59,3 +70,5 @@
     <th><%= info['recommend'] %></th> 
   </tr>
 <% end %>
+
+</table>

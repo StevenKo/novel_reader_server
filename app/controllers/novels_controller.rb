@@ -35,6 +35,7 @@ class NovelsController < ApplicationController
 
   def new
     @novel = Novel.new
+    @websites = CrawlerAdapter.adapter_map
   end
 
   def create
