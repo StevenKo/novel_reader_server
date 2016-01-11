@@ -6,6 +6,10 @@ class Crawler::Shumilou
     nodes = @page_html.css(".zl a")
     do_not_crawl = true
     nodes.each do |node|
+      if novel_id == 17988
+        do_not_crawl = false if node[:href] == "/wodtieshenxiaohua/6177262.html"
+        next if do_not_crawl
+      end
       if novel_id == 21332
         do_not_crawl = false if node[:href] == "/zhongshengzhishenjixueba10/4497795.html"
         next if do_not_crawl
