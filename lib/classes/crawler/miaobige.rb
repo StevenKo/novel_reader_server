@@ -5,7 +5,13 @@ class Crawler::Miaobige
   def crawl_articles novel_id
     subject = ""
     nodes = @page_html.css("#readerlist a")
+    do_not_crawl = true
     nodes.each do |node|
+      if novel_id == 23033
+        do_not_crawl = false if node[:href] == '/read/5892/3631848.html'
+        next if do_not_crawl
+      end
+
       url = "http://www.miaobige.com" + node[:href]
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
       next if article

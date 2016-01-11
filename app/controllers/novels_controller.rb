@@ -42,7 +42,7 @@ class NovelsController < ApplicationController
     @novel = Novel.new(params[:novel])
     @websites = CrawlerAdapter.adapter_map
     if @novel.save
-      render :action => 'show', :id => @novel.id, :page => 1
+      redirect_to :action => 'show', :id => @novel.id, :page => 1
     else
       render :action => "new"
     end

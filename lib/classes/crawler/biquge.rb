@@ -19,6 +19,10 @@ class Crawler::Biquge
         do_not_crawl = false if node[:href] == "/35_35371/2105274.html"
         next if do_not_crawl
       end
+      if novel_id == 18343
+        do_not_crawl = false if node[:href] == "/7_7638/4540530.html"
+        next if do_not_crawl
+      end
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
@@ -33,6 +37,7 @@ class Crawler::Biquge
       article.num = $1.to_i
       article.num = $1.to_i + novel.num if novel_id == 21431
       article.num = $1.to_i + novel.num if novel_id == 22539
+      article.num = $1.to_i + novel.num if novel_id == 18343
       # puts node.text
       article.save
       end
