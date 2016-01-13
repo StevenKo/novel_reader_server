@@ -155,7 +155,7 @@ class CrawlerAdapter
       'ftxsy' => {'pattern'=>'/ftxsy.com/si','name'=>'Ftxsy','crawl_site_articles' => true,'recommend' => false},
       'LwxsOrg' => {'pattern'=>'/lwxs.org/si','name'=>'LwxsOrg','crawl_site_articles' => true,'recommend' => false},
       'Lewenxiaoshuo' => {'pattern'=>'/lewenxiaoshuo.com/si','name'=>'Lewenxiaoshuo','crawl_site_articles' => true,'recommend' => false},
-      'Biquge' => {'pattern'=>'/www.biquge.tw/si','name'=>'Biquge','crawl_site_articles' => true,'recommend' => false},
+      'Biquge' => {'pattern'=>'/www.biquge/si','name'=>'Biquge','crawl_site_articles' => true,'recommend' => false},
       'Mucanwenxue' => {'pattern'=>'/mucanwenxue.com/si','name'=>'Mucanwenxue','crawl_site_articles' => true,'recommend' => false},
       'Xbiquge' => {'pattern'=>'/www.xbiquge.com/si','name'=>'Xbiquge','crawl_site_articles' => true,'recommend' => false},
       'snwx' => {'pattern'=>'/www.snwx.com/si','name'=>'Snwx','crawl_site_articles' => true,'recommend' => false},
