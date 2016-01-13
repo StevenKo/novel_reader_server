@@ -6,6 +6,9 @@ class Crawler::Shuw8
     nodes = @page_html.css(".indexlist a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 18838
         do_not_crawl = false if node[:href] == "http://tw.8shuw.net/book/7634/8364035.html"
         next if do_not_crawl

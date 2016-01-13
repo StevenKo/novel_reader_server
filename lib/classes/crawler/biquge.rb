@@ -7,6 +7,9 @@ class Crawler::Biquge
     nodes = @page_html.css("#list a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 21894
         do_not_crawl = false if node[:href] == "/9_9375/4998433.html"
         next if do_not_crawl
@@ -34,10 +37,7 @@ class Crawler::Biquge
       novel = Novel.select("id,num,name").find(novel_id)
       article.subject = novel.name
       /(\d*)\.html/ =~ node[:href]
-      article.num = $1.to_i
-      article.num = $1.to_i + novel.num if novel_id == 21431
-      article.num = $1.to_i + novel.num if novel_id == 22539
-      article.num = $1.to_i + novel.num if novel_id == 18343
+      article.num = $1.to_i + novel.num
       # puts node.text
       article.save
       end

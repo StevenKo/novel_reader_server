@@ -5,11 +5,14 @@ class Crawler::Biqugew
   def crawl_articles novel_id
     subject = ""
     nodes = @page_html.css("#list dl").children
+    do_not_crawl = true
     nodes.each do |node|
       if node.name == "dt"
         next
       elsif (node.name == "dd" && node.css("a").present?)
-
+        do_not_crawl = false if crawl_this_article(novel_id,node.children[0][:href])
+        next if do_not_crawl
+        
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node.children[0][:href]))
         next if article
 
@@ -21,7 +24,7 @@ class Crawler::Biqugew
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         /(\d*)\.html/ =~ node.children[0][:href]
-        article.num = $1.to_i
+        article.num = $1.to_i + novel.num
         # puts node.text
         article.save
         end

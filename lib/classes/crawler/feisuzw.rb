@@ -7,6 +7,9 @@ class Crawler::Feisuzw
     nodes = @page_html.css(".chapterlist a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 22539
         do_not_crawl = false if node[:href] == '6642904.html'
         next if do_not_crawl

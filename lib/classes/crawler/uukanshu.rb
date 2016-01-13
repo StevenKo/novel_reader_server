@@ -5,7 +5,10 @@ class Crawler::Uukanshu
   def crawl_articles novel_id
     nodes = @page_html.css("#chapterList a")
     do_not_crawl = true
-    nodes.reverse_each do |node|
+    nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 23033
         do_not_crawl = false if node[:href] == '/b/25080/142369.html'
         next if do_not_crawl

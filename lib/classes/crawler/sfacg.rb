@@ -19,30 +19,34 @@ class Crawler::Sfacg
     index = 0
     while index < num do
       nodes = @page_html.css(".list_Content")[index].css("a")
+      do_not_crawl = true
       nodes.each do |node|
-          next unless node[:href]
-          article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://book.sfacg.com" + node[:href])
-          # if (article != nil)
-          #   article.subject = subject_titles[index]
-          #   article.save
-          # end
-          next if article
+        next unless node[:href]
+        
+        do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+        next if do_not_crawl
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://book.sfacg.com" + node[:href])
+        # if (article != nil)
+        #   article.subject = subject_titles[index]
+        #   article.save
+        # end
+        next if article
 
-          unless article 
-            article = Article.new
-            article.novel_id = novel_id
-            article.link = "http://book.sfacg.com" + node[:href]
-            article.title = ZhConv.convert("zh-tw",node.text.strip,false)
-            novel = Novel.select("id,num,name").find(novel_id)
-            article.subject = subject_titles[index]
-            article.num = novel.num + 1
-            novel.num = novel.num + 1
-            novel.save
-              # puts node.text
-            article.save
-          end
-          ArticleWorker.perform_async(article.id)
+        unless article 
+          article = Article.new
+          article.novel_id = novel_id
+          article.link = "http://book.sfacg.com" + node[:href]
+          article.title = ZhConv.convert("zh-tw",node.text.strip,false)
+          novel = Novel.select("id,num,name").find(novel_id)
+          article.subject = subject_titles[index]
+          article.num = novel.num + 1
+          novel.num = novel.num + 1
+          novel.save
+            # puts node.text
+          article.save
         end
+        ArticleWorker.perform_async(article.id)
+      end
       index = index +1        
     end
     set_novel_last_update_and_num(novel_id)

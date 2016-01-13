@@ -6,6 +6,9 @@ class Crawler::Du55
     nodes = @page_html.css("li.chapter a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 20665
         do_not_crawl = false if node[:href] == "http://www.5du5.com/book/0/352/2245972.html"
         next if do_not_crawl

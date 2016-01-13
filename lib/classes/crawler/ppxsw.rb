@@ -6,6 +6,7 @@ class Crawler::Ppxsw
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
     nodes = @page_html.css(".centent").children
+    do_not_crawl = true
     nodes.each do |node|
       if(node[:class]=="list")
         subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
@@ -14,6 +15,9 @@ class Crawler::Ppxsw
         a_nodes.each do |a_node|
           next unless a_node[:href].index('html')
           url = @page_url + a_node[:href]
+          do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+          next if do_not_crawl
+
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
           next if article
           unless article 

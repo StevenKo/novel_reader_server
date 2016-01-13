@@ -7,6 +7,8 @@ class Crawler::Wutuxs
     nodes = @page_html.css("td.L a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
 
       if novel_id == 23179
         do_not_crawl = false if node[:href] == '/html/0/804/1465434.html'

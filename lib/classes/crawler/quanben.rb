@@ -6,6 +6,7 @@ class Crawler::Quanben
     nodes = @page_html.css("tr")
     novel = Novel.select("id,num,name").find(novel_id)
     subject = ""
+    do_not_crawl = true
     nodes.each do |node|
       if (node.children.size() == 1)
         subject = novel.name
@@ -13,6 +14,9 @@ class Crawler::Quanben
         inside_nodes = node.children.children
         inside_nodes.each do |n|
           if n.name == "a"
+            do_not_crawl = false if crawl_this_article(novel_id,n[:href])
+            next if do_not_crawl
+
             article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + n[:href])
             next if article
 
@@ -23,7 +27,7 @@ class Crawler::Quanben
             article.title = ZhConv.convert("zh-tw",n.text.strip,false)
             article.subject = subject
             /(\d*)/ =~ n[:href]
-            article.num = $1.to_i
+            article.num = $1.to_i + novel.num
             # puts node.text
             article.save
             end

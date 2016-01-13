@@ -6,7 +6,11 @@ class Crawler::Niubb
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
     nodes = @page_html.css(".box_con #list a")
-    nodes.each_with_index do |a_node,i|
+    do_not_crawl = true
+    nodes.each do |a_node|
+      do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+      next if do_not_crawl
+      
       url = @page_url + a_node[:href]
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
       next if article

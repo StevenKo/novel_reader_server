@@ -7,6 +7,9 @@ class Crawler::Shu69
     nodes = nodes[1].css(".mulu_list a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 20703
         do_not_crawl = false if node[:href] == "/txt/15418/12091444"
         next if do_not_crawl

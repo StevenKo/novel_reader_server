@@ -12,6 +12,9 @@ class Crawler::P9wx
         do_not_crawl = false if node[:onclick] == "gotochap(41197,27474181);"
         next if do_not_crawl
       end
+      do_not_crawl = false if crawl_this_article(novel_id,node[:onclick])
+      next if do_not_crawl
+      
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + "**" +node[:onclick])
       next if article
 

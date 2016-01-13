@@ -6,13 +6,17 @@ class Crawler::To59
     url = @page_url
     subject = ""
     nodes = @page_html.css(".acss").children
+    do_not_crawl = true
     nodes.each do |node|
+
       if node.children.children[0].name == "h2"
         subject = ZhConv.convert("zh-tw",node.children.text.strip,false)
       elsif (node.children.children[0].name == "a")
         inside_nodes = node.children.children
         inside_nodes.each do |n|
           if n[:href] != nil
+            do_not_crawl = false if crawl_this_article(novel_id,n[:href])
+            next if do_not_crawl
             article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + n[:href])
             next if article
 

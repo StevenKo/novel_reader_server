@@ -7,6 +7,9 @@ class Crawler::Yqhhy
     nodes = @page_html.css("#readtext a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 24065
         do_not_crawl = false if node[:href] == '1592275.html'
         next if do_not_crawl

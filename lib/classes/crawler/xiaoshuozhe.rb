@@ -7,12 +7,15 @@ class Crawler::Xiaoshuozhe
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
 
+    do_not_crawl = true
     nodes.each do |node|
       if (node.name == "dt")
         subject = node.text
       elsif node.name == "dd"
         node = node.css("a")[0]
         url = @page_url + node[:href]
+        do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+        next if do_not_crawl
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
         next if article
 

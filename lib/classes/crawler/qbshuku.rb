@@ -5,7 +5,11 @@ class Crawler::Qbshuku
   def crawl_articles novel_id
     @page_url = @page_url.gsub('Index.shtml','')
     nodes = @page_html.css(".list ul li a")
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url+ node[:href])
       next if article
 

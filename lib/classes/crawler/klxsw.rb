@@ -6,7 +6,11 @@ class Crawler::Klxsw
     nodes = @page_html.css("td[width='25%'] a")
     next_article = true
 
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       url = @page_url.gsub("index.html","")
       article_url = ""
       if node[:href].index("klxsw.com")

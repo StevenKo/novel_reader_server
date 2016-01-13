@@ -7,10 +7,14 @@ class Crawler::Hfxs
 
     subject = ""
     nodes = @page_html.css("div.List").children
+    do_not_crawl = true
     nodes.each do |node|
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
+        do_not_crawl = false if crawl_this_article(novel_id,node.children[0][:href])
+        next if do_not_crawl
+
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
         next if article
 

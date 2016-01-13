@@ -6,6 +6,9 @@ class Crawler::Lewen8
     nodes = @page_html.css("div#defaulthtml dd a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 22289
         do_not_crawl = false if node[:href] == '/lw61917/3327410.html'
         next if do_not_crawl

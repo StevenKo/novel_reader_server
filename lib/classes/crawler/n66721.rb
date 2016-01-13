@@ -7,6 +7,9 @@ class Crawler::N66721
     nodes = nodes[1].css('a')
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 22525
         do_not_crawl = false if node[:href] == "/ZhiMo/976.html"
         next if do_not_crawl

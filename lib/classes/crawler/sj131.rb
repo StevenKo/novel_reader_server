@@ -7,10 +7,14 @@ class Crawler::Sj131
     subject = ""
     nodes = @page_html.css(".booklist dl").children
     nodes = @page_html.css(".dirbox dl").children unless nodes.present?
+    do_not_crawl = true
     nodes.each do |node|
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif (node.name == "dd" && node.css("a").present?)
+        do_not_crawl = false if crawl_this_article(novel_id,node.children[0][:href])
+        next if do_not_crawl
+
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
         next if article
 

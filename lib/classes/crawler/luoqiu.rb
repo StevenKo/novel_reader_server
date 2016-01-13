@@ -6,12 +6,16 @@ class Crawler::Luoqiu
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
     nodes = @page_html.css(".booklist span")
+    do_not_crawl = true
     nodes.each do |node|
       if(node[:class]=="v")
         subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       else
         a_node = node.css("a")[0]
         url = @page_url.gsub("index.html","") + a_node[:href]
+        do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+        next if do_not_crawl
+
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
         next if article
         unless article 

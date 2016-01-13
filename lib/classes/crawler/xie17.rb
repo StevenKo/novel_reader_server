@@ -7,12 +7,15 @@ class Crawler::Xie17
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
     nodes = @page_html.css(".content").children
+    do_not_crawl = true
     nodes.each do |node|
       if(node[:class]=="juan")
         subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       elsif(node.name == "table")
         a_nodes = node.css("a")
         a_nodes.each do |a_node|
+          do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+          next if do_not_crawl
           url = "http://xiaoshuo.17xie.com" + a_node[:href]
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
           next if article

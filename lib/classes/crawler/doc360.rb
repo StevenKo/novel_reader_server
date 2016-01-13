@@ -6,11 +6,14 @@ class Crawler::Doc360
 
   def crawl_articles novel_id
     nodes = @page_html.css("#articlecontent a")
+    do_not_crawl = true
     nodes.each do |node|
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
       next if article
       next unless node[:href].index("html")
-
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       unless article 
         article = Article.new
         article.novel_id = novel_id

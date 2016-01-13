@@ -4,26 +4,30 @@ class Crawler::Mgyqw
 
   def crawl_articles novel_id
     nodes = @page_html.css(".td_con a")
+    do_not_crawl = true
     nodes.each do |node|
-        url = @page_url.sub("index.html","") + node[:href]
-        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
-        next if article
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
 
-        unless article 
-          article = Article.new
-          article.novel_id = novel_id
-          article.link = url
-          article.title = ZhConv.convert("zh-tw",node.text.strip,false)
-          novel = Novel.select("id,num,name").find(novel_id)
-          article.subject = novel.name
-          /(\d*)\.html/ =~ node[:href]
-          article.num = $1
-          novel.num = novel.num + 1
-          novel.save
-          # puts node.text
-          article.save
-        end
-        ArticleWorker.perform_async(article.id)
+      url = @page_url.sub("index.html","") + node[:href]
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
+      next if article
+
+      unless article 
+        article = Article.new
+        article.novel_id = novel_id
+        article.link = url
+        article.title = ZhConv.convert("zh-tw",node.text.strip,false)
+        novel = Novel.select("id,num,name").find(novel_id)
+        article.subject = novel.name
+        /(\d*)\.html/ =~ node[:href]
+        article.num = $1 + novel.num
+        novel.num = novel.num + 1
+        novel.save
+        # puts node.text
+        article.save
+      end
+      ArticleWorker.perform_async(article.id)
     end
     set_novel_last_update_and_num(novel_id)
   end

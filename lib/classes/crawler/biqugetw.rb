@@ -11,6 +11,9 @@ class Crawler::Biqugetw
       if node.name == "dt"
         next
       elsif (node.name == "dd" && node.css("a").present?)
+        do_not_crawl = false if crawl_this_article(novel_id,node.children[0][:href])
+        next if do_not_crawl
+        
         if novel_id == 21365
           do_not_crawl = false if node.children[0][:href] == "/7_7116/4573652.html"
           next if do_not_crawl
@@ -51,11 +54,7 @@ class Crawler::Biqugetw
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
         /(\d*)\.html/ =~ node.children[0][:href]
-        article.num = $1.to_i
-        article.num = article.num + novel.num if novel_id == 23441
-        article.num = article.num + 1422605 if novel_id == 21788
-        article.num = article.num + 7710855 if novel_id == 22521
-
+        article.num = $1.to_i + novel.num
         # puts node.text
         article.save
         end

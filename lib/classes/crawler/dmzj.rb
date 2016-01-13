@@ -4,16 +4,16 @@ class Crawler::Dmzj
 
   def crawl_articles novel_id
     nodes = @page_html.css(".download_rtx")
-    # do_not_crawl = true
+    do_not_crawl = true
     nodes.each do |node|
+
       node.css("ol li span").remove
       subject = ZhConv.convert("zh-tw",node.css("ol li").text.strip,false)
       a_nodes = node.css("ul li a")
       a_nodes.each do |a_node|
-        # if novel_id == 23463
-        #   do_not_crawl = false if a_node[:href] == '/b/30530/119958.html'
-        #   next if do_not_crawl
-        # end
+        do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+        next if do_not_crawl
+
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(a_node[:href]))
         next if article
 

@@ -31,6 +31,9 @@ class Crawler::Kanshutang
     do_not_crawl = true
     nodes.each do |node|
       next unless node[:href]
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 21845
         do_not_crawl = false if node[:href] == '4326921.html'
         next if do_not_crawl

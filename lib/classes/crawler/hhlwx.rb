@@ -6,6 +6,9 @@ class Crawler::Hhlwx
     nodes = @page_html.css(".chapterlist a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 20531
         do_not_crawl = false if node[:href] == '/hhlread/49024_5234200.html'
         next if do_not_crawl

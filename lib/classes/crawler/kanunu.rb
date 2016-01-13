@@ -7,7 +7,11 @@ class Crawler::Kanunu
     # url = @page_url.gsub("index.html","")
     # url = url.gsub(/\d*\.html/,"")
     
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       url = "http://book.kanunu.org"
       unless node[:href].index('book') || node[:href].index('files')
         url = @page_url.gsub("index.html","")

@@ -5,7 +5,11 @@ class Crawler::Yuqianshiwei
   def crawl_articles novel_id
     nodes = @page_html.css(".bg .mulu .box a")
     url = "http://www.yuqianshiwei.com/"
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
       next if node[:style]

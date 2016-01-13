@@ -6,6 +6,9 @@ class Crawler::Akxs6
     nodes = @page_html.css("#readerlist a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 23243
         do_not_crawl = false if node[:href] == '/2/2293/2964884.html'
         next if do_not_crawl

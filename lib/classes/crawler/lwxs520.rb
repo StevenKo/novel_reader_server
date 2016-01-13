@@ -7,6 +7,9 @@ class Crawler::Lwxs520
     nodes = @page_html.css(".dccss a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 16272
         do_not_crawl = false if node[:href] == '736397.html'
         next if do_not_crawl

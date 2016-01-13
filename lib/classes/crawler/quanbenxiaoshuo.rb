@@ -4,8 +4,11 @@ class Crawler::Quanbenxiaoshuo
 
   def crawl_articles novel_id
     nodes = @page_html.css("ul li[itemprop='itemListElement'] a")
-    next_article = true
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 6428
         next_article = false if node[:href] == "http://quanben-xiaoshuo.com/read/5/langyabang/1/139.html"
         next if next_article

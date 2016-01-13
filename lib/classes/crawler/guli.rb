@@ -6,8 +6,11 @@ class Crawler::Guli
     nodes = @page_html.css("#detaillist a")
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
+    do_not_crawl = true
     nodes.each do |node|
       next unless node[:href]
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.guli.cc" + node[:href])
       next if article
 
@@ -19,7 +22,7 @@ class Crawler::Guli
       article.subject = subject
       /\d+\/(\d+)\// =~ node[:href]
       next if $1.nil?
-      article.num = $1.to_i
+      article.num = $1.to_i + novel.num
       # puts node.text
       article.save
       end

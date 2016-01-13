@@ -8,7 +8,11 @@ class Crawler::D586
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
 
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       url = node[:href]
       url = @page_url + url unless node[:href].include?("d586")
 

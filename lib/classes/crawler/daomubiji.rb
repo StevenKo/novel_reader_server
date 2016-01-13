@@ -5,8 +5,8 @@ class Crawler::Daomubiji
   def crawl_articles novel_id
     subject = ""
     nodes = @page_html.css(".bg .mulu")
+    do_not_crawl = true
     nodes.each do |node|
-
       child_nodes = node.css("td")
       child_nodes.each_with_index do |c_node,i|
         if i==0
@@ -14,6 +14,10 @@ class Crawler::Daomubiji
         else
           a_node = c_node.css("a")[0]
           next if a_node.nil?
+
+          do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+          next if do_not_crawl
+
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(a_node[:href])
           next if article
           unless article 

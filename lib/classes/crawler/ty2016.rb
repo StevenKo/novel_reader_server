@@ -6,6 +6,9 @@ class Crawler::Ty2016
     nodes = @page_html.css(".book dd a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 20109
         do_not_crawl = false if node[:href] == '23802.html'
         next if do_not_crawl

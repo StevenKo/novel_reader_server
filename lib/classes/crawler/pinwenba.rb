@@ -8,6 +8,9 @@ class Crawler::Pinwenba
     nodes = @page_html.css("#list a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       url = get_article_url(node[:href])
 
       if novel_id == 21500

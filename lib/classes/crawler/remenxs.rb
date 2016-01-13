@@ -4,8 +4,11 @@ class Crawler::Remenxs
 
   def crawl_articles novel_id
     nodes = @page_html.css(".novel_list a")
-    next_article = true
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 18000
         next_article = false if node.text.strip.index("5037")
         next if next_article

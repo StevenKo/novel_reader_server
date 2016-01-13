@@ -24,6 +24,9 @@ class Crawler::Pq44
     nodes = @page_html.css(".ccss a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 22399
         do_not_crawl = false if node[:href] == "39161772.html"
         next if do_not_crawl

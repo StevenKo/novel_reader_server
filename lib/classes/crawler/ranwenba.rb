@@ -4,7 +4,11 @@ class Crawler::Ranwenba
 
   def crawl_articles novel_id
     nodes = @page_html.css(".contentandborder a")
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(@page_url + node[:href])
       next if article
 

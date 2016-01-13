@@ -10,6 +10,9 @@ class Crawler::Fxnzw
     nodes = @page_html.css("#BookText ul li a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 20344
         do_not_crawl = false if node[:href] == "/fxnread/28485_8465360.html"
         next if do_not_crawl

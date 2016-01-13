@@ -7,7 +7,11 @@ class Crawler::Yqxs
     @page_html.css("ul")[0..1].remove
     @page_html.css("ul").last.remove
     nodes = @page_html.css("ul a")
+    do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
       next if article
 

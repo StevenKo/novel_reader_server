@@ -6,6 +6,9 @@ class Crawler::Biqugedd
     nodes = @page_html.css("#readerlist a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 23493
         do_not_crawl = false if node[:href] == '/4/4787/4381173.html'
         next if do_not_crawl

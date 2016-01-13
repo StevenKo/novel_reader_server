@@ -6,6 +6,9 @@ class Crawler::Xs55
     nodes = @page_html.css(".list td a")
     do_not_crawl = true
     nodes.each do |node|
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+      
       if novel_id == 20740
         do_not_crawl = false if node[:href] == "16475486.html"
         next if do_not_crawl
