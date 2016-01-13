@@ -5,7 +5,10 @@ class Crawler::Aishu5
   def crawl_articles novel_id
     nodes = @page_html.css(".liebiao_bottom a")
     do_not_crawl = true
-    nodes.each do |node|
+    nodes.each do |node|      
+      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
+      next if do_not_crawl
+
       if novel_id == 23107
         do_not_crawl = false if node[:href] == "/shu/756/2765448.html"
         next if do_not_crawl

@@ -4,6 +4,18 @@
 
 <h1>修改novel :</h1>
 
+<br>##############################換novel link ########################################<br>
+請先把不要的articles set invisible<br>
+<%= form_tag controller: "novels", action: "change",id: @novel, method: "post" do %>  
+    新 novel link   
+    <%= text_field :link,:new_link %><br>  
+    從這篇 link 開始抓取
+    <%= text_field :link,:from_link%><br>
+    原本最後一篇article的num
+    <%= text_field :link,:num%><br>
+    <%= submit_tag 'Start' %>  
+<% end %>  
+
 <br>#########################################################################<br>
 
 <%= form_for(@novel) do |f| %>
@@ -37,10 +49,6 @@
     <%= f.text_field :is_classic_action %>(經典武俠)<br>
     <%= f.label :is_show %>:
     <%= f.text_field :is_show %><br>
-    <%= f.label :link %>:
-    <%= f.text_field :link %><br>
-
-
     <%= f.submit %>
   </div>
 <% end %>

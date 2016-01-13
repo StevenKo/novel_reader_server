@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151126033430) do
+ActiveRecord::Schema.define(:version => 20160113113052) do
 
   create_table "admins", :force => true do |t|
     t.string   "password_digest"
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(:version => 20151126033430) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "from_links", :force => true do |t|
+    t.integer  "novel_id"
+    t.string   "link"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "from_links", ["novel_id"], :name => "index_from_links_on_novel_id"
 
   create_table "hot_ships", :force => true do |t|
     t.integer  "novel_id"

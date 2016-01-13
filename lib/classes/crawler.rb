@@ -7,6 +7,12 @@ module Crawler
   
   attr_accessor :page_url, :page_html, :fake_browser_urls, :do_not_encode_urls, :match_url_pattern, :url_host, :url_path, :url_query, :url_proto
   
+  def crawl_this_article(novel_id,link)
+    f = FromLink.find_by_novel_id(novel_id)
+    return true if f.nil?
+    (f.link == link) ? (return true) : (return false)
+  end
+
   def parse_url url
     /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/ =~ url
     @url_proto = $2

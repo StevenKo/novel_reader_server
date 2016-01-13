@@ -8,6 +8,15 @@ show:   <%= @novel.is_show %> </br>
 
 1. use edit to set new novel index url <br>
 2. <%= link_to "set_all_articles_to_invisiable", set_all_articles_to_invisiable_novel_path(@novel), data: { confirm: 'Are you sure?' } %> <br>
+或者設定範圍
+<%= form_for "", :url => set_artlcles_to_invisiable_novel_path(@novel,page: params[:page]), :method => :put do |f|%>
+從(>=) 
+<%= f.text_field "num_from" %><br />
+到(<=)
+<%= f.text_field "num_to" %><br />
+<%= submit_tag "", :id => 'Scomit', :style => "display: none;" %>
+<% end %>
+
 3. <%= link_to "recrawl_all_articles(new articles)", recrawl_all_articles_novel_path(@novel), data: { confirm: 'Are you sure?' } %><br>
 4. <%= link_to "recrawl_all_existed_articles_which_blank_text(existed articles)", recrawl_blank_articles_novel_path(@novel), data: { confirm: 'Are you sure?' } %>
 

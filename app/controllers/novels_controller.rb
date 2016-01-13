@@ -62,9 +62,29 @@ class NovelsController < ApplicationController
     redirect_to novel_path(params[:id])
   end
 
+  def set_artlcles_to_invisiable
+    Article.update_all("is_show = false","novel_id = #{params[:id]} and num >= #{params[:num_from]} and num <= #{params[:num_to]}")
+    redirect_to novel_path(params[:id],page: params[:page])
+  end
+
+  def change
+    novel = Novel.find(params[:id])
+    novel.link = params[:link][:new_link]
+    novel.num = params[:link][:num]
+    novel.save
+    f = FromLink.find_or_initialize_by_novel_id(params[:id])
+    f.link = params[:link][:from_link]
+    f.save
+
+    CrawlWorker.perform_async(params[:id])
+
+    # CrawlWorker.perform_async(params[:id])
+    redirect_to novel_path(params[:id],page: 1)
+  end
+
   def recrawl_all_articles
     CrawlWorker.perform_async(params[:id])
-    redirect_to novel_path(params[:id])
+    redirect_to novel_path(params[:id],page: 1)
   end
 
   def recrawl_blank_articles
