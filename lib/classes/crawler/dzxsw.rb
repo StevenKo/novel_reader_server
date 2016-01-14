@@ -7,15 +7,16 @@ class Crawler::Dzxsw
     subject = ""
     nodes = @page_html.css(".list").children
     if nodes.present?
-      do_not_crawl = true
+      do_not_crawl_from_link = true
+      from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
       nodes.each do |node|
         if node[:class] == "book"
           subject = ZhConv.convert("zh-tw",node.text.strip,false)
         elsif node[:class] == nil
           inside_nodes = node.css("a")
           inside_nodes.each do |in_node|
-            do_not_crawl = false if crawl_this_article(novel_id,in_node[:href])
-            next if do_not_crawl
+            do_not_crawl_from_link = false if crawl_this_article(from_link,in_node[:href])
+            next if do_not_crawl_from_link
 
             article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + in_node[:href])
             next if article

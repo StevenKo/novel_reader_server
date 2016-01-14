@@ -8,8 +8,8 @@ class Crawler::Klxsw
 
     do_not_crawl = true
     nodes.each do |node|
-      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
-      next if do_not_crawl
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+      next if do_not_crawl_from_link
       
       url = @page_url.gsub("index.html","")
       article_url = ""

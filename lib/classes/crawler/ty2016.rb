@@ -5,9 +5,11 @@ class Crawler::Ty2016
   def crawl_articles novel_id
     nodes = @page_html.css(".book dd a")
     do_not_crawl = true
-    nodes.each do |node|
-      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
-      next if do_not_crawl
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node|      
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+      next if do_not_crawl_from_link
       
       if novel_id == 20109
         do_not_crawl = false if node[:href] == '23802.html'

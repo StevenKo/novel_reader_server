@@ -5,15 +5,16 @@ class Crawler::Zwwx
   def crawl_articles novel_id
     subject = ""
     nodes = @page_html.css(".book_article_texttable div")
-    do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node| 
       if node[:class] == "book_article_texttitle"
         subject = ZhConv.convert("zh-tw",node.text.strip,false)
       else
         inside_nodes = node.css("a")
         inside_nodes.each do |in_node|
-          do_not_crawl = false if crawl_this_article(novel_id,in_node[:href])
-          next if do_not_crawl
+          do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+          next if do_not_crawl_from_link
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(in_node[:href])
 
           next if article

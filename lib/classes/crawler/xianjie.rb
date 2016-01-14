@@ -6,13 +6,14 @@ class Crawler::Xianjie
     url = @page_url.gsub("index.html","")
     subject = ""
     nodes = @page_html.css(".zhangjie dl").children
-    do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node| 
       if node.name == "dt"
         subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif (node.name == "dd" && node.children.size() == 1 && node.children[0][:href] != nil)
-        do_not_crawl = false if crawl_this_article(novel_id,node.children[0][:href])
-        next if do_not_crawl
+        do_not_crawl_from_link = false if crawl_this_article(from_link,children[0][:href])
+        next if do_not_crawl_from_link
 
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node.children[0][:href])
         if article

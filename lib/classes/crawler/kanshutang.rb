@@ -29,10 +29,12 @@ class Crawler::Kanshutang
     subject = novel.name
 
     do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node|      
       next unless node[:href]
-      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
-      next if do_not_crawl
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+      next if do_not_crawl_from_link
       
       if novel_id == 21845
         do_not_crawl = false if node[:href] == '4326921.html'

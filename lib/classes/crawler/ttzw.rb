@@ -6,14 +6,15 @@ class Crawler::Ttzw
     url = @page_url
     nodes = @page_html.css("#chapter_list").children
     novel = Novel.find(novel_id)
-    do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node| 
       if(node[:class]=="chapter_list_chapter_title")
         subject = ZhConv.convert("zh-tw",node.text.strip,false)
       elsif(node[:class]=="chapter_list_chapter")
         a_node = node.css("a")[0]
-        do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
-        next if do_not_crawl
+        do_not_crawl_from_link = false if crawl_this_article(from_link,a_node[:href])
+        next if do_not_crawl_from_link
         url = @page_url.gsub("index.html","") + a_node[:href]
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
         next if article

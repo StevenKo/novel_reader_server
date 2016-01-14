@@ -6,14 +6,15 @@ class Crawler::U8xs
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
     nodes = @page_html.css(".booklist span")
-    do_not_crawl = true
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|
       if(node[:class]=="v")
         subject = ZhConv.convert("zh-tw",node.text.strip.gsub(".",""),false)
       else
         a_node = node.css("a")[0]
-        do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
-        next if do_not_crawl
+        do_not_crawl_from_link = false if crawl_this_article(from_link,a_node[:href])
+        next if do_not_crawl_from_link
 
         url = @page_url.gsub("index.html","") + a_node[:href]
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)

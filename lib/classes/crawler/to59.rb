@@ -6,8 +6,9 @@ class Crawler::To59
     url = @page_url
     subject = ""
     nodes = @page_html.css(".acss").children
-    do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node| 
 
       if node.children.children[0].name == "h2"
         subject = ZhConv.convert("zh-tw",node.children.text.strip,false)
@@ -15,8 +16,8 @@ class Crawler::To59
         inside_nodes = node.children.children
         inside_nodes.each do |n|
           if n[:href] != nil
-            do_not_crawl = false if crawl_this_article(novel_id,n[:href])
-            next if do_not_crawl
+            do_not_crawl_from_link = false if crawl_this_article(from_link,n[:href])
+            next if do_not_crawl_from_link
             article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + n[:href])
             next if article
 

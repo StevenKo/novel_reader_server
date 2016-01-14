@@ -6,14 +6,16 @@ class Crawler::P9wx
     url = @page_url
     nodes = @page_html.css(".booklist span a")
     do_not_crawl = true
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|
       next unless node[:onclick].present?
       if novel_id == 21685
         do_not_crawl = false if node[:onclick] == "gotochap(41197,27474181);"
         next if do_not_crawl
       end
-      do_not_crawl = false if crawl_this_article(novel_id,node[:onclick])
-      next if do_not_crawl
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:onclick])
+      next if do_not_crawl_from_link
       
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + "**" +node[:onclick])
       next if article

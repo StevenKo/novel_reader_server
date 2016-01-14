@@ -6,11 +6,12 @@ class Crawler::Guli
     nodes = @page_html.css("#detaillist a")
     novel = Novel.select("id,num,name").find(novel_id)
     subject = novel.name
-    do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node|      
       next unless node[:href]
-      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
-      next if do_not_crawl
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+      next if do_not_crawl_from_link
       article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://www.guli.cc" + node[:href])
       next if article
 

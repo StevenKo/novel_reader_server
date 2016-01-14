@@ -4,10 +4,11 @@ class Crawler::Mxdzw
 
   def crawl_articles novel_id
     nodes = @page_html.css(".chapterlist a")
-    do_not_crawl = true
-    nodes.each do |node|
-      do_not_crawl = false if crawl_this_article(novel_id,node[:href])
-      next if do_not_crawl
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node|      
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+      next if do_not_crawl_from_link
       
 
       (node[:href].index("mxdzw.com"))? link = node[:href] : link = "http://tw.mxdzw.com/" + node[:href]

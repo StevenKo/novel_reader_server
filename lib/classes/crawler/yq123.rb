@@ -6,12 +6,16 @@ class Crawler::Yq123
     nodes = @page_html.css("#list dl").children
     subject = ""
     do_not_crawl = true
-    nodes.each do |node|
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
+    nodes.each do |node| 
       if node[:id] == "qw"
         subject = node.text
         puts subject
       elsif node.css("a")[0]
         node = node.css("a")[0]
+        do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+        next if do_not_crawl_from_link
         if novel_id == 21442
           do_not_crawl = false if node[:href] == "http://www.123yq.com/read/35/35427/7123831.shtml"
           next if do_not_crawl
