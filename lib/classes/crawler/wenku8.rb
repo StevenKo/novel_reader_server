@@ -7,12 +7,16 @@ class Crawler::Wenku8
     nodes = @page_html.css(".css tr td")
     url = @page_url.gsub("index.htm","")
     do_not_crawl = true
+    do_not_crawl_from_link = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|
       if node[:class] == "vcss"
         subject = ZhConv.convert("zh-tw",node.text.strip,false)
       else
         a_node = node.css("a")[0]
         next if a_node.nil?
+        do_not_crawl_from_link = false if crawl_this_article(from_link,a_node[:href])
+        next if do_not_crawl_from_link
 
         if novel_id == 6834
           do_not_crawl = false if a_node[:href] == "http://www.wenku8.com/modules/article/reader.php?aid=884&cid=67251"
