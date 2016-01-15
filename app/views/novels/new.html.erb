@@ -27,7 +27,7 @@
     <%= f.label :article_num %>:
     <%= f.text_field :article_num %> 給一個大概的集數<br>
     <%= f.label :last_update %>:
-    <%= f.text_field :last_update %> ex: 12-06-01 <br>
+    <%= f.text_field :last_update, value: (DateTime.now.utc + 8.hours).strftime("%y-%m-%d") %> ex: 12-06-01 <br>
     <%= f.label :is_serializing %>:
     <%= f.text_field :is_serializing %> 0(全本)1(連載中)<br>
     <%= f.label :is_category_recommend %>:
