@@ -162,7 +162,7 @@ class CrawlerAdapter
       '扒書網' => {'pattern'=>'/tw.8shuw.net/si','name'=>'Shuw8','crawl_site_articles' => true,'recommend' => false},
       '小说路上' => {'pattern'=>'/xs63.com/si','name'=>'Xs63','crawl_site_articles' => true,'recommend' => false},
       '六九中文' => {'pattern'=>'/www.69zw.com/si','name'=>'Zw69','crawl_site_articles' => true,'recommend' => false},
-      # '123言情' => {'pattern'=>'/www.123yq.org/si','name'=>'Yq123','crawl_site_articles' => true,'recommend' => false},
+      '123言情' => {'pattern'=>'/www.123yq.org/si','name'=>'Yq123','crawl_site_articles' => true,'recommend' => false},
       '39小说网风云榜' => {'pattern'=>'/www.39txt.com/si','name'=>'Txt39','crawl_site_articles' => true,'recommend' => false},
       '00小說' => {'pattern'=>'/00xs.com/si','name'=>'Xs00','crawl_site_articles' => true,'recommend' => false},
       '69shu' => {'pattern'=>'/69shu.com/si','name'=>'Shu69','crawl_site_articles' => true,'recommend' => false},
