@@ -3,7 +3,7 @@ class Crawler::Xxs8
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css(".bookdetail a")
+    nodes = @page_html.css(".chapter-list a")
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node| 
@@ -32,8 +32,8 @@ class Crawler::Xxs8
   end
 
   def crawl_article article
-    node = @page_html.css("#mmpage")
-    text = node.text.strip
+    node = @page_html.css("#read-content")
+    text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
