@@ -35,7 +35,7 @@ class Crawler::Shushu
     text = ZhConv.convert("zh-tw",@page_html.css("#content").text.strip,false)
 
     if text.length < 150
-      imgs = @page_html.css(".divimage img")
+      imgs = @page_html.css("#content img")
       text_img = ""
       imgs.each do |img|
           text_img = text_img + img[:src] + "*&&$$*"
