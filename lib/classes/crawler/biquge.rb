@@ -20,10 +20,7 @@ class Crawler::Biquge
         do_not_crawl = false if node[:href] == "/36_36005/2416840.html"
         next if do_not_crawl
       end
-      if novel_id == 22539
-        do_not_crawl = false if node[:href] == "/35_35371/2105274.html"
-        next if do_not_crawl
-      end
+
       if novel_id == 18343
         do_not_crawl = false if node[:href] == "/7_7638/4540530.html"
         next if do_not_crawl
