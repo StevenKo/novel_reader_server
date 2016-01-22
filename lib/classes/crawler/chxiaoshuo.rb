@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Crawler::Uukanshu
+class Crawler::Chxiaoshuo
   include Crawler
 
   def crawl_articles novel_id
