@@ -173,6 +173,7 @@ class CrawlerAdapter
       '365xs' => {'pattern'=>'/365xs.org/si','name'=>'Xs365','crawl_site_articles' => true,'recommend' => false},
       'Pinkcorpse' => {'pattern'=>'/pinkcorpse.org/si','name'=>'Pinkcorpse','crawl_site_articles' => true,'recommend' => false},
       '7cct' => {'pattern'=>'/7cct.com/si','name'=>'Cct7','crawl_site_articles' => true,'recommend' => false},
+      'xklxsw' => {'pattern'=>'/xklxsw.com/si','name'=>'Xklxsw','crawl_site_articles' => true,'recommend' => false},
       '可乐小说网' => {'pattern'=>'/klxsw.com/si','name'=>'Klxsw','crawl_site_articles' => true,'recommend' => false},
       '夜玥論壇' => {'pattern'=>'/ds-hk.net/si','name'=>'Dshk','crawl_site_articles' => true,'recommend' => false},
       '无图小说网' => {'pattern'=>'/wutuxs.com/si','name'=>'Wutuxs','crawl_site_articles' => true,'recommend' => false},
@@ -274,6 +275,8 @@ class CrawlerAdapter
       'chxiaoshuo' => {'pattern'=>'/chxiaoshuo.com/si','name'=>'Chxiaoshuo','crawl_site_articles' => true,'recommend' => false},
       '71wx.net' => {'pattern'=>'/71wx.net/si','name'=>'W71x','crawl_site_articles' => true,'recommend' => false},
       'feizw' => {'pattern'=>'/feizw.com/si','name'=>'Feizw','crawl_site_articles' => true,'recommend' => false},
+      'qxswenku' => {'pattern'=>'/qxswenku.com/si','name'=>'Qxswenku','crawl_site_articles' => true,'recommend' => false},
+
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
