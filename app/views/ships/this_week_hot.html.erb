@@ -10,6 +10,8 @@
     <th>書id</th>
   </tr>
 
+<%= link_to '新增小說', new_ship_path(ship_type: @ships[0].class.name) %> <br>
+
 <% @ships.each do |ship| %>
   <tr>
     <% if ship.novel  %>
