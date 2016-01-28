@@ -4,6 +4,7 @@ class Crawler::Qbxs8
 
   def crawl_articles novel_id
     url = @page_url.sub("index.shtml","")
+    url = @page_url.sub("Index.shtml","")
     nodes = @page_html.css("ul li a")
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
