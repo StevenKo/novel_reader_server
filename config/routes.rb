@@ -31,6 +31,14 @@ NovelServer::Application.routes.draw do
     end
   end
 
+  resources :ships, except: [:index,:show] do
+    collection do
+      get 'this_week_hot'
+      get 'this_month_hot'
+      get 'hot'
+    end
+  end
+
   resources :recommend_categories
   resources :recommend_category_novel_ships
 
