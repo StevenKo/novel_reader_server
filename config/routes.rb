@@ -14,6 +14,7 @@ NovelServer::Application.routes.draw do
       put 'update_novel'
     end
     member do
+      get 'invisiable_articles'
       get 'set_all_articles_to_invisiable'
       put 'set_artlcles_to_invisiable'
       post 'change'
