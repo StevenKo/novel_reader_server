@@ -15,7 +15,7 @@ class CrawlerAdapter
       '59文学' => {'pattern'=>'/59to.org/si','name'=>'To59Org','crawl_site_articles' => true,'recommend' => true},
       'SF轻小说' => {'pattern'=>'/book.sfacg.com/si','name'=>'Sfacg','crawl_site_articles' => true,'recommend' => true},
       # '《小说阅读网》' => {'pattern'=>'/readnovel.com/si','name'=>'Readnovel','crawl_site_articles' => true,'recommend' => true},
-      # '轻小说文库' => {'pattern'=>'/wenku8.com/si','name'=>'Wenku8','crawl_site_articles' => true,'recommend' => true},
+      '轻小说文库' => {'pattern'=>'/wenku8.com/si','name'=>'Wenku8','crawl_site_articles' => true,'recommend' => true},
       '努努' => {'pattern'=>'/book.kanunu.org/si','name'=>'Kanunu','crawl_site_articles' => true,'recommend' => true},
       '努努2' => {'pattern'=>'/kanunu8.com/si','name'=>'Kanunu8','crawl_site_articles' => true,'recommend' => true},
 
