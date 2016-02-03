@@ -33,7 +33,7 @@ class CrawlerAdapter
       '校園文學' => {'pattern'=>'/xybook.net/si','name'=>'Xybook','crawl_site_articles' => true,'recommend' => false},
       '思兔網' => {'pattern'=>'/sto.cc/si','name'=>'Sto','crawl_site_articles' => true,'recommend' => false},
       # 'A咖社區' => {'pattern'=>'/aka99.com/si','name'=>'Aka99','crawl_site_articles' => true,'recommend' => false},
-      '言情' => {'pattern'=>'/yqhhy.me/si','name'=>'Yqhhy','crawl_site_articles' => true,'recommend' => false},
+      '言情' => {'pattern'=>'/yqhhy.cc/si','name'=>'Yqhhy','crawl_site_articles' => true,'recommend' => false},
       '棋子' => {'pattern'=>'/qizi.cc/si','name'=>'Qizi','crawl_site_articles' => true,'recommend' => false},
       '潇湘書院' => {'pattern'=>'/xxsy.net/si','name'=>'Xxsy','crawl_site_articles' => true,'recommend' => false},
       '言情小說' => {'pattern'=>'/yqxs.com/si','name'=>'Yqxs','crawl_site_articles' => true,'recommend' => false},
