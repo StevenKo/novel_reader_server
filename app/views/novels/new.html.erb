@@ -29,7 +29,7 @@
     <%= f.label :last_update %>:
     <%= f.text_field :last_update, value: (DateTime.now.utc + 8.hours).strftime("%y-%m-%d") %> ex: 12-06-01 <br>
     <%= f.label :is_serializing %>:
-    <%= f.text_field :is_serializing %> 0(全本)1(連載中)<br>
+    <%= f.text_field :is_serializing, value: 1 %> 0(全本)1(連載中)<br>
     <%= f.label :is_category_recommend %>:
     <%= f.text_field :is_category_recommend %><br>
     <%= f.label :is_category_hot %>:
