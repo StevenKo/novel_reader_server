@@ -278,7 +278,7 @@ class CrawlerAdapter
       'qxswenku' => {'pattern'=>'/qxswenku.com/si','name'=>'Qxswenku','crawl_site_articles' => true,'recommend' => false},
       'read' => {'pattern'=>'/read.jd.com/si','name'=>'Readjd','crawl_site_articles' => true,'recommend' => false},
       'wuqingshui' => {'pattern'=>'/wuqingshui.com/si','name'=>'Wuqingshui','crawl_site_articles' => true,'recommend' => false},
-
+      '7ddw' => {'pattern'=>'/7ddw.com/si','name'=>'Ddw7','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
