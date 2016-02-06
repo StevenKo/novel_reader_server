@@ -237,6 +237,3 @@ DEPENDENCIES
   will_paginate
   yaml_db
   zhconv
-
-BUNDLED WITH
-   1.10.6

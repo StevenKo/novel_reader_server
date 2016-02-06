@@ -280,6 +280,7 @@ class CrawlerAdapter
       'wuqingshui' => {'pattern'=>'/wuqingshui.com/si','name'=>'Wuqingshui','crawl_site_articles' => true,'recommend' => false},
       '7ddw' => {'pattern'=>'/7ddw.com/si','name'=>'Ddw7','crawl_site_articles' => true,'recommend' => false},
       'taixuanzhanji' => {'pattern'=>'/taixuanzhanji.net/si','name'=>'Taixuanzhanji','crawl_site_articles' => true,'recommend' => false},
+      '360dxs.com' => {'pattern'=>'/360dxs.com/si','name'=>'Dxs360','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
