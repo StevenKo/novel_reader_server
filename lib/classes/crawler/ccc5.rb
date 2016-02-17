@@ -14,7 +14,7 @@ class Crawler::Ccc5
       else
         a_node = node.css("a")[0]
         next if a_node.nil?
-        do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+        do_not_crawl_from_link = false if crawl_this_article(from_link,a_node[:href])
         next if do_not_crawl_from_link
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + a_node[:href])
         next if article
