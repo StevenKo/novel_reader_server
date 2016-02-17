@@ -283,6 +283,7 @@ class CrawlerAdapter
       '360dxs.com' => {'pattern'=>'/360dxs.com/si','name'=>'Dxs360','crawl_site_articles' => true,'recommend' => false},
       'ziyouge.com' => {'pattern'=>'/ziyouge.com/si','name'=>'Ziyouge','crawl_site_articles' => true,'recommend' => false},
       'dz88.com' => {'pattern'=>'/dz88.com/si','name'=>'Dz88','crawl_site_articles' => true,'recommend' => false},
+      'suixw.com' => {'pattern'=>'/suixw.com/si','name'=>'Suixw','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
