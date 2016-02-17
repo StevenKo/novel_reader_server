@@ -3,7 +3,7 @@ class Crawler::Lewen8
   include Crawler
 
   def crawl_articles novel_id
-    nodes = @page_html.css("div#defaulthtml dd a")
+    nodes = @page_html.css(".chapterlist a")
     do_not_crawl = true
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
