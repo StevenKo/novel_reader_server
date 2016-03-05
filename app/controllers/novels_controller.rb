@@ -8,7 +8,7 @@ class NovelsController < ApplicationController
 
   def search
     keyword = params[:search].strip
-    @novels = Novel.select("id,name,author,is_show,category_id").includes(:category).where("name like ? or author like ?", "%#{keyword}%","%#{keyword}%").select("id,name,author,pic,article_num,last_update,is_serializing")
+    @novels = Novel.search(keyword).per_page(100).records.where(is_show: true).select("id,name,author,is_show,category_id").includes(:category).select("id,name,author,pic,article_num,last_update,is_serializing")
   end
 
   def update_novel

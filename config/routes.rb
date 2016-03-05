@@ -63,6 +63,7 @@ NovelServer::Application.routes.draw do
           get 'this_week_hot'
           get 'this_month_hot'
           get 'search'
+          get 'elastic_search'
           get 'classic'
           get 'classic_action'
           get 'collect_novels_info'

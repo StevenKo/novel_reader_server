@@ -117,6 +117,14 @@ class Api::V1::NovelsController < Api::ApiController
     render :json => novels
   end
 
+  def elastic_search
+    keyword = params[:search].strip
+    keyword_cn = keyword.clone
+    keyword_cn = ZhConv.convert("zh-tw",keyword_cn,false)
+    novels = Novel.search(keyword + keyword_cn).per_page(20).page(params[:page])
+    render :json => novels.records.where(is_show: true).select("id,name,author,pic,article_num,last_update,is_serializing")
+  end
+
   def detail_for_save
     @novel = Novel.find(params[:id])
     render :json => { "novel" =>  @novel }

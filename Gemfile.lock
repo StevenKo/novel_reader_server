@@ -1,3 +1,20 @@
+GIT
+  remote: git://github.com/elasticsearch/elasticsearch-rails.git
+  revision: 489ab24998a87a0323c3085e29aad14367bfaf89
+  specs:
+    elasticsearch-model (0.1.8)
+      activesupport (> 3)
+      elasticsearch (> 0.4)
+      hashie
+    elasticsearch-persistence (0.1.8)
+      activemodel (> 3)
+      activesupport (> 3)
+      elasticsearch (> 0.4)
+      elasticsearch-model (>= 0.1)
+      hashie
+      virtus
+    elasticsearch-rails (0.1.8)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -29,6 +46,10 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.3)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
     capistrano (2.15.5)
@@ -49,6 +70,8 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
     coderay (1.1.0)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -57,19 +80,34 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     connection_pool (2.0.0)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
+    elasticsearch (1.0.15)
+      elasticsearch-api (= 1.0.15)
+      elasticsearch-transport (= 1.0.15)
+    elasticsearch-api (1.0.15)
+      multi_json
+    elasticsearch-transport (1.0.15)
+      faraday
+      multi_json
+    equalizer (0.0.11)
     erubis (2.7.0)
     execjs (2.2.1)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.10)
     gcm (0.0.7)
       httparty
       json
+    hashie (3.4.3)
     highline (1.6.21)
     hike (1.2.3)
     httparty (0.13.1)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.6.9)
+    ice_nine (0.11.2)
     jbuilder (1.5.3)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
@@ -87,6 +125,7 @@ GEM
     mini_portile (0.6.2)
     multi_json (1.11.2)
     multi_xml (0.5.5)
+    multipart-post (2.0.0)
     mysql2 (0.3.16)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -188,6 +227,7 @@ GEM
       tilt (~> 1.1, != 1.3.0)
     temple (0.6.7)
     thor (0.19.1)
+    thread_safe (0.3.5)
     tilt (1.4.1)
     timers (1.1.0)
     treetop (1.4.15)
@@ -197,6 +237,11 @@ GEM
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    virtus (1.0.5)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+      equalizer (~> 0.0, >= 0.0.9)
     websocket (1.2.2)
     whenever (0.9.2)
       activesupport (>= 2.3.4)
@@ -215,6 +260,9 @@ DEPENDENCIES
   capistrano (~> 2.15)
   capybara
   coffee-rails (~> 3.2.1)
+  elasticsearch-model!
+  elasticsearch-persistence!
+  elasticsearch-rails!
   gcm
   jbuilder (= 1.5.3)
   jquery-rails
@@ -237,3 +285,6 @@ DEPENDENCIES
   will_paginate
   yaml_db
   zhconv
+
+BUNDLED WITH
+   1.10.6

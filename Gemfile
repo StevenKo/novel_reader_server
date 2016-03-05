@@ -29,6 +29,13 @@ gem 'jbuilder', '1.5.3'
 # 爬蟲
 gem 'nokogiri'
 
+#分頁
+gem 'will_paginate'
+
+gem 'elasticsearch-model', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
+gem 'elasticsearch-rails', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
+gem 'elasticsearch-persistence', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
+
 group :test, :development do
   gem "rspec"
   gem "rspec-rails"
@@ -45,9 +52,6 @@ gem "net-ssh", "~> 2.7.0"
 
 # cron table
 gem 'whenever', :require => false
-
-#分頁
-gem 'will_paginate'
 
 gem 'sidekiq'
 gem 'sinatra', require: false
