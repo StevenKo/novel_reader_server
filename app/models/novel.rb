@@ -13,7 +13,8 @@ class Novel < ActiveRecord::Base
     indexes :author, type: 'string'
   end
 
-  after_save :update_index
+  after_create :create_index
+  after_update :update_index
   after_destroy :delete_index
 
   def recrawl_articles_text
@@ -25,8 +26,12 @@ class Novel < ActiveRecord::Base
     end
   end
 
-  def update_index
+  def create_index
     __elasticsearch__.index_document
+  end
+
+  def update_index
+    __elasticsearch__.update_document
   end
 
   def delete_index
