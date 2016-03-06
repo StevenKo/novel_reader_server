@@ -13,6 +13,10 @@ class Novel < ActiveRecord::Base
     indexes :author, type: 'string'
   end
 
+  def as_indexed_json(options={})
+    self.as_json(only: [:name,:author])
+  end
+
   after_create :create_index
   after_update :update_index
   after_destroy :delete_index
