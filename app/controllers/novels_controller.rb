@@ -8,7 +8,7 @@ class NovelsController < ApplicationController
 
   def search
     keyword = params[:search].strip
-    @novels = Novel.search(keyword).per_page(100).records.select("id,name,author,is_show,category_id").includes(:category).select("id,name,author,pic,article_num,last_update,is_serializing")
+    @novels = Novel.search(keyword).per_page(100).records.includes(:category).select("id,name,author,pic,article_num,last_update,is_serializing,is_show,category_id")
   end
 
   def update_novel
