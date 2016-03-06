@@ -4,7 +4,7 @@ class Crawler::Lwxs
 
   def crawl_articles novel_id
     url = @page_url
-    nodes = @page_html.css("div#defaulthtml4 td a")
+    nodes = @page_html.css("#list a")
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|      
@@ -33,7 +33,9 @@ class Crawler::Lwxs
   end
 
   def crawl_article article
-    text = @page_html.css("div#content").text.strip
+    node = @page_html.css("#TXT")
+    node.css("script").remove
+    text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text,false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)

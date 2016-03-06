@@ -7,6 +7,7 @@ class Crawler::Faloo
     subject = novel.name
     nodes = @page_html.css(".centent").children
     do_not_crawl = true
+    from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|
 
       if(node[:class]=="list")
@@ -15,7 +16,7 @@ class Crawler::Faloo
         a_nodes = node.css("a")
         a_nodes.each do |a_node|
           url = a_node[:href]
-          do_not_crawl = false if crawl_this_article(novel_id,a_node[:href])
+          do_not_crawl = false if crawl_this_article(from_link,a_node[:href])
           next if do_not_crawl
 
           article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url)
