@@ -26,6 +26,7 @@ class Crawler::Sfacg
         
         do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
         next if do_not_crawl_from_link
+        break if node[:href].include? "vip"
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link("http://book.sfacg.com" + node[:href])
         next if article
 
