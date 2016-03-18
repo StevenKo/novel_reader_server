@@ -1,8 +1,6 @@
 # encoding: utf-8
 class Crawler::Sbkk8
   include Crawler
-  include Capybara::DSL
-
 
   def crawl_articles novel_id
     url = "http://www.sbkk8.cn"
