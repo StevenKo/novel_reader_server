@@ -121,7 +121,7 @@ class Api::V1::NovelsController < Api::ApiController
     keyword = params[:search].strip
     keyword_cn = keyword.clone
     keyword_cn = ZhConv.convert("zh-tw",keyword_cn,false)
-    novels = Novel.search(keyword + keyword_cn).per_page(20).page(params[:page])
+    novels = Novel.search(keyword_cn).per_page(20).page(params[:page])
     render :json => novels.records.where(is_show: true).select("id,name,author,pic,article_num,last_update,is_serializing")
   end
 
