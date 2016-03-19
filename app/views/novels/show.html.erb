@@ -31,7 +31,9 @@ show:   <%= @novel.is_show %> </br>
 <% end %>
 
 <br>#########################################################################<br>
-
+<br>
+new article: <%= link_to 'New', new_article_path(:novel_id => @novel.id,:page => params[:page]) %> <br>
+<br>
 
 <% if @articles %>
 <table>
