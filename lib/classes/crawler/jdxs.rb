@@ -3,7 +3,7 @@ class Crawler::Jdxs
   include Crawler
 
   def crawl_article article
-    node = @page_html.css("#content")
+    node = @page_html.css(".content")
     node.css("script,a").remove
     text = change_node_br_to_newline(node).strip
     text = ZhConv.convert("zh-tw", text,false)
