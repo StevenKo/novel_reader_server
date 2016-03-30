@@ -4,6 +4,17 @@ class Crawler::Ck101
 
   def crawl_articles novel_id
     novel = Novel.select("id,num,name").find(novel_id)
+    if @page_html.css(".pg a").last.nil?
+      article = Article.new
+      article.novel_id = novel_id
+      article.link = @page_url
+      article.title = '全'
+      novel = Novel.select("id,num,name").find(novel_id)
+      article.subject = novel.name
+      article.save
+      ArticleWorker.perform_async(article.id)
+      return
+    end
     last_node_url = @page_html.css(".pg a").last.previous[:href]
     /thread-(\d*)-(\d*)-\d*/ =~ last_node_url
     if $2!= nil
