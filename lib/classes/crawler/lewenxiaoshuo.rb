@@ -4,33 +4,31 @@ class Crawler::Lewenxiaoshuo
 
   def crawl_articles novel_id
     subject = ""
-    nodes = @page_html.css("#list dl").children
+    nodes = @page_html.css("#Chapters li a")
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|      
-      if node.name == "dt"
-        subject = ZhConv.convert("zh-tw",node.text.strip,false)
-      elsif (node.name == "dd" && node.css("a").present?)
-        do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
-        next if do_not_crawl_from_link
-        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node.children[0][:href])
-        next if article
+      
+      do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
+      next if do_not_crawl_from_link
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+      next if article
 
-        unless article 
+      unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = node.children[0][:href]
+        article.link = node[:href]
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
-        article.subject = subject
+        article.subject = novel.name
         article.num = novel.num + 1
         novel.num = novel.num + 1
         novel.save
         # puts node.text
         article.save
-        end
-        ArticleWorker.perform_async(article.id)          
       end
+      ArticleWorker.perform_async(article.id)          
+  
     end
     set_novel_last_update_and_num(novel_id)
   end
