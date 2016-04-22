@@ -43,7 +43,7 @@ class Crawler::Yq123
           # puts node.text
           article.save
         end
-        ArticleWorker.perform_async(article.id)
+        YqArticleWorker.perform_async(article.id)
       end
     end
     set_novel_last_update_and_num(novel_id)

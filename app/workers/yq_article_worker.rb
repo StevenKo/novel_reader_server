@@ -1,7 +1,7 @@
 # encoding: utf-8
-class CapybaraArticleWorker
+class YqArticleWorker
   include Sidekiq::Worker
-  sidekiq_options queue: "capybara_novel_article", :retry => 2
+  sidekiq_options queue: "yq_novel_article", :retry => 2
   
   def perform(article_id)
     article = Article.select("title, id, link, is_show").find(article_id)
