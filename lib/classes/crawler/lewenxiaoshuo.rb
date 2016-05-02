@@ -4,7 +4,7 @@ class Crawler::Lewenxiaoshuo
 
   def crawl_articles novel_id
     subject = ""
-    nodes = @page_html.css("#Chapters li a")
+    nodes = @page_html.css("#list a")
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|      
