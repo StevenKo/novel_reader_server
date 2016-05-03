@@ -62,7 +62,7 @@ class Crawler::Fxnzw
       imgs = @page_html.css("div[style=\"font-size: 20px; text-indent: 30px; line-height: 40px; width: 770px; margin: 0 auto;\"] img")
       text_img = ""
       imgs.each do |img|
-          text_img = text_img + img[:src] + "*&&$$*"
+          text_img = text_img + get_article_url(img[:src]) + "*&&$$*"
       end
       text_img = text_img + "如果看不到圖片, 請更新至新版APP"
       text = text_img
