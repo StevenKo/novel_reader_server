@@ -63,6 +63,15 @@ class Crawler::Xiaoshuokan
       text = text_img
     end
 
+    unless isArticleTextOK(article,text)
+      s = @page_html.css('script').text
+      /data: {"bid":"(.*)","cid":"(.*)",c:"(.*)"}/ =~ s
+      url = "http://soso2.xiaoshuokan.com/call/chapreadajax.ashx?bid=#{$1}&cid=#{$2}&c=big5"
+      crawler = CrawlerAdapter.get_instance url
+      crawler.fetch url
+      text = change_node_br_to_newline(crawler.page_html).strip
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
