@@ -52,6 +52,16 @@ class Crawler::Dmzj
     end
     text = article_text
 
+    unless isArticleTextOK(article,text)
+      imgs = @page_html.css("#novel_contents img")
+      text_img = ""
+      imgs.each do |img|
+          text_img = text_img + get_article_url(img[:src].gsub("../..","")) + "*&&$$*"
+      end
+      text_img = text_img + "如果看不到圖片, 請更新至新版APP"
+      text = text_img
+    end
+
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
