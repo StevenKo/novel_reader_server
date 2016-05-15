@@ -286,6 +286,7 @@ class CrawlerAdapter
       'suixw.com' => {'pattern'=>'/suixw.com/si','name'=>'Suixw','crawl_site_articles' => true,'recommend' => false},
       'novel8.net' => {'pattern'=>'/novel8.net/si','name'=>'Novel8','crawl_site_articles' => true,'recommend' => false},
       'jdxs' => {'pattern'=>'/jdxs.net/si','name'=>'Jdxs','crawl_site_articles' => true,'recommend' => false},
+      'qb5200' => {'pattern'=>'/qb5200.com/si','name'=>'Qb5200','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},
