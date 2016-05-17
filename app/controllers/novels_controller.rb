@@ -8,7 +8,9 @@ class NovelsController < ApplicationController
 
   def search
     keyword = params[:search].strip
-    @novels = Novel.search(keyword).per_page(100).records.includes(:category).select("id,name,author,pic,article_num,last_update,is_serializing,is_show,category_id")
+    keyword_cn = keyword.clone
+    keyword_cn = ZhConv.convert("zh-tw",keyword_cn,false)
+    @novels = Novel.search(keyword_cn).per_page(100).records.includes(:category).select("id,name,author,pic,article_num,last_update,is_serializing,is_show,category_id")
   end
 
   def update_novel
