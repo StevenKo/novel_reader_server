@@ -246,7 +246,7 @@ class CrawlerAdapter
       'xcxs' => {'pattern'=>'/xcxs.net/si','name'=>'Xcxs','crawl_site_articles' => true,'recommend' => false},
       'biqugew' => {'pattern'=>'/biqugew.net/si','name'=>'Biqugew','crawl_site_articles' => true,'recommend' => false},
       '55xs' => {'pattern'=>'/55xs.com/si','name'=>'Xs55','crawl_site_articles' => true,'recommend' => false},
-      'aishu5' => {'pattern'=>'/aishu5.com/si','name'=>'Aishu5','crawl_site_articles' => true,'recommend' => false},
+      'aishu5' => {'pattern'=>'/aishu5/si','name'=>'Aishu5','crawl_site_articles' => true,'recommend' => false},
       'piaotiancc' => {'pattern'=>'/piaotian.cc/si','name'=>'Piaotiancc','crawl_site_articles' => true,'recommend' => false},
       'aiweicn' => {'pattern'=>'/aiweicn.com/si','name'=>'Aiweicn','crawl_site_articles' => true,'recommend' => false},
       'yuesesx' => {'pattern'=>'/yuesesx.com/si','name'=>'Yuesesx','crawl_site_articles' => true,'recommend' => false},
