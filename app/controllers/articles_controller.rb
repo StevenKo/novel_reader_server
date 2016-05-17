@@ -10,6 +10,10 @@ class ArticlesController < ApplicationController
     text = params[:article][:article_all_text]
     params[:article].delete(:article_all_text)
     if @article.update_attributes(params[:article])
+      if @article.is_show == false
+        novel = Novel.find(@article.novel_id)
+        novel.update_num
+      end
       article_text = ArticleText.find_or_initialize_by_article_id(params[:id])
       article_text.text = text
       article_text.save

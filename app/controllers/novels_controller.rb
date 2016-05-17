@@ -67,11 +67,15 @@ class NovelsController < ApplicationController
 
   def set_all_articles_to_invisiable
     Article.update_all("is_show = false", "novel_id = #{params[:id]}")
+    novel = Novel.find(params[:id])
+    novel.update_num
     redirect_to novel_path(params[:id])
   end
 
   def set_artlcles_to_invisiable
     Article.update_all("is_show = false","novel_id = #{params[:id]} and num >= #{params[:num_from]} and num <= #{params[:num_to]}")
+    novel = Novel.find(params[:id])
+    novel.update_num
     redirect_to novel_path(params[:id],page: params[:page])
   end
 

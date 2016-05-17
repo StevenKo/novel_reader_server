@@ -36,6 +36,11 @@ class Novel < ActiveRecord::Base
     end
   end
 
+  def update_num
+    self.article_num = articles.show.size.to_s + "篇"
+    self.save
+  end
+
   def create_index
     __elasticsearch__.index_document
   end
