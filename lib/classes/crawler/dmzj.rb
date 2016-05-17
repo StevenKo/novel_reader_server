@@ -40,17 +40,14 @@ class Crawler::Dmzj
   def crawl_article article
     article_text = ""
     links = @page_html.css('.pages a')
-    links.each_with_index do |link,index|
-      next if(index == 0 || index == links.size - 1 || index == links.size - 2) 
-      c = Crawler::NovelCrawler.new
-      c.fetch get_article_url(link[:href])
-      node = c.page_html.css("#novel_contents")
-      node.css("script,a").remove
-      text = change_node_br_to_newline(node).strip
-      text = ZhConv.convert("zh-tw", text.strip, false)
-      article_text += text
+    text = ""
+    text,links = crawl_page_article text,links[1][:href]
+    previous_link = links[1][:href]
+
+    while previous_link != links[links.size-2][:href]
+      previous_link = links[links.size-2][:href]
+      text,links = crawl_page_article text, previous_link
     end
-    text = article_text
 
     unless isArticleTextOK(article,text)
       imgs = @page_html.css("#novel_contents img")
@@ -64,6 +61,18 @@ class Crawler::Dmzj
 
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
+  end
+
+  def crawl_page_article text,url
+    c = Crawler::NovelCrawler.new
+    c.fetch get_article_url(url)
+    node = c.page_html.css("#novel_contents")
+    node.css("script").remove
+    article_text = change_node_br_to_newline(node).strip
+    article_text = ZhConv.convert("zh-tw", article_text.strip, false)
+    text += article_text
+    links = c.page_html.css('.pages a')
+    return text,links
   end
 
 end
