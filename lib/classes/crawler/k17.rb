@@ -3,21 +3,20 @@ class Crawler::K17
   include Crawler
 
   def crawl_articles novel_id
-    url = "http://mm.17k.com"
-    nodes = @page_html.css(".con li a")
+    nodes = @page_html.css(".Volume a")
     do_not_crawl_from_link = true
     from_link = (FromLink.find_by_novel_id(novel_id).nil?) ? nil : FromLink.find_by_novel_id(novel_id).link
     nodes.each do |node|      
       do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
       next if do_not_crawl_from_link
       
-      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(url + node[:href])
+      article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(get_article_url(node[:href]))
       next if article
 
       unless article 
         article = Article.new
         article.novel_id = novel_id
-        article.link = url + node[:href]
+        article.link = get_article_url(node[:href])
         article.title = ZhConv.convert("zh-tw",node.text.strip,false)
         novel = Novel.select("id,num,name").find(novel_id)
         article.subject = novel.name
