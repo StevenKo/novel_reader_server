@@ -277,7 +277,6 @@ class CrawlerAdapter
       'feizw' => {'pattern'=>'/feizw.com/si','name'=>'Feizw','crawl_site_articles' => true,'recommend' => false},
       'qxswenku' => {'pattern'=>'/qxswenku.com/si','name'=>'Qxswenku','crawl_site_articles' => true,'recommend' => false},
       'read' => {'pattern'=>'/read.jd.com/si','name'=>'Readjd','crawl_site_articles' => true,'recommend' => false},
-      'wuqingshui' => {'pattern'=>'/wuqingshui.com/si','name'=>'Wuqingshui','crawl_site_articles' => true,'recommend' => false},
       '7ddw' => {'pattern'=>'/7ddw.com/si','name'=>'Ddw7','crawl_site_articles' => true,'recommend' => false},
       'taixuanzhanji' => {'pattern'=>'/taixuanzhanji.net/si','name'=>'Taixuanzhanji','crawl_site_articles' => true,'recommend' => false},
       '360dxs.com' => {'pattern'=>'/360dxs.com/si','name'=>'Dxs360','crawl_site_articles' => true,'recommend' => false},
