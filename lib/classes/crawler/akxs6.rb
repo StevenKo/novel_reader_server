@@ -36,9 +36,22 @@ class Crawler::Akxs6
   end
 
   def crawl_article article
-    node = @page_html.css("#content")
-    node.css("script,a").remove
-    text = change_node_br_to_newline(node).strip
+    /www.akxs6.com\/\d*\/(\d*)\/(\d*)\.html/ =~ @page_url
+
+    url = URI.parse("http://www.akxs6.com/akxs.php")
+    option = {
+              'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36',
+              'Cookie' => 'jieqiVisitId=article_articleviews%3D4835; JXM703301=1; JXD703301=1; showother=3; JXS703301=1; CNZZDATA1254121877=140561776-1465879430-%7C1465879430',
+              'X-Requested-With' => 'XMLHttpRequest',
+              'aid'=> $1,
+              'cid' => $2
+            }
+    resp, data = Net::HTTP.post_form(url, option)
+    text = resp.body.force_encoding("gbk")
+    text.encode!("utf-8", :undef => :replace, :replace => "", :invalid => :replace)
+    resp_page = Nokogiri::HTML(text)
+
+    text = change_node_br_to_newline(resp_page).strip
     text = ZhConv.convert("zh-tw", text.strip, false)
     raise 'Do not crawl the article text ' unless isArticleTextOK(article,text)
     ArticleText.update_or_create(article_id: article.id, text: text)
