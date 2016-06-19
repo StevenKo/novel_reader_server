@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Crawler::Yq123
+class Crawler::Yq33
   include Crawler
 
   def crawl_articles novel_id
@@ -16,16 +16,11 @@ class Crawler::Yq123
         node = node.css("a")[0]
         do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
         next if do_not_crawl_from_link
-        if novel_id == 21442
-          do_not_crawl = false if node[:href] == "http://www.123yq.com/read/35/35427/7123831.shtml"
-          next if do_not_crawl
-        end
-        if novel_id == 22137
-          do_not_crawl = false if node[:href] == "http://www.123yq.com/read/33/33483/7633101.shtml"
-          next if do_not_crawl
-        end
       
         article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href])
+        next if article
+
+        article = Article.select("articles.id, is_show, title, link, novel_id, subject, num").find_by_link(node[:href].gsub("33yq.com","123yq.org"))
         next if article
 
         unless article

@@ -38,7 +38,7 @@ module Crawler
   end
 
   def fetch url
-    @fake_browser_urls = ['www.akxs6.com','www.365xs.org','www.yqhhy.me','www.uukanshu.com','www.123yq.org','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
+    @fake_browser_urls = ['www.akxs6.com','www.365xs.org','www.yqhhy.me','www.uukanshu.com','www.33yq.com','00xs.com','www.7788xiaoshuo.com',"book.rijigu.com","yueduxs.com","b.faloo.com","www.ttzw.com","www.8535.org","6ycn.net","www.readnovel.com","www.d586.com","www.fftxt.com","www.bixiage.com"]
     @do_not_encode_urls = ['ranwen.org','read.jd.com','feizw.com','nch.com.tw','www.feisuzw.com','aiweicn.com','ixs.cc','quledu.com','tw.xiaoshuokan.com','7788xiaoshuo.com','wcxiaoshuo.com','2dollars.com.tw','dushi800','59to.org','book.sfacg','ranwenba','shushu5','kushuku','feiku.com','daomubiji','luoqiu.com','kxwxw','txtbbs.com','tw.57book','b.faloo.com/p/','9pwx.com']
     @page_url = url
     get_page(@page_url)   
@@ -78,8 +78,8 @@ module Crawler
       path = $1
       http = Net::HTTP.new(@match_url_pattern, 80)
       option = {
-        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36',
-        'Cookie' => '__jsluid=51f88fd48cf6ee798c0f06a8829d254b; __jsl_clearance=1449750010.005|0|09A7WH9s7uorHTXe7lCnfLR6I8Y%3D; bdshare_firstime=1449750013040'
+        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36',
+        'Cookie' => 'BAIDU_SSP_lcr=https://www.google.com.tw/; bdshare_firstime=1466256175434; CNZZDATA1259570428=1940376711-1466251308-null%7C1466326914; Hm_lvt_890dc1eca4564f20e1ea0ce03998176c=1466256174; Hm_lpvt_890dc1eca4564f20e1ea0ce03998176c=1466328380'
       }
       res = http.get path, option
       content = res.body

@@ -26,7 +26,7 @@ class Novel < ActiveRecord::Base
       articles.each do |article|
         texts = ArticleText.select("id").where("article_id = #{article.id}")
         unless texts.present?
-          if link.index('123yq')
+          if link.index('33yq')
             YqArticleWorker.perform_async(article.id)
           else
             ArticleWorker.perform_async(article.id)
