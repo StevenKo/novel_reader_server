@@ -1,1 +1,1 @@
-Elasticsearch::Model.client = Elasticsearch::Client.new host: 'http://139.162.39.168:9200'
+Elasticsearch::Model.client = Elasticsearch::Client.new host: 'http://139.162.8.75:9200'
