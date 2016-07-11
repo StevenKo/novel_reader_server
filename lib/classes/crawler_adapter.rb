@@ -296,7 +296,6 @@ class CrawlerAdapter
       '螞蟻創作網' => {'pattern'=>'/antscreation.com/si','name'=>'Antscreation','crawl_site_articles' => false,'recommend' => false},
       '天天中文網' => {'pattern'=>'/ttzw365.com/si','name'=>'Ttzw365','crawl_site_articles' => false,'recommend' => false},
       '全本書庫' => {'pattern'=>'/qbshuku.com/si','name'=>'Qbshuku','crawl_site_articles' => false,'recommend' => false},
-      '九品文学' => {'pattern'=>'/tw.9pwx.com/si','name'=>'P9wx','crawl_site_articles' => false,'recommend' => false},
       '艳腾中文' => {'pattern'=>'/yantengzw.com/si','name'=>'Yantengzw','crawl_site_articles' => false,'recommend' => false},
       '腾讯原创' => {'pattern'=>'/book.qq.com/si','name'=>'BookQq','crawl_site_articles' => false,'recommend' => false},
       '四海网' => {'pattern'=>'/4hw.com.cn/si','name'=>'Hw4','crawl_site_articles' => false,'recommend' => false},
