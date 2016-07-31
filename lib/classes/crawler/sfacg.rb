@@ -74,4 +74,27 @@ class Crawler::Sfacg
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel(category_id)
+    img_link = @page_html.css("li.cover img")[0][:src]
+    name = node.css("h1")[0].text
+    is_serializing = false
+    is_serializing = true if @page_html.css(".synopsises_font").text.index("连载中")
+    author = @page_html.css(".synopsises_font l1")[1].text
+    description = change_node_br_to_newline(node.css(".synopsises_font li").next.text).strip
+    link = get_article_url(@page_html.css(".Content_block a")[0][:href])
+    
+    novel = Novel.new
+    novel.link = link
+    novel.name = ZhConv.convert("zh-tw",name,false)
+    novel.author = ZhConv.convert("zh-tw",author,false)
+    novel.category_id = category_id
+    novel.is_show = true
+    novel.is_serializing = is_serializing
+    novel.last_update = Time.now.strftime("%m/%d/%Y")
+    novel.article_num = "?"
+    novel.description = description
+    novel.save
+    CrawlWorker.perform_async(novel.id)
+  end
+
 end
