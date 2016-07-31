@@ -111,6 +111,7 @@ class Crawler::Shu69
     novel.description = description
     novel.save
     CrawlWorker.perform_async(novel.id)
+    novel.id
   end
 
 end

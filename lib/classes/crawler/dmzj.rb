@@ -96,6 +96,7 @@ class Crawler::Dmzj
     novel.description = description
     novel.save
     CrawlWorker.perform_async(novel.id)
+    novel.id
   end
 
 end
