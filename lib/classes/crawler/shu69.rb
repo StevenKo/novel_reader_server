@@ -91,4 +91,26 @@ class Crawler::Shu69
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel(category_id)
+    img_link = @page_html.css(".zhbook_info .imgbox img")[0][:src]
+    name = node.css(".status h1")[0].text
+    is_serializing = true
+    author = @page_html.css(".author a")[0].text
+    description = change_node_br_to_newline(node.css(".jianjie p").text).strip
+    link = get_article_url(@page_html.css(".button.read a")[0][:href])
+    
+    novel = Novel.new
+    novel.link = link
+    novel.name = ZhConv.convert("zh-tw",name,false)
+    novel.author = ZhConv.convert("zh-tw",author,false)
+    novel.category_id = category_id
+    novel.is_show = true
+    novel.is_serializing = is_serializing
+    novel.last_update = Time.now.strftime("%m/%d/%Y")
+    novel.article_num = "?"
+    novel.description = description
+    novel.save
+    CrawlWorker.perform_async(novel.id)
+  end
+
 end
