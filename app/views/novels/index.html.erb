@@ -1,9 +1,10 @@
 <h1>Listing novels</h1>
 <%= form_for "", :url => search_novels_path, :method => :put do |f|%>
-
 <%= f.text_field "search" %><br />
-
 <% end %>
+
+<%= link_to "貼網址抓取小說", auto_crawl_info_novels_path %>
+
 
 <%= will_paginate @novels %>
 <table>

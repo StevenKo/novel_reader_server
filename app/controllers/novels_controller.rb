@@ -105,6 +105,14 @@ class NovelsController < ApplicationController
     redirect_to novel_path(params[:id])
   end
 
+  def auto_crawl
+    novel_link = params[:novel_link]
+    crawler = CrawlerAdapter.get_instance novel_link
+    crawler.fetch novel_link
+    novel_id = crawler.crawl_novel(params[:category_id])
+    redirect_to novel_path(novel_id)
+  end
+
   private
 
   def sort_column

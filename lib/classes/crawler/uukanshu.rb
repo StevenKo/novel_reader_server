@@ -149,4 +149,29 @@ class Crawler::Uukanshu
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel(category_id)
+    img_link = @page_html.css(".bookImg img")[0][:src]
+    name = @page_html.css(".jieshao_content h1")[0].text.gsub("最新章节","")
+    is_serializing = true
+    is_serializing = false if @page_html.css(".status-text").text.include?("完结")
+    author = @page_html.css(".jieshao_content h2 a")[0].text
+    description = change_node_br_to_newline(@page_html.css(".jieshao_content h3")).gsub("www.uukanshu.com","").gsub("http://Www.uuKanShu.Com","").gsub("－","").strip
+    link = @page_url
+    
+    novel = Novel.new
+    novel.link = link
+    novel.name = ZhConv.convert("zh-tw",name,false)
+    novel.author = ZhConv.convert("zh-tw",author,false)
+    novel.category_id = category_id
+    novel.is_show = true
+    novel.is_serializing = is_serializing
+    novel.last_update = Time.now.strftime("%m/%d/%Y")
+    novel.article_num = "?"
+    novel.description = description
+    novel.pic = img_link
+    novel.save
+    CrawlWorker.perform_async(novel.id)
+    novel.id
+  end
+
 end

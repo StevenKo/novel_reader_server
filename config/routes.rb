@@ -12,6 +12,8 @@ NovelServer::Application.routes.draw do
     collection do
       put 'search'
       put 'update_novel'
+      get 'auto_crawl_info'
+      put 'auto_crawl'
     end
     member do
       get 'invisiable_articles'

@@ -168,4 +168,33 @@ class Crawler::Piaotian
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel(category_id)
+    link = @page_html.css("#content td[width='20%'] a")[0][:href]
+    img_link = @page_html.css("#content td[width='80%'] a img")[0][:src]
+    name = @page_html.css("#content h1")[0].text
+    tables_contents = @page_html.css("#content table[width='100%'][border='0'][cellspacing='0'][cellpadding='3']")
+    is_serializing = false
+    is_serializing = true if tables_contents[0].css("tr")[3].text.include?("连载中")
+    author = tables_contents[0].css("tr")[2].css("td")[1].text.gsub("作    者：","")
+    description_content = tables_contents[1]
+    description_content.css("span,a,script").remove
+    description = change_node_br_to_newline(description_content).strip
+    
+    
+    novel = Novel.new
+    novel.link = link
+    novel.name = ZhConv.convert("zh-tw",name,false)
+    novel.author = ZhConv.convert("zh-tw",author,false)
+    novel.category_id = category_id
+    novel.is_show = true
+    novel.is_serializing = is_serializing
+    novel.last_update = Time.now.strftime("%m/%d/%Y")
+    novel.article_num = "?"
+    novel.description = description
+    novel.pic = img_link
+    novel.save
+    CrawlWorker.perform_async(novel.id)
+    novel.id
+  end
+
 end
