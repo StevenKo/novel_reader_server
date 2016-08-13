@@ -168,6 +168,7 @@ class Crawler::Uukanshu
     novel.last_update = Time.now.strftime("%m/%d/%Y")
     novel.article_num = "?"
     novel.description = description
+    novel.pic = img_link
     novel.save
     CrawlWorker.perform_async(novel.id)
     novel.id

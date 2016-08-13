@@ -40,4 +40,30 @@ class Crawler::Danmeila
     ArticleText.update_or_create(article_id: article.id, text: text)
   end
 
+  def crawl_novel(category_id)
+    is_serializing = true
+    is_serializing = false if @page_html.css(".cont h3")[0].text.include?("完本")
+    @page_html.css(".cont h3")[0].css("span").remove
+    img_link = get_article_url(@page_html.css(".titlepic img")[0][:src])
+    name = @page_html.css(".cont h3")[0].text
+    author = @page_html.css(".info dd a")[0].text
+    description = change_node_br_to_newline(@page_html.css("#xs-text p")[1]).strip
+    link = get_article_url(@page_html.css("a.btnHook")[1][:href])
+    
+    novel = Novel.new
+    novel.link = link
+    novel.name = ZhConv.convert("zh-tw",name,false)
+    novel.author = ZhConv.convert("zh-tw",author,false)
+    novel.category_id = category_id
+    novel.is_show = true
+    novel.is_serializing = is_serializing
+    novel.last_update = Time.now.strftime("%m/%d/%Y")
+    novel.article_num = "?"
+    novel.description = description
+    novel.pic = img_link
+    novel.save
+    CrawlWorker.perform_async(novel.id)
+    novel.id
+  end
+
 end

@@ -58,4 +58,29 @@ class Crawler::Yq33
     sleep(5)
   end
 
+  def crawl_novel(category_id)
+    raise Exception if @page_url.include?('xiaoshuo')
+    img_link = @page_html.css("#fmimg img")[0][:src]
+    name = @page_html.css("#info h1")[0].text
+    is_serializing = true
+    author = @page_html.css("#info h1")[0].next.next.text.gsub("作    者：","")
+    description = change_node_br_to_newline(@page_html.css(".introtxt")).strip
+    link = @page_url
+    
+    novel = Novel.new
+    novel.link = link
+    novel.name = ZhConv.convert("zh-tw",name,false)
+    novel.author = ZhConv.convert("zh-tw",author,false)
+    novel.category_id = category_id
+    novel.is_show = true
+    novel.is_serializing = is_serializing
+    novel.last_update = Time.now.strftime("%m/%d/%Y")
+    novel.article_num = "?"
+    novel.description = description
+    novel.pic = img_link
+    novel.save
+    CrawlWorker.perform_async(novel.id)
+    novel.id
+  end
+
 end
