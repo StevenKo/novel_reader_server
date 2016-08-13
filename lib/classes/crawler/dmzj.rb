@@ -77,11 +77,11 @@ class Crawler::Dmzj
 
   def crawl_novel(category_id)
     img_link = @page_html.css(".novel_cover img")[0][:src]
-    name = node.css(".novel_cover_text h1")[0].text
+    name = @page_html.css(".novel_cover_text h1")[0].text
     is_serializing = false
     is_serializing = true if @page_html.css(".spanwidth1").text.index("连载中")
-    author = @page_html.css("span.spanwidth1 l1")[0].text.gsub("作者：","")
-    description = change_node_br_to_newline(node.css("#show_intro").next.text).strip
+    author = @page_html.css("span.spanwidth1")[0].text.gsub("作者：","")
+    description = change_node_br_to_newline(@page_html.css("#show_intro")).strip
     link = @page_url
     
     novel = Novel.new

@@ -92,12 +92,15 @@ class Crawler::Shu69
   end
 
   def crawl_novel(category_id)
-    img_link = @page_html.css(".zhbook_info .imgbox img")[0][:src]
-    name = node.css(".status h1")[0].text
+    img_link = get_article_url(@page_html.css(".zhbook_info .imgbox img")[0][:src])
+    name = @page_html.css(".status h1")[0].text
     is_serializing = true
     author = @page_html.css(".author a")[0].text
-    description = change_node_br_to_newline(node.css(".jianjie p").text).strip
-    link = get_article_url(@page_html.css(".button.read a")[0][:href])
+    description_url = get_article_url(@page_html.css(".jianjie p a")[0][:href])
+    crawler = CrawlerAdapter.get_instance description_url
+    crawler.fetch description_url
+    description = change_node_br_to_newline(crawler.page_html.css(".jianjie p")).strip
+    link = get_article_url(@page_html.css("a.button.read")[0][:href])
     
     novel = Novel.new
     novel.link = link

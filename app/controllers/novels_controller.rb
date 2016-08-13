@@ -105,7 +105,7 @@ class NovelsController < ApplicationController
     redirect_to novel_path(params[:id])
   end
 
-  def auto_crawl_novel
+  def auto_crawl
     novel_link = params[:novel_link]
     crawler = CrawlerAdapter.get_instance novel_link
     crawler.fetch novel_link

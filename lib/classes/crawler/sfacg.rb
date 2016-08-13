@@ -76,12 +76,14 @@ class Crawler::Sfacg
 
   def crawl_novel(category_id)
     img_link = @page_html.css("li.cover img")[0][:src]
-    name = node.css("h1")[0].text
+    name = @page_html.css("li.cover img")[0][:title]
     is_serializing = false
     is_serializing = true if @page_html.css(".synopsises_font").text.index("连载中")
-    author = @page_html.css(".synopsises_font l1")[1].text
-    description = change_node_br_to_newline(node.css(".synopsises_font li").next.text).strip
-    link = get_article_url(@page_html.css(".Content_block a")[0][:href])
+    author = @page_html.css(".synopsises_font a")[1].text
+    des_node = @page_html.css(".synopsises_font li")[1]
+    des_node.css("img,span,script,a").remove
+    description = change_node_br_to_newline(des_node).strip
+    link = @page_url + "MainIndex/"
     
     novel = Novel.new
     novel.link = link
