@@ -45,6 +45,7 @@ class CrawlerAdapter
       '黃金屋中文(台灣)' => {'pattern'=>'/tw.hjwzw.com/si','name'=>'Hjwzw','crawl_site_articles' => true,'recommend' => false},
       '手打小说网' => {'pattern'=>'/xs555.com/si','name'=>'Xs555','crawl_site_articles' => true,'recommend' => false},
       '书迷楼' => {'pattern'=>'/shumilou.com|shumilou.co/si','name'=>'Shumilou','crawl_site_articles' => true,'recommend' => false},
+      '书迷楼org' => {'pattern'=>'/shumilou.org/si','name'=>'Shumilouorg','crawl_site_articles' => true,'recommend' => false},
       '玄葫堂' => {'pattern'=>'/xuanhutang.com/si','name'=>'Xuanhutang','crawl_site_articles' => true,'recommend' => false},
       '剑侠' => {'pattern'=>'/jianxia.cc/si','name'=>'Jianxia','crawl_site_articles' => true,'recommend' => false},
       '全本小说网quanben' => {'pattern'=>'/quanben.com/si','name'=>'Quanben','crawl_site_articles' => true,'recommend' => false},
@@ -155,6 +156,7 @@ class CrawlerAdapter
       'ftxsy' => {'pattern'=>'/ftxsy.com/si','name'=>'Ftxsy','crawl_site_articles' => true,'recommend' => false},
       'LwxsOrg' => {'pattern'=>'/lwxs.org/si','name'=>'LwxsOrg','crawl_site_articles' => true,'recommend' => false},
       'Lewenxiaoshuo' => {'pattern'=>'/lewenxiaoshuo.com/si','name'=>'Lewenxiaoshuo','crawl_site_articles' => true,'recommend' => false},
+      'Biqugezw' => {'pattern'=>'/biqugezw.com/si','name'=>'Biqugezw','crawl_site_articles' => true,'recommend' => false},
       'Biquge' => {'pattern'=>'/www.biquge/si','name'=>'Biquge','crawl_site_articles' => true,'recommend' => false},
       'Mucanwenxue' => {'pattern'=>'/mucanwenxue.com/si','name'=>'Mucanwenxue','crawl_site_articles' => true,'recommend' => false},
       'Xbiquge' => {'pattern'=>'/www.xbiquge.com/si','name'=>'Xbiquge','crawl_site_articles' => true,'recommend' => false},
@@ -286,6 +288,7 @@ class CrawlerAdapter
       'novel8.net' => {'pattern'=>'/novel8.net/si','name'=>'Novel8','crawl_site_articles' => true,'recommend' => false},
       'jdxs' => {'pattern'=>'/jdxs.net/si','name'=>'Jdxs','crawl_site_articles' => true,'recommend' => false},
       'qb5200' => {'pattern'=>'/qb5200.com/si','name'=>'Qb5200','crawl_site_articles' => true,'recommend' => false},
+      'lcread' => {'pattern'=>'/lcread.com/si','name'=>'Lcread','crawl_site_articles' => true,'recommend' => false},
 
       '冰火' => {'pattern'=>'/binhuo.com/si','name'=>'Binhuo','crawl_site_articles' => false,'recommend' => false},
       '91baby' => {'pattern'=>'/91baby.mama.cn/si','name'=>'Baby91','crawl_site_articles' => false,'recommend' => false},

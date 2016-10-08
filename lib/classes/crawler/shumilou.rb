@@ -11,10 +11,6 @@ class Crawler::Shumilou
       do_not_crawl_from_link = false if crawl_this_article(from_link,node[:href])
       next if do_not_crawl_from_link
       
-      if novel_id == 17988
-        do_not_crawl = false if node[:href] == "/wodtieshenxiaohua/6177262.html"
-        next if do_not_crawl
-      end
       if novel_id == 21332
         do_not_crawl = false if node[:href] == "/zhongshengzhishenjixueba10/4497795.html"
         next if do_not_crawl
